@@ -1,14 +1,13 @@
 package com.sasfmlzr.findfilm;
 
 import android.os.AsyncTask;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.JsonReader;
+import android.support.v7.app.AppCompatActivity;
+
+import com.sasfmlzr.findfilm.model.request.DiscoverMovieRequest;
 
 import org.json.JSONException;
 import org.json.JSONObject;
-
-import java.io.IOException;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -24,13 +23,14 @@ public class MainActivity extends AppCompatActivity {
         @Override
         protected Void doInBackground(Void... voids) {
             Request request = new Request();
-            String json="";
+            String json = "";
             JSONObject jsonObject;
             try {
-                json = request.connection("https://api.themoviedb.org/3/movie/550?api_key=95b6fb97b8ac374f68020711a8b9ceec");
+                json = request.discoverMovie();
                 jsonObject = new JSONObject(json);
+                DiscoverMovieRequest request1 = new DiscoverMovieRequest(jsonObject);
                 System.out.println();
-            } catch (IOException | JSONException e) {
+            } catch (JSONException e) {
                 e.printStackTrace();
             }
             System.out.println(json);
