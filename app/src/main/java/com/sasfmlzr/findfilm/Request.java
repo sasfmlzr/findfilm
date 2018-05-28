@@ -37,7 +37,7 @@ public class Request {
 
     public String viewMovie(int movie_id) {
         return connection("https://api.themoviedb.org/3/movie/" + movie_id +
-                "?api_key=" + API_KEY + ">&language=en-US");
+                "?api_key=" + API_KEY + "&language=en-US");
     }
 
 }
