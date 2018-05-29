@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">FindFilm</string>
+    <string name="name_film">Name film</string>
+    <string name="desctiption_film">Desctiption</string>
 </resources>

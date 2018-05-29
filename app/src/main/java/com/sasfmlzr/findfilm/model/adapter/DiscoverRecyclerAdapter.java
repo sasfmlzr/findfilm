@@ -32,7 +32,11 @@ public class DiscoverRecyclerAdapter extends RecyclerView.Adapter<DiscoverRecycl
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         DiscoverMovieRequest.ResultsField currentFilm = filmList.get(position);
         holder.nameFilm.setText(currentFilm.getTitle());
-        holder.descriptionFilm.setText(currentFilm.getOverview());
+        String overview = currentFilm.getOverview();
+        if(overview.length()>=97) {
+            overview = overview.substring(0,97) + "...";
+        }
+        holder.descriptionFilm.setText(overview);
     }
 
     @Override
