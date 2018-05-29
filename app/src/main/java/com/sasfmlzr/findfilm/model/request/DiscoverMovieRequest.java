@@ -33,26 +33,26 @@ public class DiscoverMovieRequest {
                 JSONObject currentObject = jsonArray.getJSONObject(countArray);
 
                 List<Integer> genreIdsList = new ArrayList<>();
-                JSONArray genreIds = currentObject.getJSONArray("genre_ids");
-                for (int i = 0; i < genreIds.length(); i++) {
-                    genreIdsList.add(genreIds.getInt(i));
-                }
-
-                resultsFields.add(new ResultsField(currentObject.getInt("vote_count"),
-                        currentObject.getInt("id"),
-                        currentObject.getBoolean("video"),
-                        currentObject.getLong("vote_average"),
-                        currentObject.getString("title"),
-                        currentObject.getLong("popularity"),
-                        currentObject.getString("poster_path"),
-                        currentObject.getString("original_language"),
-                        currentObject.getString("original_title"),
-                        genreIdsList,
-                        currentObject.getString("backdrop_path"),
-                        currentObject.getBoolean("adult"),
-                        currentObject.getString("overview"),
-                        currentObject.getString("release_date")));
+            JSONArray genreIds = currentObject.getJSONArray("genre_ids");
+            for (int i = 0; i < genreIds.length(); i++) {
+                genreIdsList.add(genreIds.getInt(i));
             }
+
+            resultsFields.add(new ResultsField(currentObject.getInt("vote_count"),
+                    currentObject.getInt("id"),
+                    currentObject.getBoolean("video"),
+                    currentObject.getLong("vote_average"),
+                    currentObject.getString("title"),
+                    currentObject.getLong("popularity"),
+                    currentObject.getString("poster_path"),
+                    currentObject.getString("original_language"),
+                    currentObject.getString("original_title"),
+                    genreIdsList,
+                    currentObject.getString("backdrop_path"),
+                    currentObject.getBoolean("adult"),
+                    currentObject.getString("overview"),
+                    currentObject.getString("release_date")));
+        }
         } catch (JSONException e) {
             e.printStackTrace();
         }
