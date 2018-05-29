@@ -108,7 +108,7 @@ public class DiscoverFilmFragment extends android.support.v4.app.Fragment {
         }
     }
 
-    static class DownloadImageTask extends AsyncTask<Void, Void, Void> {
+    static class DownloadImageTask extends AsyncTask<Void, Void, DiscoverMovieRequest.ResultsField> {
         private String url;
         DiscoverMovieRequest.ResultsField film;
         DownloadImage callback;
@@ -120,11 +120,16 @@ public class DiscoverFilmFragment extends android.support.v4.app.Fragment {
         }
 
         @Override
-        protected Void doInBackground(Void... voids) {
+        protected DiscoverMovieRequest.ResultsField doInBackground(Void... voids) {
             Bitmap bitmap = Downloader.downloadImage(url);
             film.setBackdropBitmap(bitmap);
+            return film;
+        }
+
+        @Override
+        protected void onPostExecute(DiscoverMovieRequest.ResultsField film) {
             callback.isDownloaded(film);
-            return null;
+            super.onPostExecute(film);
         }
     }
 }
