@@ -1,4 +1,5 @@
 package com.sasfmlzr.findfilm.model.fragment;
+import android.graphics.Bitmap;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -15,11 +16,14 @@ import com.sasfmlzr.findfilm.model.adapter.DiscoverRecyclerAdapter;
 import com.sasfmlzr.findfilm.model.request.CurrentMovieRequest;
 import com.sasfmlzr.findfilm.model.request.DiscoverMovieRequest;
 import com.sasfmlzr.findfilm.model.request.JsonParserRequest;
+import com.sasfmlzr.findfilm.model.utils.Downloader;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.List;
+
+import static com.sasfmlzr.findfilm.model.SystemSettings.URL_IMAGE_92PX;
 
 public class DiscoverFilmFragment extends android.support.v4.app.Fragment {
     private RecyclerView listFilmView;
@@ -35,15 +39,27 @@ public class DiscoverFilmFragment extends android.support.v4.app.Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.discover_fragment, container, false);
         loadRecyclerFilmView();
-        AsyncComplete listener = (List<DiscoverMovieRequest.ResultsField> filmList) -> {
-            setAdapterDiscoverFilm(filmList);
+
+        DownloadImage downloadCallback = (film) -> {
+            ((DiscoverRecyclerAdapter) listFilmView.getAdapter()).replaceImageViewFilm(film);
         };
+        FilmListComplete listener = (filmList) -> {
+            setAdapterDiscoverFilm(filmList);
+            for (DiscoverMovieRequest.ResultsField film : filmList) {
+                new DownloadImageTask(URL_IMAGE_92PX + film.getBackdrop_path(), film, downloadCallback).execute();
+            }
+        };
+
         new RetrieveFeedTask(listener).execute();
         return view;
     }
 
-    public interface AsyncComplete {
+    public interface FilmListComplete {
         void isCompleted(List<DiscoverMovieRequest.ResultsField> filmList);
+    }
+
+    public interface DownloadImage {
+        void isDownloaded(DiscoverMovieRequest.ResultsField film);
     }
 
     private void loadRecyclerFilmView() {
@@ -57,9 +73,9 @@ public class DiscoverFilmFragment extends android.support.v4.app.Fragment {
     }
 
     static class RetrieveFeedTask extends AsyncTask<Void, Void, List<DiscoverMovieRequest.ResultsField>> {
-        private AsyncComplete listener;
+        private FilmListComplete listener;
 
-        RetrieveFeedTask(AsyncComplete listener) {
+        RetrieveFeedTask(FilmListComplete listener) {
             this.listener = listener;
         }
 
@@ -89,6 +105,26 @@ public class DiscoverFilmFragment extends android.support.v4.app.Fragment {
         protected void onPostExecute(List<DiscoverMovieRequest.ResultsField> resultsFields) {
             listener.isCompleted(resultsFields);
             super.onPostExecute(resultsFields);
+        }
+    }
+
+    static class DownloadImageTask extends AsyncTask<Void, Void, Void> {
+        private String url;
+        DiscoverMovieRequest.ResultsField film;
+        DownloadImage callback;
+
+        DownloadImageTask(String url, DiscoverMovieRequest.ResultsField film, DownloadImage callback) {
+            this.url = url;
+            this.film = film;
+            this.callback = callback;
+        }
+
+        @Override
+        protected Void doInBackground(Void... voids) {
+            Bitmap bitmap = Downloader.downloadImage(url);
+            film.setBackdropBitmap(bitmap);
+            callback.isDownloaded(film);
+            return null;
         }
     }
 }

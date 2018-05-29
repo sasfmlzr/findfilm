@@ -1,4 +1,6 @@
 package com.sasfmlzr.findfilm.model.request;
+import android.graphics.Bitmap;
+
 import java.util.List;
 
 @SuppressWarnings({"unused"})
@@ -50,6 +52,7 @@ public class DiscoverMovieRequest {
         private Boolean adult;
         private String overview;
         private String release_date;
+        private Bitmap backdropBitmap;
 
         ResultsField(int vote_count,
                      int id, Boolean video,
@@ -134,6 +137,14 @@ public class DiscoverMovieRequest {
 
         public String getRelease_date() {
             return release_date;
+        }
+
+        public Bitmap getBackdropBitmap() {
+            return backdropBitmap;
+        }
+
+        public void setBackdropBitmap(Bitmap backdropBitmap) {
+            this.backdropBitmap = backdropBitmap;
         }
     }
 }
