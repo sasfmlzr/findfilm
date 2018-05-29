@@ -1,11 +1,8 @@
 package com.sasfmlzr.findfilm.model.request;
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import java.util.ArrayList;
 import java.util.List;
 
+@SuppressWarnings({"unused"})
 public class DiscoverMovieRequest {
     private int page;
     private int total_results;
@@ -21,41 +18,6 @@ public class DiscoverMovieRequest {
         this.total_results = total_results;
         this.total_pages = total_pages;
         this.resultsFields = resultsFields;
-    }
-
-    public DiscoverMovieRequest(JSONObject discoverMovieJson) {
-        try {
-            this.page = discoverMovieJson.getInt("page");
-            this.total_results = discoverMovieJson.getInt("total_results");
-            this.total_pages = discoverMovieJson.getInt("total_pages");
-            JSONArray jsonArray = discoverMovieJson.getJSONArray("results");
-            for (int countArray = 0; countArray < jsonArray.length(); countArray++) {
-                JSONObject currentObject = jsonArray.getJSONObject(countArray);
-
-                List<Integer> genreIdsList = new ArrayList<>();
-            JSONArray genreIds = currentObject.getJSONArray("genre_ids");
-            for (int i = 0; i < genreIds.length(); i++) {
-                genreIdsList.add(genreIds.getInt(i));
-            }
-
-            resultsFields.add(new ResultsField(currentObject.getInt("vote_count"),
-                    currentObject.getInt("id"),
-                    currentObject.getBoolean("video"),
-                    currentObject.getLong("vote_average"),
-                    currentObject.getString("title"),
-                    currentObject.getLong("popularity"),
-                    currentObject.getString("poster_path"),
-                    currentObject.getString("original_language"),
-                    currentObject.getString("original_title"),
-                    genreIdsList,
-                    currentObject.getString("backdrop_path"),
-                    currentObject.getBoolean("adult"),
-                    currentObject.getString("overview"),
-                    currentObject.getString("release_date")));
-        }
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
     }
 
     public int getPage() {
@@ -74,7 +36,7 @@ public class DiscoverMovieRequest {
         return resultsFields;
     }
 
-    private static class ResultsField {
+    public static class ResultsField {
         private int vote_count;
         private int id;
         private Boolean video;
@@ -90,19 +52,19 @@ public class DiscoverMovieRequest {
         private String overview;
         private String release_date;
 
-        public ResultsField(int vote_count,
-                            int id, Boolean video,
-                            float vote_average,
-                            String title,
-                            float popularity,
-                            String poster_path,
-                            String original_language,
-                            String original_title,
-                            List<Integer> genre_ids,
-                            String backdrop_path,
-                            Boolean adult,
-                            String overview,
-                            String release_date) {
+        ResultsField(int vote_count,
+                     int id, Boolean video,
+                     float vote_average,
+                     String title,
+                     float popularity,
+                     String poster_path,
+                     String original_language,
+                     String original_title,
+                     List<Integer> genre_ids,
+                     String backdrop_path,
+                     Boolean adult,
+                     String overview,
+                     String release_date) {
             this.vote_count = vote_count;
             this.id = id;
             this.video = video;
