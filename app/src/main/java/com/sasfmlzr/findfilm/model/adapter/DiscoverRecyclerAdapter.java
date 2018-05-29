@@ -33,8 +33,8 @@ public class DiscoverRecyclerAdapter extends RecyclerView.Adapter<DiscoverRecycl
         DiscoverMovieRequest.ResultsField currentFilm = filmList.get(position);
         holder.nameFilm.setText(currentFilm.getTitle());
         String overview = currentFilm.getOverview();
-        if(overview.length()>=97) {
-            overview = overview.substring(0,97) + "...";
+        if (overview.length() >= 97) {
+            overview = overview.substring(0, 97) + "...";
         }
         holder.descriptionFilm.setText(overview);
     }

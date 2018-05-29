@@ -1,5 +1,4 @@
 package com.sasfmlzr.findfilm.model.request;
-import java.util.ArrayList;
 import java.util.List;
 
 @SuppressWarnings({"unused"})
@@ -7,7 +6,7 @@ public class DiscoverMovieRequest {
     private int page;
     private int total_results;
     private int total_pages;
-    private List<ResultsField> resultsFields = new ArrayList<>();
+    private List<ResultsField> resultsFields;
 
 
     public DiscoverMovieRequest(int page,

@@ -24,6 +24,7 @@ import java.util.List;
 public class DiscoverFilmFragment extends android.support.v4.app.Fragment {
     private RecyclerView listFilmView;
     private View view;
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -41,16 +42,16 @@ public class DiscoverFilmFragment extends android.support.v4.app.Fragment {
         return view;
     }
 
-    public interface AsyncComplete{
+    public interface AsyncComplete {
         void isCompleted(List<DiscoverMovieRequest.ResultsField> filmList);
     }
 
-    private void loadRecyclerFilmView(){
-        listFilmView=view.findViewById(R.id.discoverFilmList);
+    private void loadRecyclerFilmView() {
+        listFilmView = view.findViewById(R.id.discoverFilmList);
         listFilmView.setLayoutManager(new LinearLayoutManager(view.getContext()));
     }
 
-    private void setAdapterDiscoverFilm(List<DiscoverMovieRequest.ResultsField> filmList){
+    private void setAdapterDiscoverFilm(List<DiscoverMovieRequest.ResultsField> filmList) {
         RecyclerView.Adapter adapter = new DiscoverRecyclerAdapter(filmList);
         listFilmView.setAdapter(adapter);
     }
@@ -59,7 +60,7 @@ public class DiscoverFilmFragment extends android.support.v4.app.Fragment {
         private AsyncComplete listener;
 
         RetrieveFeedTask(AsyncComplete listener) {
-            this.listener=listener;
+            this.listener = listener;
         }
 
         @Override
