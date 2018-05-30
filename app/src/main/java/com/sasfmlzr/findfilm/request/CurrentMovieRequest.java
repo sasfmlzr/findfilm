@@ -81,6 +81,106 @@ public class CurrentMovieRequest {
         this.voteCount = voteCount;
     }
 
+    public boolean isAdult() {
+        return adult;
+    }
+
+    public String getBackdropPath() {
+        return backdropPath;
+    }
+
+    public BelongsToCollection getBelongsToCollection() {
+        return belongsToCollection;
+    }
+
+    public int getBudget() {
+        return budget;
+    }
+
+    public List<Genre> getGenres() {
+        return genres;
+    }
+
+    public String getHomepage() {
+        return homepage;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public String getImdbId() {
+        return imdbId;
+    }
+
+    public String getOriginalLanguage() {
+        return originalLanguage;
+    }
+
+    public String getOriginalTitle() {
+        return originalTitle;
+    }
+
+    public String getOverview() {
+        return overview;
+    }
+
+    public double getPopularity() {
+        return popularity;
+    }
+
+    public String getPosterPath() {
+        return posterPath;
+    }
+
+    public List<ProductionCompany> getProductionCompanies() {
+        return productionCompanies;
+    }
+
+    public List<ProductionCountry> getProductionCountries() {
+        return productionCountries;
+    }
+
+    public String getReleaseDate() {
+        return releaseDate;
+    }
+
+    public int getRevenue() {
+        return revenue;
+    }
+
+    public int getRuntime() {
+        return runtime;
+    }
+
+    public List<SpokenLanguage> getSpokenLanguages() {
+        return spokenLanguages;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public String getTagline() {
+        return tagline;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public boolean isVideo() {
+        return video;
+    }
+
+    public double getVoteAverage() {
+        return voteAverage;
+    }
+
+    public int getVoteCount() {
+        return voteCount;
+    }
+
     public static class BelongsToCollection {
         private int id;
         private String name;
