@@ -10,22 +10,24 @@
         android:id="@+id/current_film_image_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_weight="1" />
+        android:layout_weight="4" />
 
     <TextView
         android:id="@+id/name_current_film"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_weight="1"
+        android:layout_weight="6"
         android:gravity="top|center"
         android:text="@string/name_film"
-        android:textSize="24sp" />
+        android:textSize="24sp"
+        android:textStyle="bold" />
 
     <TextView
         android:id="@+id/description_current_film"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_weight="1"
+        android:layout_weight="4"
         android:gravity="left"
-        android:text="@string/desctiption_film" />
+        android:text="@string/desctiption_film"
+        android:textSize="18sp" />
 </LinearLayout>

@@ -1,4 +1,5 @@
 package com.sasfmlzr.findfilm.fragment;
+import android.graphics.Bitmap;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -14,9 +15,12 @@ import com.sasfmlzr.findfilm.R;
 import com.sasfmlzr.findfilm.request.CurrentMovieRequest;
 import com.sasfmlzr.findfilm.request.JsonParserRequest;
 import com.sasfmlzr.findfilm.request.Request;
+import com.sasfmlzr.findfilm.utils.Downloader;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import static com.sasfmlzr.findfilm.model.SystemSettings.URL_IMAGE_500PX;
 
 public class CurrentFilmFragment extends Fragment {
     private int idFilm;
@@ -60,13 +64,21 @@ public class CurrentFilmFragment extends Fragment {
         void isLoaded(CurrentMovieRequest currentMovieRequest);
     }
 
+    public interface DownloadImage {
+        void isDownloaded(CurrentMovieRequest currentMovieRequest);
+    }
+
     public void loadFilm() {
-        FilmLoaded callback = (currentMovieRequest) -> {
-            posterFilm.setImageBitmap(currentMovieRequest.getBackdropBitmap());
+        DownloadImage imageDownloadCallback = (film) ->
+                posterFilm.setImageBitmap(film.getBackdropBitmap());
+
+        FilmLoaded filmLoadCallback = (currentMovieRequest) -> {
             nameFilm.setText(currentMovieRequest.getTitle());
             description.setText(currentMovieRequest.getOverview());
+            new DownloadImageTask(currentMovieRequest, imageDownloadCallback).execute();
         };
-        new LoadDataFilmTask(idFilm, callback).execute();
+
+        new LoadDataFilmTask(idFilm, filmLoadCallback).execute();
     }
 
     static class LoadDataFilmTask extends AsyncTask<Void, Void, CurrentMovieRequest> {
@@ -96,6 +108,31 @@ public class CurrentFilmFragment extends Fragment {
         protected void onPostExecute(CurrentMovieRequest currentMovieRequest) {
             super.onPostExecute(currentMovieRequest);
             callback.isLoaded(currentMovieRequest);
+        }
+    }
+
+    static class DownloadImageTask extends AsyncTask<Void, Void, CurrentMovieRequest> {
+        private String url;
+        CurrentMovieRequest film;
+        CurrentFilmFragment.DownloadImage callback;
+
+        DownloadImageTask(CurrentMovieRequest film, CurrentFilmFragment.DownloadImage callback) {
+            this.url = URL_IMAGE_500PX + film.getBackdropPath();
+            this.film = film;
+            this.callback = callback;
+        }
+
+        @Override
+        protected CurrentMovieRequest doInBackground(Void... voids) {
+            Bitmap bitmap = Downloader.downloadImage(url);
+            film.setBackdropBitmap(bitmap);
+            return film;
+        }
+
+        @Override
+        protected void onPostExecute(CurrentMovieRequest film) {
+            callback.isDownloaded(film);
+            super.onPostExecute(film);
         }
     }
 }

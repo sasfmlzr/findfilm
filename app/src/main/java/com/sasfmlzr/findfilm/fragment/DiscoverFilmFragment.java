@@ -48,7 +48,7 @@ public class DiscoverFilmFragment extends android.support.v4.app.Fragment {
         FilmListComplete listener = (filmList) -> {
             setAdapterDiscoverFilm(filmList);
             for (DiscoverMovieRequest.ResultsField film : filmList) {
-                new DownloadImageTask(URL_IMAGE_92PX + film.getBackdrop_path(), film, downloadCallback).execute();
+                new DownloadImageTask(film, downloadCallback).execute();
             }
         };
 
@@ -127,12 +127,12 @@ public class DiscoverFilmFragment extends android.support.v4.app.Fragment {
     }
 
     static class DownloadImageTask extends AsyncTask<Void, Void, DiscoverMovieRequest.ResultsField> {
+        private DiscoverMovieRequest.ResultsField film;
+        private DownloadImage callback;
         private String url;
-        DiscoverMovieRequest.ResultsField film;
-        DownloadImage callback;
 
-        DownloadImageTask(String url, DiscoverMovieRequest.ResultsField film, DownloadImage callback) {
-            this.url = url;
+        DownloadImageTask(DiscoverMovieRequest.ResultsField film, DownloadImage callback) {
+            this.url = URL_IMAGE_92PX + film.getBackdrop_path();
             this.film = film;
             this.callback = callback;
         }
