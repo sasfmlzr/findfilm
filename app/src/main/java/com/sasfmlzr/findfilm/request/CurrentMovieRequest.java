@@ -1,4 +1,6 @@
 package com.sasfmlzr.findfilm.request;
+import android.graphics.Bitmap;
+
 import java.util.List;
 
 @SuppressWarnings({"unused"})
@@ -28,6 +30,7 @@ public class CurrentMovieRequest {
     private boolean video;
     private double voteAverage;
     private int voteCount;
+    private Bitmap backdropBitmap;
 
     public CurrentMovieRequest(boolean adult,
                                String backdropPath,
@@ -179,6 +182,10 @@ public class CurrentMovieRequest {
 
     public int getVoteCount() {
         return voteCount;
+    }
+
+    public Bitmap getBackdropBitmap() {
+        return backdropBitmap;
     }
 
     public static class BelongsToCollection {
