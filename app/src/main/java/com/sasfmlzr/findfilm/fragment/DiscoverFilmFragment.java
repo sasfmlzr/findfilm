@@ -1,4 +1,5 @@
 package com.sasfmlzr.findfilm.fragment;
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -26,6 +27,8 @@ import java.util.List;
 import static com.sasfmlzr.findfilm.model.SystemSettings.URL_IMAGE_92PX;
 
 public class DiscoverFilmFragment extends android.support.v4.app.Fragment {
+    private DiscoverFilmFragment.OnFilmSelectedListener filmSelectedListener;
+
     private RecyclerView listFilmView;
     private View view;
 
@@ -54,6 +57,26 @@ public class DiscoverFilmFragment extends android.support.v4.app.Fragment {
         return view;
     }
 
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        try {
+            filmSelectedListener = (OnFilmSelectedListener) getActivity();
+        } catch (ClassCastException e) {
+            throw new ClassCastException(context.toString() + " OnFilmSelectedListener not attached");
+        }
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        filmSelectedListener = null;
+    }
+
+    public interface OnFilmSelectedListener{
+        void filmClicked(int idFilm);
+    }
+
     public interface FilmListComplete {
         void isCompleted(List<DiscoverMovieRequest.ResultsField> filmList);
     }
@@ -68,7 +91,7 @@ public class DiscoverFilmFragment extends android.support.v4.app.Fragment {
     }
 
     private void setAdapterDiscoverFilm(List<DiscoverMovieRequest.ResultsField> filmList) {
-        RecyclerView.Adapter adapter = new DiscoverRecyclerAdapter(filmList);
+        RecyclerView.Adapter adapter = new DiscoverRecyclerAdapter(filmList, filmSelectedListener);
         listFilmView.setAdapter(adapter);
     }
 

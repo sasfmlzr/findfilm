@@ -9,15 +9,19 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.sasfmlzr.findfilm.R;
+import com.sasfmlzr.findfilm.fragment.DiscoverFilmFragment;
 import com.sasfmlzr.findfilm.request.DiscoverMovieRequest;
 
 import java.util.List;
 
 public class DiscoverRecyclerAdapter extends RecyclerView.Adapter<DiscoverRecyclerAdapter.ViewHolder> {
-    List<DiscoverMovieRequest.ResultsField> filmList;
+    private List<DiscoverMovieRequest.ResultsField> filmList;
+    private DiscoverFilmFragment.OnFilmSelectedListener filmSelectedListener;
 
-    public DiscoverRecyclerAdapter(List<DiscoverMovieRequest.ResultsField> filmList) {
+    public DiscoverRecyclerAdapter(List<DiscoverMovieRequest.ResultsField> filmList,
+                                   DiscoverFilmFragment.OnFilmSelectedListener filmSelectedListener) {
         this.filmList = filmList;
+        this.filmSelectedListener = filmSelectedListener;
     }
 
     @NonNull
@@ -66,11 +70,12 @@ public class DiscoverRecyclerAdapter extends RecyclerView.Adapter<DiscoverRecycl
             nameFilm = itemView.findViewById(R.id.nameFilm);
             descriptionFilm = itemView.findViewById(R.id.descriptionFilm);
             imageFilmView = itemView.findViewById(R.id.previewFilmImageView);
+            itemView.setOnClickListener(this);
         }
 
         @Override
         public void onClick(View v) {
-
+            filmSelectedListener.filmClicked(filmList.get(getAdapterPosition()).getId());
         }
     }
 }
