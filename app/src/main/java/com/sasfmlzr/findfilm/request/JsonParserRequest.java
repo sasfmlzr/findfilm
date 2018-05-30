@@ -1,4 +1,4 @@
-package com.sasfmlzr.findfilm.model.request;
+package com.sasfmlzr.findfilm.request;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;

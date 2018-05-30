@@ -1,4 +1,4 @@
-package com.sasfmlzr.findfilm;
+package com.sasfmlzr.findfilm.request;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;

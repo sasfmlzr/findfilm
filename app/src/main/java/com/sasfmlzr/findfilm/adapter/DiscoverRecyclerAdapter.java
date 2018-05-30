@@ -1,4 +1,4 @@
-package com.sasfmlzr.findfilm.model.adapter;
+package com.sasfmlzr.findfilm.adapter;
 
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
@@ -9,7 +9,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.sasfmlzr.findfilm.R;
-import com.sasfmlzr.findfilm.model.request.DiscoverMovieRequest;
+import com.sasfmlzr.findfilm.request.DiscoverMovieRequest;
 
 import java.util.List;
 

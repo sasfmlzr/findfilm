@@ -1,4 +1,4 @@
-package com.sasfmlzr.findfilm.model.request;
+package com.sasfmlzr.findfilm.request;
 import java.util.List;
 
 @SuppressWarnings({"unused"})

@@ -1,4 +1,4 @@
-package com.sasfmlzr.findfilm.model.fragment;
+package com.sasfmlzr.findfilm.fragment;
 import android.graphics.Bitmap;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -11,12 +11,12 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.sasfmlzr.findfilm.R;
-import com.sasfmlzr.findfilm.Request;
-import com.sasfmlzr.findfilm.model.adapter.DiscoverRecyclerAdapter;
-import com.sasfmlzr.findfilm.model.request.CurrentMovieRequest;
-import com.sasfmlzr.findfilm.model.request.DiscoverMovieRequest;
-import com.sasfmlzr.findfilm.model.request.JsonParserRequest;
-import com.sasfmlzr.findfilm.model.utils.Downloader;
+import com.sasfmlzr.findfilm.request.Request;
+import com.sasfmlzr.findfilm.adapter.DiscoverRecyclerAdapter;
+import com.sasfmlzr.findfilm.request.CurrentMovieRequest;
+import com.sasfmlzr.findfilm.request.DiscoverMovieRequest;
+import com.sasfmlzr.findfilm.request.JsonParserRequest;
+import com.sasfmlzr.findfilm.utils.Downloader;
 
 import org.json.JSONException;
 import org.json.JSONObject;

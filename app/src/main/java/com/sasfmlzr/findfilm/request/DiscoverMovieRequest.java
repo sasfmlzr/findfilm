@@ -1,4 +1,4 @@
-package com.sasfmlzr.findfilm.model.request;
+package com.sasfmlzr.findfilm.request;
 import android.graphics.Bitmap;
 
 import java.util.List;

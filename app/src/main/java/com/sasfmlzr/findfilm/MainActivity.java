@@ -4,7 +4,7 @@ import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 
-import com.sasfmlzr.findfilm.model.fragment.DiscoverFilmFragment;
+import com.sasfmlzr.findfilm.fragment.DiscoverFilmFragment;
 
 public class MainActivity extends AppCompatActivity {
 

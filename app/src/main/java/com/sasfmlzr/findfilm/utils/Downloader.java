@@ -1,4 +1,4 @@
-package com.sasfmlzr.findfilm.model.utils;
+package com.sasfmlzr.findfilm.utils;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 
