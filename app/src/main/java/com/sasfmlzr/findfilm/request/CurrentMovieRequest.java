@@ -188,6 +188,10 @@ public class CurrentMovieRequest {
         return backdropBitmap;
     }
 
+    public void setBackdropBitmap(Bitmap backdropBitmap) {
+        this.backdropBitmap = backdropBitmap;
+    }
+
     public static class BelongsToCollection {
         private int id;
         private String name;
