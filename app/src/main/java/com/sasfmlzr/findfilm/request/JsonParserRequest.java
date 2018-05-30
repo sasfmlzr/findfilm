@@ -11,7 +11,7 @@ public class JsonParserRequest {
     public CurrentMovieRequest currentMovieParce(JSONObject currentMovieJSON) {
         boolean adult;
         String backdropPath;
-        CurrentMovieRequest.BelongsToCollection belongsToCollection;
+        CurrentMovieRequest.BelongsToCollection belongsToCollection = null;
         int budget;
         List<CurrentMovieRequest.Genre> genres = new ArrayList<>();
         String homepage;
@@ -57,46 +57,55 @@ public class JsonParserRequest {
             voteAverage = currentMovieJSON.getDouble("vote_average");
             voteCount = currentMovieJSON.getInt("vote_count");
 
-            JSONObject belongsToCollectionArray = currentMovieJSON.getJSONObject("belongs_to_collection");
-
-            belongsToCollection = new CurrentMovieRequest.BelongsToCollection(
-                    belongsToCollectionArray.getInt("id"),
-                    belongsToCollectionArray.getString("name"),
-                    belongsToCollectionArray.getString("poster_path"),
-                    belongsToCollectionArray.getString("backdrop_path"));
-
-            JSONArray genresArray = currentMovieJSON.getJSONArray("genres");
-            for (int countArray = 0; countArray < genresArray.length(); countArray++) {
-                JSONObject currentObject = genresArray.getJSONObject(countArray);
-                genres.add(new CurrentMovieRequest.Genre(
-                        currentObject.getInt("id"),
-                        currentObject.getString("name")));
+            if (!currentMovieJSON.isNull("belongs_to_collection")) {
+                JSONObject belongsToCollectionArray = currentMovieJSON.getJSONObject("belongs_to_collection");
+                belongsToCollection = new CurrentMovieRequest.BelongsToCollection(
+                        belongsToCollectionArray.getInt("id"),
+                        belongsToCollectionArray.getString("name"),
+                        belongsToCollectionArray.getString("poster_path"),
+                        belongsToCollectionArray.getString("backdrop_path"));
             }
 
-            JSONArray productionCompaniesArray = currentMovieJSON.getJSONArray("production_companies");
-            for (int countArray = 0; countArray < productionCompaniesArray.length(); countArray++) {
-                JSONObject currentObject = productionCompaniesArray.getJSONObject(countArray);
-                productionCompanies.add(new CurrentMovieRequest.ProductionCompany(
-                        currentObject.getInt("id"),
-                        currentObject.getString("name"),
-                        currentObject.getString("logo_path"),
-                        currentObject.getString("origin_country")));
+            if (!currentMovieJSON.isNull("genres")) {
+                JSONArray genresArray = currentMovieJSON.getJSONArray("genres");
+                for (int countArray = 0; countArray < genresArray.length(); countArray++) {
+                    JSONObject currentObject = genresArray.getJSONObject(countArray);
+                    genres.add(new CurrentMovieRequest.Genre(
+                            currentObject.getInt("id"),
+                            currentObject.getString("name")));
+                }
             }
 
-            JSONArray productionCountriesArray = currentMovieJSON.getJSONArray("production_countries");
-            for (int countArray = 0; countArray < productionCountriesArray.length(); countArray++) {
-                JSONObject currentObject = productionCountriesArray.getJSONObject(countArray);
-                productionCountries.add(new CurrentMovieRequest.ProductionCountry(
-                        currentObject.getString("iso_3166_1"),
-                        currentObject.getString("name")));
+            if (!currentMovieJSON.isNull("production_companies")) {
+                JSONArray productionCompaniesArray = currentMovieJSON.getJSONArray("production_companies");
+                for (int countArray = 0; countArray < productionCompaniesArray.length(); countArray++) {
+                    JSONObject currentObject = productionCompaniesArray.getJSONObject(countArray);
+                    productionCompanies.add(new CurrentMovieRequest.ProductionCompany(
+                            currentObject.getInt("id"),
+                            currentObject.getString("name"),
+                            currentObject.getString("logo_path"),
+                            currentObject.getString("origin_country")));
+                }
             }
 
-            JSONArray spokenLanguagesArray = currentMovieJSON.getJSONArray("spoken_languages");
-            for (int countArray = 0; countArray < spokenLanguagesArray.length(); countArray++) {
-                JSONObject currentObject = spokenLanguagesArray.getJSONObject(countArray);
-                spokenLanguages.add(new CurrentMovieRequest.SpokenLanguage(
-                        currentObject.getString("iso_639_1"),
-                        currentObject.getString("name")));
+            if (!currentMovieJSON.isNull("production_countries")) {
+                JSONArray productionCountriesArray = currentMovieJSON.getJSONArray("production_countries");
+                for (int countArray = 0; countArray < productionCountriesArray.length(); countArray++) {
+                    JSONObject currentObject = productionCountriesArray.getJSONObject(countArray);
+                    productionCountries.add(new CurrentMovieRequest.ProductionCountry(
+                            currentObject.getString("iso_3166_1"),
+                            currentObject.getString("name")));
+                }
+            }
+
+            if (!currentMovieJSON.isNull("spoken_languages")) {
+                JSONArray spokenLanguagesArray = currentMovieJSON.getJSONArray("spoken_languages");
+                for (int countArray = 0; countArray < spokenLanguagesArray.length(); countArray++) {
+                    JSONObject currentObject = spokenLanguagesArray.getJSONObject(countArray);
+                    spokenLanguages.add(new CurrentMovieRequest.SpokenLanguage(
+                            currentObject.getString("iso_639_1"),
+                            currentObject.getString("name")));
+                }
             }
 
             return new CurrentMovieRequest(adult,
