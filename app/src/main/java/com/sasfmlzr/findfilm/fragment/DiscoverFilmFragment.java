@@ -12,11 +12,10 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.sasfmlzr.findfilm.R;
-import com.sasfmlzr.findfilm.request.Request;
 import com.sasfmlzr.findfilm.adapter.DiscoverRecyclerAdapter;
-import com.sasfmlzr.findfilm.request.CurrentMovieRequest;
 import com.sasfmlzr.findfilm.request.DiscoverMovieRequest;
 import com.sasfmlzr.findfilm.request.JsonParserRequest;
+import com.sasfmlzr.findfilm.request.Request;
 import com.sasfmlzr.findfilm.utils.Downloader;
 
 import org.json.JSONException;
@@ -73,7 +72,7 @@ public class DiscoverFilmFragment extends android.support.v4.app.Fragment {
         filmSelectedListener = null;
     }
 
-    public interface OnFilmSelectedListener{
+    public interface OnFilmSelectedListener {
         void filmClicked(int idFilm);
     }
 
@@ -111,12 +110,8 @@ public class DiscoverFilmFragment extends android.support.v4.app.Fragment {
                 JsonParserRequest jsonParserRequest = new JsonParserRequest();
                 json = request.discoverMovie();
                 jsonObject = new JSONObject(json);
-                DiscoverMovieRequest request1 = jsonParserRequest.discoverMovieParce(jsonObject);
-                json = request.viewMovie(383498);
-                jsonObject = new JSONObject(json);
-                CurrentMovieRequest currentMovieRequest = jsonParserRequest.currentMovieParce(jsonObject);
-                System.out.println();
-                return request1.getResultsFields();
+                DiscoverMovieRequest movieiRequest = jsonParserRequest.discoverMovieParce(jsonObject);
+                return movieiRequest.getResultsFields();
             } catch (JSONException e) {
                 e.printStackTrace();
             }

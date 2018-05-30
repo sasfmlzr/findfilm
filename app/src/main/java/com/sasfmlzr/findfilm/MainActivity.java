@@ -5,8 +5,8 @@ import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 
 import com.sasfmlzr.findfilm.fragment.CurrentFilmFragment;
-import com.sasfmlzr.findfilm.fragment.DiscoverFilmFragment.OnFilmSelectedListener;
 import com.sasfmlzr.findfilm.fragment.DiscoverFilmFragment;
+import com.sasfmlzr.findfilm.fragment.DiscoverFilmFragment.OnFilmSelectedListener;
 
 public class MainActivity extends AppCompatActivity implements OnFilmSelectedListener {
 
