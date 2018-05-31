@@ -26,10 +26,11 @@ import java.util.List;
 import static com.sasfmlzr.findfilm.model.SystemSettings.URL_IMAGE_92PX;
 
 public class DiscoverFilmFragment extends android.support.v4.app.Fragment {
-    private DiscoverFilmFragment.OnFilmSelectedListener filmSelectedListener;
 
+    private DiscoverFilmFragment.OnFilmSelectedListener filmSelectedListener;
     private RecyclerView listFilmView;
     private View view;
+    private int countLoadedPages=1;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -84,13 +85,21 @@ public class DiscoverFilmFragment extends android.support.v4.app.Fragment {
         void isDownloaded(DiscoverMovieRequest.ResultsField film);
     }
 
+    public interface RecyclerElementEnded{
+        void isEnded();
+    }
+
     private void loadRecyclerFilmView() {
         listFilmView = view.findViewById(R.id.discoverFilmList);
         listFilmView.setLayoutManager(new LinearLayoutManager(view.getContext()));
     }
 
     private void setAdapterDiscoverFilm(List<DiscoverMovieRequest.ResultsField> filmList) {
-        RecyclerView.Adapter adapter = new DiscoverRecyclerAdapter(filmList, filmSelectedListener);
+        DiscoverFilmFragment.RecyclerElementEnded callback = () -> {
+            
+        };
+        RecyclerView.Adapter adapter =
+                new DiscoverRecyclerAdapter(filmList, filmSelectedListener, callback);
         listFilmView.setAdapter(adapter);
     }
 

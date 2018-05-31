@@ -17,11 +17,14 @@ import java.util.List;
 public class DiscoverRecyclerAdapter extends RecyclerView.Adapter<DiscoverRecyclerAdapter.ViewHolder> {
     private List<DiscoverMovieRequest.ResultsField> filmList;
     private DiscoverFilmFragment.OnFilmSelectedListener filmSelectedListener;
+    private DiscoverFilmFragment.RecyclerElementEnded elementEndedCallback;
 
     public DiscoverRecyclerAdapter(List<DiscoverMovieRequest.ResultsField> filmList,
-                                   DiscoverFilmFragment.OnFilmSelectedListener filmSelectedListener) {
+                                   DiscoverFilmFragment.OnFilmSelectedListener filmSelectedListener,
+                                   DiscoverFilmFragment.RecyclerElementEnded elementEndedCallback) {
         this.filmList = filmList;
         this.filmSelectedListener = filmSelectedListener;
+        this.elementEndedCallback = elementEndedCallback;
     }
 
     @NonNull
@@ -42,6 +45,9 @@ public class DiscoverRecyclerAdapter extends RecyclerView.Adapter<DiscoverRecycl
         }
         holder.descriptionFilm.setText(overview);
         holder.imageFilmView.setImageBitmap(currentFilm.getBackdropBitmap());
+        if(position==filmList.size()-1){
+            elementEndedCallback.isEnded();
+        }
     }
 
     @Override
