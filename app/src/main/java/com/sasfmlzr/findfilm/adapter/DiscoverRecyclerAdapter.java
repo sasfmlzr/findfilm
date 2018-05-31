@@ -66,6 +66,11 @@ public class DiscoverRecyclerAdapter extends RecyclerView.Adapter<DiscoverRecycl
         }
     }
 
+    public void addElements(List<DiscoverMovieRequest.ResultsField> filmList){
+        this.filmList.addAll(filmList);
+        notifyDataSetChanged();
+    }
+
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         final TextView nameFilm;
         final TextView descriptionFilm;

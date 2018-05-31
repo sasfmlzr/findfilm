@@ -31,6 +31,7 @@ public class DiscoverFilmFragment extends android.support.v4.app.Fragment {
     private RecyclerView listFilmView;
     private View view;
     private int countLoadedPages = 1;
+    private boolean isFirstList = true;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -41,10 +42,19 @@ public class DiscoverFilmFragment extends android.support.v4.app.Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.discover_fragment, container, false);
+        countLoadedPages = 1;
+        isFirstList = true;
         loadRecyclerFilmView();
 
-        new RetrieveFeedTask(countLoadedPages, setFilmListListener()).execute();
+        new RetrieveFeedTask(countLoadedPages, setFilmListListener())
+                .executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
         return view;
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        System.out.println();
+        super.onViewCreated(view, savedInstanceState);
     }
 
     @Override
@@ -87,7 +97,8 @@ public class DiscoverFilmFragment extends android.support.v4.app.Fragment {
             setAdapterDiscoverFilm(filmList);
             countLoadedPages++;
             for (DiscoverMovieRequest.ResultsField film : filmList) {
-                new DownloadImageTask(film, downloadCallback).execute();
+            //    new DownloadImageTask(film, downloadCallback)
+            //            .executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
             }
         };
     }
@@ -98,12 +109,18 @@ public class DiscoverFilmFragment extends android.support.v4.app.Fragment {
     }
 
     private void setAdapterDiscoverFilm(List<DiscoverMovieRequest.ResultsField> filmList) {
-        DiscoverFilmFragment.RecyclerElementEnded callback = () -> {
-            new RetrieveFeedTask(countLoadedPages, setFilmListListener()).execute();
-        };
-        RecyclerView.Adapter adapter =
-                new DiscoverRecyclerAdapter(filmList, filmSelectedListener, callback);
-        listFilmView.setAdapter(adapter);
+        if (isFirstList) {
+            DiscoverFilmFragment.RecyclerElementEnded callback = () -> {
+                new RetrieveFeedTask(countLoadedPages, setFilmListListener())
+                        .executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+            };
+            RecyclerView.Adapter adapter =
+                    new DiscoverRecyclerAdapter(filmList, filmSelectedListener, callback);
+            listFilmView.setAdapter(adapter);
+            isFirstList = false;
+        } else {
+            ((DiscoverRecyclerAdapter) listFilmView.getAdapter()).addElements(filmList);
+        }
     }
 
     static class RetrieveFeedTask extends AsyncTask<Void, Void, List<DiscoverMovieRequest.ResultsField>> {
