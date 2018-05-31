@@ -10,7 +10,13 @@
         android:id="@+id/current_film_image_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_weight="4" />
+        android:layout_weight="6"
+        android:adjustViewBounds="false"
+        android:background="@drawable/ic_loading_element"
+        android:baselineAlignBottom="false"
+        android:contentDescription="poster"
+        android:cropToPadding="false"
+        android:scaleType="fitEnd" />
 
     <TextView
         android:id="@+id/name_current_film"

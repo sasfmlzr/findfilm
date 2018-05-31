@@ -8,6 +8,9 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.LinearInterpolator;
+import android.view.animation.RotateAnimation;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -49,6 +52,17 @@ public class CurrentFilmFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.current_film_fragment, container, false);
         posterFilm = view.findViewById(R.id.current_film_image_view);
+        RotateAnimation anim = new RotateAnimation(0.0f, 360.0f,
+                Animation.RELATIVE_TO_SELF, 0.5f,
+                Animation.RELATIVE_TO_SELF, 0.5f);
+        anim.setInterpolator(new LinearInterpolator());
+        anim.setRepeatCount(Animation.INFINITE);
+        anim.setDuration(700);
+
+// Start animating the image
+
+        //posterFilm.startAnimation(anim);
+
         nameFilm = view.findViewById(R.id.name_current_film);
         description = view.findViewById(R.id.description_current_film);
         return view;
@@ -69,7 +83,7 @@ public class CurrentFilmFragment extends Fragment {
     }
 
     public void loadFilm() {
-        DownloadImage imageDownloadCallback = (film) ->
+       /*DownloadImage imageDownloadCallback = (film) ->
                 posterFilm.setImageBitmap(film.getBackdropBitmap());
 
         FilmLoaded filmLoadCallback = (currentMovieRequest) -> {
@@ -78,7 +92,7 @@ public class CurrentFilmFragment extends Fragment {
             new DownloadImageTask(currentMovieRequest, imageDownloadCallback).execute();
         };
 
-        new LoadDataFilmTask(idFilm, filmLoadCallback).execute();
+        new LoadDataFilmTask(idFilm, filmLoadCallback).execute();*/
     }
 
     static class LoadDataFilmTask extends AsyncTask<Void, Void, CurrentMovieRequest> {
