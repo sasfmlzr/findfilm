@@ -52,17 +52,6 @@ public class CurrentFilmFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.current_film_fragment, container, false);
         posterFilm = view.findViewById(R.id.current_film_image_view);
-        RotateAnimation anim = new RotateAnimation(0.0f, 360.0f,
-                Animation.RELATIVE_TO_SELF, 0.5f,
-                Animation.RELATIVE_TO_SELF, 0.5f);
-        anim.setInterpolator(new LinearInterpolator());
-        anim.setRepeatCount(Animation.INFINITE);
-        anim.setDuration(700);
-
-// Start animating the image
-
-        //posterFilm.startAnimation(anim);
-
         nameFilm = view.findViewById(R.id.name_current_film);
         description = view.findViewById(R.id.description_current_film);
         return view;
