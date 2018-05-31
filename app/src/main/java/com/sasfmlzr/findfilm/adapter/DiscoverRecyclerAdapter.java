@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.sasfmlzr.findfilm.R;
@@ -75,12 +76,14 @@ public class DiscoverRecyclerAdapter extends RecyclerView.Adapter<DiscoverRecycl
         final TextView nameFilm;
         final TextView descriptionFilm;
         final ImageView imageFilmView;
+        final ProgressBar progressLoaderImage;
 
         ViewHolder(View itemView) {
             super(itemView);
             nameFilm = itemView.findViewById(R.id.nameFilm);
             descriptionFilm = itemView.findViewById(R.id.descriptionFilm);
             imageFilmView = itemView.findViewById(R.id.previewFilmImageView);
+            progressLoaderImage = itemView.findViewById(R.id.progressBarLoaderImage);
             itemView.setOnClickListener(this);
         }
 

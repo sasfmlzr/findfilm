@@ -10,6 +10,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 
 import com.sasfmlzr.findfilm.R;
 import com.sasfmlzr.findfilm.adapter.DiscoverRecyclerAdapter;
@@ -97,8 +98,8 @@ public class DiscoverFilmFragment extends android.support.v4.app.Fragment {
             setAdapterDiscoverFilm(filmList);
             countLoadedPages++;
             for (DiscoverMovieRequest.ResultsField film : filmList) {
-            //    new DownloadImageTask(film, downloadCallback)
-            //            .executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+                new DownloadImageTask(film, downloadCallback)
+                        .executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
             }
         };
     }
