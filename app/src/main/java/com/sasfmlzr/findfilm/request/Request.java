@@ -30,9 +30,9 @@ public class Request {
         }
     }
 
-    public String discoverMovie() {
+    public String discoverMovie(int page) {
         return connection("https://api.themoviedb.org/3/discover/movie?api_key=" + API_KEY + "" +
-                "&language=en-US&sort_by=popularity.desc&include_adult=false&include_video=false&page=1");
+                "&language=en-US&sort_by=popularity.desc&include_adult=false&include_video=false&page="+page);
     }
 
     public String viewMovie(int movie_id) {
