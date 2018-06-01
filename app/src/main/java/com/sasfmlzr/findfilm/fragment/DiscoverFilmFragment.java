@@ -92,7 +92,10 @@ public class DiscoverFilmFragment extends android.support.v4.app.Fragment {
 
     private FilmListComplete setFilmListListener() {
         DownloadImage downloadCallback = (film) -> {
-            ((DiscoverRecyclerAdapter) listFilmView.getAdapter()).replaceImageViewFilm(film);
+            DiscoverRecyclerAdapter adapter = (DiscoverRecyclerAdapter)listFilmView.getAdapter();
+            if(adapter!=null){
+                adapter.replaceImageViewFilm(film);
+            }
         };
         return (filmList) -> {
             setAdapterDiscoverFilm(filmList);
