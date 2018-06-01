@@ -1,5 +1,6 @@
 package com.sasfmlzr.findfilm.adapter;
 
+import android.graphics.Bitmap;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -45,8 +46,12 @@ public class DiscoverRecyclerAdapter extends RecyclerView.Adapter<DiscoverRecycl
             overview = overview.substring(0, 97) + "...";
         }
         holder.descriptionFilm.setText(overview);
-        holder.imageFilmView.setImageBitmap(currentFilm.getBackdropBitmap());
-        if(position==filmList.size()-1){
+        Bitmap bitmap = currentFilm.getBackdropBitmap();
+        holder.imageFilmView.setImageBitmap(bitmap);
+        if (bitmap != null) {
+            holder.progressLoaderImage.setVisibility(View.INVISIBLE);
+        }
+        if (position == filmList.size() - 1) {
             elementEndedCallback.isEnded();
         }
     }
@@ -67,7 +72,7 @@ public class DiscoverRecyclerAdapter extends RecyclerView.Adapter<DiscoverRecycl
         }
     }
 
-    public void addElements(List<DiscoverMovieRequest.ResultsField> filmList){
+    public void addElements(List<DiscoverMovieRequest.ResultsField> filmList) {
         this.filmList.addAll(filmList);
         notifyDataSetChanged();
     }
