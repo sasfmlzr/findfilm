@@ -1,47 +1,57 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:layout_height="match_parent">
 
-    <FrameLayout
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_weight="4">
-
-        <ProgressBar
-            android:id="@+id/progressBarLoaderCurrentFilm"
-            style="?android:attr/progressBarStyle"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" />
-
-        <ImageView
-            android:id="@+id/current_film_image_view"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:adjustViewBounds="false"
-            android:baselineAlignBottom="false"
-            android:contentDescription="@string/poster"
-            android:cropToPadding="false"
-            android:scaleType="fitEnd" />
-    </FrameLayout>
-
-    <TextView
-        android:id="@+id/name_current_film"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_weight="6"
+        android:layout_height="wrap_content"
         android:gravity="top|center"
-        android:text="@string/name_film"
-        android:textSize="24sp"
-        android:textStyle="bold" />
+        android:orientation="vertical">
 
-    <TextView
-        android:id="@+id/description_current_film"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_weight="4"
-        android:gravity="left"
-        android:text="@string/desctiption_film"
-        android:textSize="18sp" />
-</LinearLayout>
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/imagefilm_height"
+            android:layout_gravity="center"
+            android:layout_weight="1">
+
+            <ProgressBar
+                android:id="@+id/progressBarLoaderCurrentFilm"
+                style="?android:attr/progressBarStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center" />
+
+            <ImageView
+                android:id="@+id/current_film_image_view"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/imagefilm_height"
+                android:layout_gravity="top|center"
+                android:adjustViewBounds="false"
+                android:baselineAlignBottom="false"
+                android:contentDescription="@string/poster"
+                android:cropToPadding="false"
+                android:scaleType="fitCenter" />
+        </FrameLayout>
+
+        <TextView
+            android:id="@+id/name_current_film"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="top|center"
+            android:text="@string/name_film"
+            android:textSize="24sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/description_current_film"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="left"
+            android:textSize="18sp" />
+
+    </LinearLayout>
+
+</ScrollView>
