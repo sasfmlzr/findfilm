@@ -3,4 +3,5 @@
     <string name="name_film">Loading...</string>
     <string name="desctiption_film">Desctiption</string>
     <string name="poster">poster</string>
+    <string name="search">search</string>
 </resources>
