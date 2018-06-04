@@ -1,4 +1,5 @@
 package com.sasfmlzr.findfilm.fragment;
+
 import android.graphics.Bitmap;
 import android.os.AsyncTask;
 import android.os.Bundle;

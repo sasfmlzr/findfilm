@@ -1,4 +1,5 @@
 package com.sasfmlzr.findfilm.request;
+
 import android.graphics.Bitmap;
 
 import java.util.List;
@@ -11,10 +12,10 @@ public class DiscoverMovieRequest {
     private List<ResultsField> resultsFields;
 
 
-    public DiscoverMovieRequest(int page,
-                                int total_results,
-                                int total_pages,
-                                List<ResultsField> resultsFields) {
+    DiscoverMovieRequest(int page,
+                         int total_results,
+                         int total_pages,
+                         List<ResultsField> resultsFields) {
         this.page = page;
         this.total_results = total_results;
         this.total_pages = total_pages;

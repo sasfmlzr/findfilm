@@ -1,4 +1,5 @@
 package com.sasfmlzr.findfilm.request;
+
 import android.graphics.Bitmap;
 
 import java.util.List;
@@ -32,31 +33,31 @@ public class CurrentMovieRequest {
     private int voteCount;
     private Bitmap backdropBitmap;
 
-    public CurrentMovieRequest(boolean adult,
-                               String backdropPath,
-                               BelongsToCollection belongsToCollection,
-                               int budget,
-                               List<Genre> genres,
-                               String homepage,
-                               int id,
-                               String imdbId,
-                               String originalLanguage,
-                               String originalTitle,
-                               String overview,
-                               double popularity,
-                               String posterPath,
-                               List<ProductionCompany> productionCompanies,
-                               List<ProductionCountry> productionCountries,
-                               String releaseDate,
-                               int revenue,
-                               int runtime,
-                               List<SpokenLanguage> spokenLanguages,
-                               String status,
-                               String tagline,
-                               String title,
-                               boolean video,
-                               double voteAverage,
-                               int voteCount) {
+    CurrentMovieRequest(boolean adult,
+                        String backdropPath,
+                        BelongsToCollection belongsToCollection,
+                        int budget,
+                        List<Genre> genres,
+                        String homepage,
+                        int id,
+                        String imdbId,
+                        String originalLanguage,
+                        String originalTitle,
+                        String overview,
+                        double popularity,
+                        String posterPath,
+                        List<ProductionCompany> productionCompanies,
+                        List<ProductionCountry> productionCountries,
+                        String releaseDate,
+                        int revenue,
+                        int runtime,
+                        List<SpokenLanguage> spokenLanguages,
+                        String status,
+                        String tagline,
+                        String title,
+                        boolean video,
+                        double voteAverage,
+                        int voteCount) {
         this.adult = adult;
         this.backdropPath = backdropPath;
         this.belongsToCollection = belongsToCollection;

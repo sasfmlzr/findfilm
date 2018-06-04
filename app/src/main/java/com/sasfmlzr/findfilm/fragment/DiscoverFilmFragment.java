@@ -139,10 +139,6 @@ public class DiscoverFilmFragment extends android.support.v4.app.Fragment {
                     temp[1] = filmList.get(i);
                     cursor.addRow(temp);
                 }
-
-                SearchManager manager = (SearchManager) Objects.requireNonNull(
-                        getActivity()).getSystemService(Context.SEARCH_SERVICE);
-
                 final SearchView search = (SearchView) menu.findItem(R.id.search).getActionView();
                 search.setSuggestionsAdapter(new SearchAdapter(getContext(),
                         cursor,
@@ -223,10 +219,9 @@ public class DiscoverFilmFragment extends android.support.v4.app.Fragment {
 
     private void setAdapterDiscoverFilm(List<DiscoverMovieRequest.ResultsField> filmList) {
         if (isFirstList) {
-            DiscoverFilmFragment.RecyclerElementEnded callback = () -> {
-                new RetrieveFeedTask(countLoadedPages, setFilmListListener())
-                        .executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
-            };
+            DiscoverFilmFragment.RecyclerElementEnded callback = () ->
+                    new RetrieveFeedTask(countLoadedPages, setFilmListListener())
+                    .executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
             RecyclerView.Adapter adapter =
                     new DiscoverRecyclerAdapter(filmList, filmSelectedListener, callback);
             listFilmView.setAdapter(adapter);

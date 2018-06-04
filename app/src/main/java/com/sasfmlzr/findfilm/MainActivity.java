@@ -10,7 +10,6 @@ import com.sasfmlzr.findfilm.fragment.DiscoverFilmFragment.OnFilmSelectedListene
 
 public class MainActivity extends AppCompatActivity implements OnFilmSelectedListener {
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -24,8 +23,6 @@ public class MainActivity extends AppCompatActivity implements OnFilmSelectedLis
         }
     }
 
-
-
     @Override
     public void filmClicked(int idFilm) {
         FragmentManager fragmentManager = getSupportFragmentManager();
@@ -34,6 +31,4 @@ public class MainActivity extends AppCompatActivity implements OnFilmSelectedLis
                 .addToBackStack(null)
                 .commit();
     }
-
-
 }
