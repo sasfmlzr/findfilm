@@ -179,4 +179,45 @@ public class JsonParserRequest {
             return null;
         }
     }
+
+    public DiscoverMovieRequest searchMovieParce(JSONObject searchMovieJSON) {
+        int page;
+        int total_results;
+        int total_pages;
+        List<DiscoverMovieRequest.ResultsField> resultsFields = new ArrayList<>();
+
+        try {
+            page = searchMovieJSON.getInt("page");
+            total_results = searchMovieJSON.getInt("total_results");
+            total_pages = searchMovieJSON.getInt("total_pages");
+            JSONArray jsonArray = searchMovieJSON.getJSONArray("results");
+            for (int countArray = 0; countArray < jsonArray.length(); countArray++) {
+                JSONObject currentObject = jsonArray.getJSONObject(countArray);
+                List<Integer> genreIdsList = new ArrayList<>();
+                JSONArray genreIds = currentObject.getJSONArray("genre_ids");
+                for (int i = 0; i < genreIds.length(); i++) {
+                    genreIdsList.add(genreIds.getInt(i));
+                }
+
+                resultsFields.add(new DiscoverMovieRequest.ResultsField(currentObject.getInt("vote_count"),
+                        currentObject.getInt("id"),
+                        currentObject.getBoolean("video"),
+                        currentObject.getLong("vote_average"),
+                        currentObject.getString("title"),
+                        currentObject.getLong("popularity"),
+                        currentObject.getString("poster_path"),
+                        currentObject.getString("original_language"),
+                        currentObject.getString("original_title"),
+                        genreIdsList,
+                        currentObject.getString("backdrop_path"),
+                        currentObject.getBoolean("adult"),
+                        currentObject.getString("overview"),
+                        currentObject.getString("release_date")));
+            }
+            return new DiscoverMovieRequest(page, total_results, total_pages, resultsFields);
+        } catch (JSONException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
 }

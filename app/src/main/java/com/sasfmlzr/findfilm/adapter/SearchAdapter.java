@@ -9,39 +9,33 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.sasfmlzr.findfilm.R;
+import com.sasfmlzr.findfilm.request.DiscoverMovieRequest;
 
 import java.util.List;
 
 public class SearchAdapter extends CursorAdapter {
-    private List<String> items;
+    private List<DiscoverMovieRequest.ResultsField> filmList;
 
     private TextView text;
 
-    public SearchAdapter(Context context, Cursor cursor, List<String> items) {
-
+    public SearchAdapter(Context context,
+                         Cursor cursor,
+                         List<DiscoverMovieRequest.ResultsField> filmList) {
         super(context, cursor, false);
-
-        this.items = items;
-
+        this.filmList = filmList;
     }
 
     @Override
     public void bindView(View view, Context context, Cursor cursor) {
-
-        text.setText(items.get(cursor.getPosition()));
-
+        text.setText(filmList.get(cursor.getPosition()).getTitle());
     }
 
     @Override
     public View newView(Context context, Cursor cursor, ViewGroup parent) {
-
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-
+        assert inflater != null;
         View view = inflater.inflate(R.layout.search_item, parent, false);
-
-        text = (TextView) view.findViewById(R.id.text);
-
+        text = view.findViewById(R.id.itemSearchTitle);
         return view;
-
     }
 }
