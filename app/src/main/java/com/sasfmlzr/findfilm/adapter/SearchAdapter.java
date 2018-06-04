@@ -15,7 +15,6 @@ import java.util.List;
 
 public class SearchAdapter extends CursorAdapter {
     private List<DiscoverMovieRequest.ResultsField> filmList;
-
     private TextView text;
 
     public SearchAdapter(Context context,
@@ -27,7 +26,9 @@ public class SearchAdapter extends CursorAdapter {
 
     @Override
     public void bindView(View view, Context context, Cursor cursor) {
-        text.setText(filmList.get(cursor.getPosition()).getTitle());
+        if (filmList!=null){
+            text.setText(filmList.get(cursor.getPosition()).getTitle());
+        }
     }
 
     @Override

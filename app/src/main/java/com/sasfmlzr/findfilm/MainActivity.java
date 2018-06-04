@@ -49,12 +49,13 @@ public class MainActivity extends AppCompatActivity implements OnFilmSelectedLis
         SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
         SearchView searchView = (SearchView) menu.findItem(R.id.search).getActionView();
         // Assumes current activity is the searchable activity
+        assert searchManager != null;
         searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
         searchView.setIconifiedByDefault(false); // Do not iconify the widget; expand it by default
         searchView.setOnQueryTextListener(new android.support.v7.widget.SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
-                return false;
+                return true;
             }
 
             @Override
@@ -63,7 +64,7 @@ public class MainActivity extends AppCompatActivity implements OnFilmSelectedLis
                 return true;
             }
         });
-        return true;
+       return true;
     }
 
     @Override
@@ -81,24 +82,36 @@ public class MainActivity extends AppCompatActivity implements OnFilmSelectedLis
 
     private void loadHistory(String query) {
         // Cursor
-        SearchCallback callback = filmList -> {
+        if (query.length()==0){
             String[] columns = new String[]{"_id", "text"};
-            Object[] temp = new Object[]{0, "default"};
-
             MatrixCursor cursor = new MatrixCursor(columns);
-
-            for (int i = 0; i < filmList.size(); i++) {
-                temp[0] = i;
-                temp[1] = filmList.get(i);
-                cursor.addRow(temp);
-            }
-
-            SearchManager manager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
             final SearchView search = (SearchView) menu.findItem(R.id.search).getActionView();
-            search.setSuggestionsAdapter(new SearchAdapter(getApplicationContext(), cursor, filmList));
-        };
+            search.setSuggestionsAdapter(new SearchAdapter(getApplicationContext(),
+                    cursor,
+                    null));
+            return;
+        }
+        if (query.length() > 2) {
+            SearchCallback callback = filmList -> {
+                String[] columns = new String[]{"_id", "text"};
+                Object[] temp = new Object[]{0, "default"};
 
-        new SearchFilmTask(query, callback).execute();
+                MatrixCursor cursor = new MatrixCursor(columns);
+
+                for (int i = 0; i < filmList.size(); i++) {
+                    temp[0] = i;
+                    temp[1] = filmList.get(i);
+                    cursor.addRow(temp);
+                }
+
+                SearchManager manager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
+                final SearchView search = (SearchView) menu.findItem(R.id.search).getActionView();
+                search.setSuggestionsAdapter(new SearchAdapter(getApplicationContext(),
+                        cursor,
+                        filmList));
+            };
+            new SearchFilmTask(query, callback).execute();
+        }
     }
 
     private static class SearchFilmTask extends AsyncTask<Void, Void, List<DiscoverMovieRequest.ResultsField>> {
