@@ -5,6 +5,7 @@ import android.content.Context;
 import android.database.MatrixCursor;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.RecyclerView;
@@ -27,11 +28,13 @@ import org.json.JSONObject;
 
 import java.util.List;
 import java.util.Objects;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class DiscoverFilmFragment extends AbstractFilmFragment {
-
     private int countLoadedPages = 1;
     private Menu menu;
+    private Timer timer;
 
     @Nullable
     @Override
@@ -101,7 +104,21 @@ public class DiscoverFilmFragment extends AbstractFilmFragment {
                         filmList,
                         filmSelectedListener));
             };
-            new SearchFilmTask(query, callback).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+            Handler handler = new Handler();
+            TimerTask timerTask = new TimerTask() {
+                @Override
+                public void run() {
+                    handler.post(() -> {
+                        new SearchFilmTask(query, callback).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+                        timer = null;
+                    });
+                }
+            };
+            if (timer != null) {
+                timer.cancel();
+            }
+            timer = new Timer();
+            timer.schedule(timerTask, 2000);
         }
     }
 
