@@ -33,14 +33,9 @@ import java.util.Objects;
 
 import static com.sasfmlzr.findfilm.model.SystemSettings.URL_IMAGE_154PX;
 
-public class DiscoverFilmFragment extends android.support.v4.app.Fragment {
+public class DiscoverFilmFragment extends AbstractFilmFragment {
 
-    private DiscoverFilmFragment.OnFilmSelectedListener filmSelectedListener;
-    private RecyclerView listFilmView;
-    private View view;
     private Menu menu;
-    private int countLoadedPages = 1;
-    private boolean isFirstList = true;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -67,47 +62,34 @@ public class DiscoverFilmFragment extends android.support.v4.app.Fragment {
         super.onViewCreated(view, savedInstanceState);
     }
 
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        try {
-            filmSelectedListener = (OnFilmSelectedListener) getActivity();
-        } catch (ClassCastException e) {
-            throw new ClassCastException(context.toString() + " OnFilmSelectedListener not attached");
-        }
-    }
 
-    @Override
-    public void onDetach() {
-        super.onDetach();
-        filmSelectedListener = null;
-    }
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         inflater.inflate(R.menu.search_menu, menu);
         this.menu = menu;
-        // Get the SearchView and set the searchable configuration
+
         SearchManager searchManager = (SearchManager) Objects.requireNonNull(
                 getActivity()).getSystemService(Context.SEARCH_SERVICE);
-
         SearchView searchView = (SearchView) menu.findItem(R.id.search).getActionView();
-        // Assumes current activity is the searchable activity
+
         assert searchManager != null;
         searchView.setSearchableInfo(searchManager.getSearchableInfo(getActivity().getComponentName()));
-        searchView.setIconifiedByDefault(false); // Do not iconify the widget; expand it by default
+        searchView.setIconifiedByDefault(false);
         searchView.setOnQueryTextListener(new android.support.v7.widget.SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
                 SearchCallback callback = filmList -> {
-                    isFirstList = true;
+                   /* isFirstList = true;
                     setAdapterDiscoverFilm(filmList);
                     for (DiscoverMovieRequest.ResultsField film : filmList) {
                         new DownloadImageTask(film, downloadCallback)
                                 .executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
-                    }
+                    }*/
+                   filmSelectedListener.filmSearched();
                 };
                 new SearchFilmTask(query, callback).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+
                 return true;
             }
 
@@ -190,6 +172,7 @@ public class DiscoverFilmFragment extends android.support.v4.app.Fragment {
 
     public interface OnFilmSelectedListener {
         void filmClicked(int idFilm);
+        void filmSearched();
     }
 
     public interface FilmListComplete {
@@ -212,7 +195,6 @@ public class DiscoverFilmFragment extends android.support.v4.app.Fragment {
     };
 
     private FilmListComplete setFilmListListener() {
-
         return (filmList) -> {
             setAdapterDiscoverFilm(filmList);
             countLoadedPages++;
@@ -221,11 +203,6 @@ public class DiscoverFilmFragment extends android.support.v4.app.Fragment {
                         .executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
             }
         };
-    }
-
-    private void loadRecyclerFilmView() {
-        listFilmView = view.findViewById(R.id.discoverFilmList);
-        listFilmView.setLayoutManager(new LinearLayoutManager(view.getContext()));
     }
 
     private void setAdapterDiscoverFilm(List<DiscoverMovieRequest.ResultsField> filmList) {
@@ -273,35 +250,6 @@ public class DiscoverFilmFragment extends android.support.v4.app.Fragment {
         protected void onPostExecute(List<DiscoverMovieRequest.ResultsField> resultsFields) {
             listener.isCompleted(resultsFields);
             super.onPostExecute(resultsFields);
-        }
-    }
-
-    static class DownloadImageTask extends AsyncTask<Void, Void, DiscoverMovieRequest.ResultsField> {
-        private DiscoverMovieRequest.ResultsField film;
-        private DownloadImage callback;
-        private String url;
-
-        DownloadImageTask(DiscoverMovieRequest.ResultsField film, DownloadImage callback) {
-            if (film.getBackdrop_path().equals("null")) {
-                this.url = URL_IMAGE_154PX + film.getPoster_path();
-            } else {
-                this.url = URL_IMAGE_154PX + film.getBackdrop_path();
-            }
-            this.film = film;
-            this.callback = callback;
-        }
-
-        @Override
-        protected DiscoverMovieRequest.ResultsField doInBackground(Void... voids) {
-            Bitmap bitmap = Downloader.downloadImage(url);
-            film.setBackdropBitmap(bitmap);
-            return film;
-        }
-
-        @Override
-        protected void onPostExecute(DiscoverMovieRequest.ResultsField film) {
-            callback.isDownloaded(film);
-            super.onPostExecute(film);
         }
     }
 }

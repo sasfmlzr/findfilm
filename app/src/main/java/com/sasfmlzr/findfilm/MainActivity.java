@@ -7,6 +7,7 @@ import android.support.v7.app.AppCompatActivity;
 import com.sasfmlzr.findfilm.fragment.CurrentFilmFragment;
 import com.sasfmlzr.findfilm.fragment.DiscoverFilmFragment;
 import com.sasfmlzr.findfilm.fragment.DiscoverFilmFragment.OnFilmSelectedListener;
+import com.sasfmlzr.findfilm.fragment.SearchFilmFragment;
 
 public class MainActivity extends AppCompatActivity implements OnFilmSelectedListener {
 
@@ -28,6 +29,15 @@ public class MainActivity extends AppCompatActivity implements OnFilmSelectedLis
         FragmentManager fragmentManager = getSupportFragmentManager();
         fragmentManager.beginTransaction()
                 .replace(R.id.containerForFragment, CurrentFilmFragment.newInstance(idFilm))
+                .addToBackStack(null)
+                .commit();
+    }
+
+    @Override
+    public void filmSearched() {
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        fragmentManager.beginTransaction()
+                .replace(R.id.containerForFragment, new SearchFilmFragment())
                 .addToBackStack(null)
                 .commit();
     }
