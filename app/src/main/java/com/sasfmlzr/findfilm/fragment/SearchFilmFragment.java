@@ -60,5 +60,4 @@ public class SearchFilmFragment extends AbstractFilmFragment {
                 new DiscoverRecyclerAdapter(filmList, filmSelectedListener, callback);
         listFilmView.setAdapter(adapter);
     }
-
 }
