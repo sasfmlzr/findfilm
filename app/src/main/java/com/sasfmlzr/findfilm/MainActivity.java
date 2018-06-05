@@ -34,10 +34,10 @@ public class MainActivity extends AppCompatActivity implements OnFilmSelectedLis
     }
 
     @Override
-    public void filmSearched() {
+    public void filmSearched(String query) {
         FragmentManager fragmentManager = getSupportFragmentManager();
         fragmentManager.beginTransaction()
-                .replace(R.id.containerForFragment, new SearchFilmFragment())
+                .replace(R.id.containerForFragment, SearchFilmFragment.newInstance(query))
                 .addToBackStack(null)
                 .commit();
     }

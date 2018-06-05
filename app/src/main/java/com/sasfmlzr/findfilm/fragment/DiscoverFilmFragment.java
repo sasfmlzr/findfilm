@@ -3,12 +3,10 @@ package com.sasfmlzr.findfilm.fragment;
 import android.app.SearchManager;
 import android.content.Context;
 import android.database.MatrixCursor;
-import android.graphics.Bitmap;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
 import android.view.LayoutInflater;
@@ -23,7 +21,6 @@ import com.sasfmlzr.findfilm.adapter.SearchAdapter;
 import com.sasfmlzr.findfilm.request.DiscoverMovieRequest;
 import com.sasfmlzr.findfilm.request.JsonParserRequest;
 import com.sasfmlzr.findfilm.request.Request;
-import com.sasfmlzr.findfilm.utils.Downloader;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -31,16 +28,10 @@ import org.json.JSONObject;
 import java.util.List;
 import java.util.Objects;
 
-import static com.sasfmlzr.findfilm.model.SystemSettings.URL_IMAGE_154PX;
-
 public class DiscoverFilmFragment extends AbstractFilmFragment {
 
+    private int countLoadedPages = 1;
     private Menu menu;
-
-    @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-    }
 
     @Nullable
     @Override
@@ -55,14 +46,6 @@ public class DiscoverFilmFragment extends AbstractFilmFragment {
                 .executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
         return view;
     }
-
-    @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        System.out.println();
-        super.onViewCreated(view, savedInstanceState);
-    }
-
-
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
@@ -86,10 +69,12 @@ public class DiscoverFilmFragment extends AbstractFilmFragment {
                         new DownloadImageTask(film, downloadCallback)
                                 .executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
                     }*/
-                   filmSelectedListener.filmSearched();
-                };
-                new SearchFilmTask(query, callback).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
 
+                };
+                if (query != null) {
+                    filmSelectedListener.filmSearched(query);
+                }
+                //new SearchFilmTask(query, callback).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
                 return true;
             }
 
@@ -100,10 +85,6 @@ public class DiscoverFilmFragment extends AbstractFilmFragment {
             }
         });
         super.onCreateOptionsMenu(menu, inflater);
-    }
-
-    public interface SearchCallback {
-        void isFind(List<DiscoverMovieRequest.ResultsField> filmList);
     }
 
     private void loadHistory(String query) {
@@ -140,39 +121,9 @@ public class DiscoverFilmFragment extends AbstractFilmFragment {
         }
     }
 
-    private static class SearchFilmTask extends AsyncTask<Void, Void, List<DiscoverMovieRequest.ResultsField>> {
-        private String query;
-        private SearchCallback callback;
-
-        SearchFilmTask(String query, SearchCallback callback) {
-            this.query = query;
-            this.callback = callback;
-        }
-
-        @Override
-        protected List<DiscoverMovieRequest.ResultsField> doInBackground(Void... voids) {
-            Request request = new Request();
-            try {
-                JSONObject jsonObject = new JSONObject(request.searchMovie(query));
-                JsonParserRequest jsonParserRequest = new JsonParserRequest();
-                DiscoverMovieRequest result = jsonParserRequest.searchMovieParce(jsonObject);
-                return result.getResultsFields();
-            } catch (JSONException e) {
-                e.printStackTrace();
-                return null;
-            }
-        }
-
-        @Override
-        protected void onPostExecute(List<DiscoverMovieRequest.ResultsField> resultsFields) {
-            callback.isFind(resultsFields);
-            super.onPostExecute(resultsFields);
-        }
-    }
-
     public interface OnFilmSelectedListener {
         void filmClicked(int idFilm);
-        void filmSearched();
+        void filmSearched(String query);
     }
 
     public interface FilmListComplete {
@@ -182,17 +133,6 @@ public class DiscoverFilmFragment extends AbstractFilmFragment {
     public interface DownloadImage {
         void isDownloaded(DiscoverMovieRequest.ResultsField film);
     }
-
-    public interface RecyclerElementEnded {
-        void isEnded();
-    }
-
-    private DownloadImage downloadCallback = (film) -> {
-        DiscoverRecyclerAdapter adapter = (DiscoverRecyclerAdapter) listFilmView.getAdapter();
-        if (adapter != null) {
-            adapter.replaceImageViewFilm(film);
-        }
-    };
 
     private FilmListComplete setFilmListListener() {
         return (filmList) -> {
