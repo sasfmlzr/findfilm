@@ -68,7 +68,7 @@ public class DiscoverFilmFragment extends AbstractFilmFragment {
                 if (query != null) {
                     filmSelectedListener.filmSearched(query);
                 }
-                return true;
+                return false;
             }
 
             @Override
