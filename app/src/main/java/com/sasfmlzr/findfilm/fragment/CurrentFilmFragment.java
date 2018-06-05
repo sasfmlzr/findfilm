@@ -125,7 +125,11 @@ public class CurrentFilmFragment extends Fragment {
         CurrentFilmFragment.DownloadImage callback;
 
         DownloadImageTask(CurrentMovieRequest film, CurrentFilmFragment.DownloadImage callback) {
-            this.url = URL_IMAGE_500PX + film.getBackdropPath();
+            if (film.getBackdropPath().equals("null")) {
+                this.url = URL_IMAGE_500PX + film.getPosterPath();
+            } else {
+                this.url = URL_IMAGE_500PX + film.getBackdropPath();
+            }
             this.film = film;
             this.callback = callback;
         }

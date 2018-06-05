@@ -31,7 +31,7 @@ import org.json.JSONObject;
 import java.util.List;
 import java.util.Objects;
 
-import static com.sasfmlzr.findfilm.model.SystemSettings.URL_IMAGE_92PX;
+import static com.sasfmlzr.findfilm.model.SystemSettings.URL_IMAGE_154PX;
 
 public class DiscoverFilmFragment extends android.support.v4.app.Fragment {
 
@@ -99,6 +99,15 @@ public class DiscoverFilmFragment extends android.support.v4.app.Fragment {
         searchView.setOnQueryTextListener(new android.support.v7.widget.SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
+                SearchCallback callback = filmList -> {
+                    isFirstList = true;
+                    setAdapterDiscoverFilm(filmList);
+                    for (DiscoverMovieRequest.ResultsField film : filmList) {
+                        new DownloadImageTask(film, downloadCallback)
+                                .executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+                    }
+                };
+                new SearchFilmTask(query, callback).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
                 return true;
             }
 
@@ -145,7 +154,7 @@ public class DiscoverFilmFragment extends android.support.v4.app.Fragment {
                         filmList,
                         filmSelectedListener));
             };
-            new SearchFilmTask(query, callback).execute();
+            new SearchFilmTask(query, callback).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
         }
     }
 
@@ -195,13 +204,15 @@ public class DiscoverFilmFragment extends android.support.v4.app.Fragment {
         void isEnded();
     }
 
+    private DownloadImage downloadCallback = (film) -> {
+        DiscoverRecyclerAdapter adapter = (DiscoverRecyclerAdapter) listFilmView.getAdapter();
+        if (adapter != null) {
+            adapter.replaceImageViewFilm(film);
+        }
+    };
+
     private FilmListComplete setFilmListListener() {
-        DownloadImage downloadCallback = (film) -> {
-            DiscoverRecyclerAdapter adapter = (DiscoverRecyclerAdapter) listFilmView.getAdapter();
-            if (adapter != null) {
-                adapter.replaceImageViewFilm(film);
-            }
-        };
+
         return (filmList) -> {
             setAdapterDiscoverFilm(filmList);
             countLoadedPages++;
@@ -221,7 +232,7 @@ public class DiscoverFilmFragment extends android.support.v4.app.Fragment {
         if (isFirstList) {
             DiscoverFilmFragment.RecyclerElementEnded callback = () ->
                     new RetrieveFeedTask(countLoadedPages, setFilmListListener())
-                    .executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+                            .executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
             RecyclerView.Adapter adapter =
                     new DiscoverRecyclerAdapter(filmList, filmSelectedListener, callback);
             listFilmView.setAdapter(adapter);
@@ -271,7 +282,11 @@ public class DiscoverFilmFragment extends android.support.v4.app.Fragment {
         private String url;
 
         DownloadImageTask(DiscoverMovieRequest.ResultsField film, DownloadImage callback) {
-            this.url = URL_IMAGE_92PX + film.getBackdrop_path();
+            if (film.getBackdrop_path().equals("null")) {
+                this.url = URL_IMAGE_154PX + film.getPoster_path();
+            } else {
+                this.url = URL_IMAGE_154PX + film.getBackdrop_path();
+            }
             this.film = film;
             this.callback = callback;
         }
