@@ -31,14 +31,21 @@ public class SearchFilmFragment extends AbstractFilmFragment {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
             querySearch = getArguments().getString("querySearch");
+            Log.d("asdas", "onCreate() called with: savedInstanceState = [" + savedInstanceState + "]");
+            currentSearchQuery = querySearch;
         }
     }
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        if (savedState != null) {
+            currentSearchQuery = savedState.getString("currentSearchQuery");
+        }
+        savedState = null;
         view = inflater.inflate(R.layout.discover_fragment, container, false);
         isFirstList = true;
+        setHasOptionsMenu(true);
         loadRecyclerFilmView();
 
         SearchCallback callback = filmList -> {
@@ -51,6 +58,18 @@ public class SearchFilmFragment extends AbstractFilmFragment {
         new SearchFilmTask(querySearch, callback).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
 
         return view;
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        savedState = saveState();
+    }
+
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putString("currentSearchQuery", searchView.getQuery().toString());
     }
 
     private void setAdapterDiscoverFilm(List<DiscoverMovieRequest.ResultsField> filmList) {
