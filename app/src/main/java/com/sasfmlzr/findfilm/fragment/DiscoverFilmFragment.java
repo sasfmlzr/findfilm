@@ -62,19 +62,9 @@ public class DiscoverFilmFragment extends AbstractFilmFragment {
         searchView.setOnQueryTextListener(new android.support.v7.widget.SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
-                SearchCallback callback = filmList -> {
-                   /* isFirstList = true;
-                    setAdapterDiscoverFilm(filmList);
-                    for (DiscoverMovieRequest.ResultsField film : filmList) {
-                        new DownloadImageTask(film, downloadCallback)
-                                .executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
-                    }*/
-
-                };
                 if (query != null) {
                     filmSelectedListener.filmSearched(query);
                 }
-                //new SearchFilmTask(query, callback).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
                 return true;
             }
 
@@ -88,7 +78,6 @@ public class DiscoverFilmFragment extends AbstractFilmFragment {
     }
 
     private void loadHistory(String query) {
-        // Cursor
         if (query.length() == 0) {
             String[] columns = new String[]{"_id", "text"};
             MatrixCursor cursor = new MatrixCursor(columns);
@@ -123,6 +112,7 @@ public class DiscoverFilmFragment extends AbstractFilmFragment {
 
     public interface OnFilmSelectedListener {
         void filmClicked(int idFilm);
+
         void filmSearched(String query);
     }
 
