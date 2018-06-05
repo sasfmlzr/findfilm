@@ -78,8 +78,7 @@ public class CurrentFilmFragment extends Fragment {
             posterFilm.setImageBitmap(film.getBackdropBitmap());
             progressLoaderImage.setVisibility(View.INVISIBLE);
         };
-
-
+        
         FilmLoaded filmLoadCallback = (currentMovieRequest) -> {
             nameFilm.setText(currentMovieRequest.getTitle());
             description.setText(currentMovieRequest.getOverview());
