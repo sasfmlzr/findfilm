@@ -78,10 +78,11 @@ public class DiscoverFilmFragment extends AbstractFilmFragment {
     }
 
     private void loadHistory(String query) {
+        String[] columns = new String[]{"_id", "text"};
+        Object[] temp = new Object[]{0, "default"};
+        final SearchView search = (SearchView) menu.findItem(R.id.search).getActionView();
+        MatrixCursor cursor = new MatrixCursor(columns);
         if (query.length() == 0) {
-            String[] columns = new String[]{"_id", "text"};
-            MatrixCursor cursor = new MatrixCursor(columns);
-            final SearchView search = (SearchView) menu.findItem(R.id.search).getActionView();
             search.setSuggestionsAdapter(new SearchAdapter(getContext(),
                     cursor,
                     null,
@@ -90,17 +91,11 @@ public class DiscoverFilmFragment extends AbstractFilmFragment {
         }
         if (query.length() > 2) {
             SearchCallback callback = filmList -> {
-                String[] columns = new String[]{"_id", "text"};
-                Object[] temp = new Object[]{0, "default"};
-
-                MatrixCursor cursor = new MatrixCursor(columns);
-
                 for (int i = 0; i < filmList.size(); i++) {
                     temp[0] = i;
                     temp[1] = filmList.get(i);
                     cursor.addRow(temp);
                 }
-                final SearchView search = (SearchView) menu.findItem(R.id.search).getActionView();
                 search.setSuggestionsAdapter(new SearchAdapter(getContext(),
                         cursor,
                         filmList,
