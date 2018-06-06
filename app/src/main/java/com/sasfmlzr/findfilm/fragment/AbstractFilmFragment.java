@@ -1,5 +1,4 @@
 package com.sasfmlzr.findfilm.fragment;
-import android.app.SearchManager;
 import android.content.Context;
 import android.database.MatrixCursor;
 import android.graphics.Bitmap;
@@ -26,7 +25,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.List;
-import java.util.Objects;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -81,27 +79,22 @@ public abstract class AbstractFilmFragment extends android.support.v4.app.Fragme
 
     public Bundle saveState() { /* called either from onDestroyView() or onSaveInstanceState() */
         Bundle state = new Bundle();
-        state.putString("currentSearchQuery", searchView.getQuery().toString());
+        if (searchView != null) {
+            state.putString("currentSearchQuery", searchView.getQuery().toString());
+        }
         return state;
     }
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        inflater.inflate(R.menu.search_menu, menu);
         this.menu = menu;
 
-        SearchManager searchManager = (SearchManager) Objects.requireNonNull(
-                getActivity()).getSystemService(Context.SEARCH_SERVICE);
         searchView = (SearchView) menu.findItem(R.id.search).getActionView();
 
         if (currentSearchQuery != null && !currentSearchQuery.isEmpty()) {
-            //searchMenuItem.expandActionView();
             searchView.setQuery(currentSearchQuery, true);
             searchView.clearFocus();
         }
-        assert searchManager != null;
-        searchView.setSearchableInfo(searchManager.getSearchableInfo(getActivity().getComponentName()));
-        searchView.setIconifiedByDefault(false);
         searchView.setOnQueryTextListener(new android.support.v7.widget.SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {

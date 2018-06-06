@@ -69,7 +69,9 @@ public class SearchFilmFragment extends AbstractFilmFragment {
     @Override
     public void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
-        outState.putString("currentSearchQuery", searchView.getQuery().toString());
+        if (searchView != null) {
+            outState.putString("currentSearchQuery", searchView.getQuery().toString());
+        }
     }
 
     private void setAdapterDiscoverFilm(List<DiscoverMovieRequest.ResultsField> filmList) {
