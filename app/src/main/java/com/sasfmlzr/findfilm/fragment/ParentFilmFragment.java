@@ -18,11 +18,15 @@ import com.sasfmlzr.findfilm.R;
 import java.util.Objects;
 
 public class ParentFilmFragment extends Fragment implements DiscoverFilmFragment.OnFilmSelectedListener {
-    filmClickedListener searchedListener;
+    private String query;
+    private filmClickedListener searchedListener;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        if (getArguments() != null) {
+            query = getArguments().getString("query");
+        }
     }
 
     @Nullable
@@ -46,6 +50,7 @@ public class ParentFilmFragment extends Fragment implements DiscoverFilmFragment
 
     @Override
     public void filmSearched(String query) {
+        this.query = query;
         FragmentManager fragmentManager = getChildFragmentManager();
         fragmentManager.beginTransaction()
                 .replace(R.id.container_child_fragment, SearchFilmFragment.newInstance(query))
@@ -61,6 +66,11 @@ public class ParentFilmFragment extends Fragment implements DiscoverFilmFragment
         SearchView searchView = (SearchView) menu.findItem(R.id.search).getActionView();
         searchView.setSearchableInfo(searchManager.getSearchableInfo(getActivity().getComponentName()));
         searchView.setIconifiedByDefault(false);
+        if (query != null && !query.isEmpty()) {
+            //searchMenuItem.expandActionView();
+            searchView.setQuery(query, false);
+            searchView.clearFocus();
+        }
         super.onCreateOptionsMenu(menu, inflater);
     }
 
@@ -76,14 +86,24 @@ public class ParentFilmFragment extends Fragment implements DiscoverFilmFragment
         super.onDetach();
     }
 
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        outState.putString("query", query);
+        super.onSaveInstanceState(outState);
+    }
+
     public interface filmClickedListener {
         void isClicked(int idFilm);
     }
 
     public void replaceChildFragment() {
-        DiscoverFilmFragment childFragment = new DiscoverFilmFragment();
-        getChildFragmentManager().beginTransaction()
-                .replace(R.id.container_child_fragment, childFragment)
-                .commit();
+        if (query == null) {
+            DiscoverFilmFragment childFragment = new DiscoverFilmFragment();
+            getChildFragmentManager().beginTransaction()
+                    .replace(R.id.container_child_fragment, childFragment)
+                    .commit();
+        } else {
+            filmSearched(query);
+        }
     }
 }

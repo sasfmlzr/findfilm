@@ -1,4 +1,5 @@
 package com.sasfmlzr.findfilm.fragment;
+import android.app.SearchManager;
 import android.content.Context;
 import android.database.MatrixCursor;
 import android.graphics.Bitmap;
@@ -25,6 +26,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Timer;
 import java.util.TimerTask;
 

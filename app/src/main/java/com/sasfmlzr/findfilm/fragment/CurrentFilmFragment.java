@@ -5,6 +5,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,7 +24,7 @@ import org.json.JSONObject;
 
 import static com.sasfmlzr.findfilm.model.SystemSettings.URL_IMAGE_500PX;
 
-public class CurrentFilmFragment extends AbstractFilmFragment {
+public class CurrentFilmFragment extends Fragment {
     private int idFilm;
     private ImageView posterFilm;
     private TextView nameFilm;
@@ -49,7 +50,7 @@ public class CurrentFilmFragment extends AbstractFilmFragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        view = inflater.inflate(R.layout.current_film_fragment, container, false);
+        View view = inflater.inflate(R.layout.current_film_fragment, container, false);
         setHasOptionsMenu(true);
         posterFilm = view.findViewById(R.id.current_film_image_view);
         progressLoaderImage = view.findViewById(R.id.progressBarLoaderCurrentFilm);

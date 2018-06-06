@@ -40,5 +40,8 @@ public class MainActivity extends AppCompatActivity implements ParentFilmFragmen
     @Override
     public void onBackPressed() {
         super.onBackPressed();
+        if (getSupportFragmentManager().getFragments().size()==0){
+            super.onBackPressed();
+        }
     }
 }
