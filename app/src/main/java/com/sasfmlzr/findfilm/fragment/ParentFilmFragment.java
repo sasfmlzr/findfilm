@@ -20,12 +20,17 @@ import java.util.Objects;
 public class ParentFilmFragment extends Fragment implements DiscoverFilmFragment.OnFilmSelectedListener {
     private String query;
     private filmClickedListener searchedListener;
+    Fragment.SavedState myFragmentState;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
             query = getArguments().getString("query");
+            myFragmentState = getArguments().getParcelable("fragment");
+        }
+        if (myFragmentState != null) {
+            setInitialSavedState(myFragmentState);
         }
     }
 
@@ -39,7 +44,9 @@ public class ParentFilmFragment extends Fragment implements DiscoverFilmFragment
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        replaceChildFragment();
+        if (myFragmentState == null) {
+            replaceChildFragment();
+        }
         super.onViewCreated(view, savedInstanceState);
     }
 
@@ -67,7 +74,6 @@ public class ParentFilmFragment extends Fragment implements DiscoverFilmFragment
         searchView.setSearchableInfo(searchManager.getSearchableInfo(getActivity().getComponentName()));
         searchView.setIconifiedByDefault(false);
         if (query != null && !query.isEmpty()) {
-            //searchMenuItem.expandActionView();
             searchView.setQuery(query, false);
             searchView.clearFocus();
         }
@@ -87,8 +93,15 @@ public class ParentFilmFragment extends Fragment implements DiscoverFilmFragment
     }
 
     @Override
+    public void onDestroyView() {
+        myFragmentState = getFragmentManager().saveFragmentInstanceState(this);
+        super.onDestroyView();
+    }
+
+    @Override
     public void onSaveInstanceState(@NonNull Bundle outState) {
         outState.putString("query", query);
+        outState.putParcelable("fragment", myFragmentState);
         super.onSaveInstanceState(outState);
     }
 
@@ -97,13 +110,10 @@ public class ParentFilmFragment extends Fragment implements DiscoverFilmFragment
     }
 
     public void replaceChildFragment() {
-        if (query == null) {
-            DiscoverFilmFragment childFragment = new DiscoverFilmFragment();
-            getChildFragmentManager().beginTransaction()
-                    .replace(R.id.container_child_fragment, childFragment)
-                    .commit();
-        } else {
-            filmSearched(query);
-        }
+        DiscoverFilmFragment childFragment = new DiscoverFilmFragment();
+        getChildFragmentManager().beginTransaction()
+                .replace(R.id.container_child_fragment, childFragment)
+                .addToBackStack(null)
+                .commit();
     }
 }

@@ -1,6 +1,7 @@
 package com.sasfmlzr.findfilm;
 
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
@@ -15,11 +16,7 @@ public class MainActivity extends AppCompatActivity implements ParentFilmFragmen
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         if (savedInstanceState == null) {
-            FragmentManager fragmentManager = getSupportFragmentManager();
-            fragmentManager.beginTransaction()
-                    .add(R.id.containerForFragment, new ParentFilmFragment())
-                    .addToBackStack(null)
-                    .commit();
+            createParentFragment();
         }
     }
 
@@ -39,9 +36,16 @@ public class MainActivity extends AppCompatActivity implements ParentFilmFragmen
 
     @Override
     public void onBackPressed() {
+        // https://alexfu.github.io/android/2013/12/09/managing-fragment-states-manually.html
+        // http://android.joao.jp/2013/09/back-stack-with-nested-fragments-back.html
+        // http://d.hatena.ne.jp/yohpapa/20130317/1363509114
         super.onBackPressed();
-        if (getSupportFragmentManager().getFragments().size()==0){
-            super.onBackPressed();
-        }
+    }
+
+    private void createParentFragment() {
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        fragmentManager.beginTransaction()
+                .add(R.id.containerForFragment, new ParentFilmFragment())
+                .commit();
     }
 }
