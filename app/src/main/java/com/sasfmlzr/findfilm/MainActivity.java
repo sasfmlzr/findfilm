@@ -15,12 +15,19 @@ import com.sasfmlzr.findfilm.fragment.SettingsFragment;
 import com.sasfmlzr.findfilm.model.SystemSettings;
 
 public class MainActivity extends AppCompatActivity implements ParentFilmFragment.filmClickedListener {
+    private SharedPreferences.OnSharedPreferenceChangeListener prefListener;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
+        prefListener = (prefs, key) -> {
+            if (key.equals(SettingsFragment.KEY_LANGUAGE))
+                recreate();
+        };
+        sharedPref.registerOnSharedPreferenceChangeListener(prefListener);
+
         SystemSettings.LANGUAGE = sharedPref.getString(SettingsFragment.KEY_LANGUAGE, "en_US");
         if (savedInstanceState == null) {
             createParentFragment();
