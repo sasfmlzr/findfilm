@@ -4,6 +4,8 @@ import android.support.v7.preference.PreferenceFragmentCompat;
 
 import com.sasfmlzr.findfilm.R;
 
+import java.util.Objects;
+
 public class SettingsFragment extends PreferenceFragmentCompat {
     public static final String KEY_LANGUAGE = "language";
 
@@ -17,5 +19,11 @@ public class SettingsFragment extends PreferenceFragmentCompat {
     @Override
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
         setPreferencesFromResource(R.xml.settings, rootKey);
+    }
+
+    @Override
+    public void onStop() {
+        Objects.requireNonNull(getActivity()).recreate();
+        super.onStop();
     }
 }

@@ -5,14 +5,11 @@
         android:title="General Information">
 
         <ListPreference
-
             android:defaultValue="en-US"
             android:entries="@array/language"
-            android:entryValues="@array/language"
-
+            android:entryValues="@array/languageValues"
             android:key="language"
             android:summary="Change language"
             android:title="Language" />
-
     </PreferenceCategory>
 </PreferenceScreen>
