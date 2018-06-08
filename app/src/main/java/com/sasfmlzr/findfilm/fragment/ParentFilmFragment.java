@@ -113,7 +113,6 @@ public class ParentFilmFragment extends Fragment implements DiscoverFilmFragment
         DiscoverFilmFragment childFragment = new DiscoverFilmFragment();
         getChildFragmentManager().beginTransaction()
                 .replace(R.id.container_child_fragment, childFragment)
-                .addToBackStack(null)
                 .commit();
     }
 }

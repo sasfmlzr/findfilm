@@ -1,5 +1,4 @@
 package com.sasfmlzr.findfilm.fragment;
-import android.app.SearchManager;
 import android.content.Context;
 import android.database.MatrixCursor;
 import android.graphics.Bitmap;
@@ -38,7 +37,6 @@ public abstract class AbstractFilmFragment extends android.support.v4.app.Fragme
     public RecyclerView listFilmView;
     public View view;
     public SearchView searchView;
-    public String currentSearchQuery;
     public Bundle savedState = null;
     private Timer timer;
     private Menu menu;
@@ -79,7 +77,7 @@ public abstract class AbstractFilmFragment extends android.support.v4.app.Fragme
         listFilmView.setLayoutManager(new LinearLayoutManager(view.getContext()));
     }
 
-    public Bundle saveState() { /* called either from onDestroyView() or onSaveInstanceState() */
+    public Bundle saveState() {
         Bundle state = new Bundle();
         if (searchView != null) {
             state.putString("currentSearchQuery", searchView.getQuery().toString());
@@ -92,19 +90,13 @@ public abstract class AbstractFilmFragment extends android.support.v4.app.Fragme
         this.menu = menu;
 
         searchView = (SearchView) menu.findItem(R.id.search).getActionView();
-
-        if (currentSearchQuery != null && !currentSearchQuery.isEmpty()) {
-            //searchMenuItem.expandActionView();
-            searchView.setQuery(currentSearchQuery, true);
-            searchView.clearFocus();
-        }
-
         searchView.setOnQueryTextListener(new android.support.v7.widget.SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
                 if (query != null) {
                     filmSelectedListener.filmSearched(query);
-                    InputMethodManager imm = (InputMethodManager) getActivity()
+                    InputMethodManager imm = (InputMethodManager)
+                            Objects.requireNonNull(getActivity())
                             .getSystemService(Context.INPUT_METHOD_SERVICE);
                     assert imm != null;
                     imm.hideSoftInputFromWindow(view.getWindowToken(), 0);

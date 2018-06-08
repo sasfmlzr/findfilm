@@ -26,17 +26,11 @@ public class DiscoverFilmFragment extends AbstractFilmFragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            currentSearchQuery = getArguments().getString("currentSearchQuery");
-        }
     }
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
-        if (savedState != null) {
-            currentSearchQuery = savedState.getString("currentSearchQuery");
-        }
         savedState = null;
         view = inflater.inflate(R.layout.discover_fragment, container, false);
         setHasOptionsMenu(true);

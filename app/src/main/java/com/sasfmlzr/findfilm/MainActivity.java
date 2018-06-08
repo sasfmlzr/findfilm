@@ -39,7 +39,18 @@ public class MainActivity extends AppCompatActivity implements ParentFilmFragmen
         // https://alexfu.github.io/android/2013/12/09/managing-fragment-states-manually.html
         // http://android.joao.jp/2013/09/back-stack-with-nested-fragments-back.html
         // http://d.hatena.ne.jp/yohpapa/20130317/1363509114
-        super.onBackPressed();
+        FragmentManager fm = getSupportFragmentManager();
+        for (Fragment frag : fm.getFragments()) {
+            if (frag.isVisible()) {
+                FragmentManager childFm = frag.getChildFragmentManager();
+                if (childFm.getBackStackEntryCount() > 0) {
+                    childFm.popBackStack();
+                    return;
+                } else {
+                    super.onBackPressed();
+                }
+            }
+        }
     }
 
     private void createParentFragment() {
