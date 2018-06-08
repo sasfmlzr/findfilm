@@ -1,13 +1,18 @@
 package com.sasfmlzr.findfilm;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
+import android.view.MenuItem;
 
 import com.sasfmlzr.findfilm.fragment.CurrentFilmFragment;
 import com.sasfmlzr.findfilm.fragment.ParentFilmFragment;
+import com.sasfmlzr.findfilm.fragment.SettingsFragment;
+import com.sasfmlzr.findfilm.model.SystemSettings;
 
 public class MainActivity extends AppCompatActivity implements ParentFilmFragment.filmClickedListener {
 
@@ -15,6 +20,8 @@ public class MainActivity extends AppCompatActivity implements ParentFilmFragmen
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
+        SystemSettings.LANGUAGE = sharedPref.getString(SettingsFragment.KEY_LANGUAGE, "en_US");
         if (savedInstanceState == null) {
             createParentFragment();
         }
@@ -32,6 +39,17 @@ public class MainActivity extends AppCompatActivity implements ParentFilmFragmen
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.settings:
+                setSettings();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 
     @Override
@@ -57,6 +75,14 @@ public class MainActivity extends AppCompatActivity implements ParentFilmFragmen
         FragmentManager fragmentManager = getSupportFragmentManager();
         fragmentManager.beginTransaction()
                 .add(R.id.containerForFragment, new ParentFilmFragment())
+                .commit();
+    }
+
+    private void setSettings() {
+        FragmentManager fm = getSupportFragmentManager();
+        fm.beginTransaction()
+                .replace(R.id.containerForFragment, new SettingsFragment())
+                .addToBackStack(null)
                 .commit();
     }
 }
