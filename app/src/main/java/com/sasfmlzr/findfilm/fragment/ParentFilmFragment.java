@@ -72,7 +72,7 @@ public class ParentFilmFragment extends Fragment implements DiscoverFilmFragment
                 getActivity()).getSystemService(Context.SEARCH_SERVICE);
         SearchView searchView = (SearchView) menu.findItem(R.id.search).getActionView();
         searchView.setSearchableInfo(searchManager.getSearchableInfo(getActivity().getComponentName()));
-        searchView.setIconifiedByDefault(false);
+        searchView.setIconifiedByDefault(true);
         if (query != null && !query.isEmpty()) {
             searchView.setQuery(query, false);
             searchView.clearFocus();
