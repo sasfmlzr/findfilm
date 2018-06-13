@@ -17,11 +17,11 @@ import com.sasfmlzr.findfilm.request.DiscoverMovieRequest;
 import java.util.List;
 
 public class DiscoverRecyclerAdapter extends RecyclerView.Adapter<DiscoverRecyclerAdapter.ViewHolder> {
-    private List<DiscoverMovieRequest.ResultsField> filmList;
+    private List<DiscoverMovieRequest.Result> filmList;
     private DiscoverFilmFragment.OnFilmSelectedListener filmSelectedListener;
     private DiscoverFilmFragment.RecyclerElementEnded elementEndedCallback;
 
-    public DiscoverRecyclerAdapter(List<DiscoverMovieRequest.ResultsField> filmList,
+    public DiscoverRecyclerAdapter(List<DiscoverMovieRequest.Result> filmList,
                                    DiscoverFilmFragment.OnFilmSelectedListener filmSelectedListener,
                                    DiscoverFilmFragment.RecyclerElementEnded elementEndedCallback) {
         this.filmList = filmList;
@@ -39,7 +39,7 @@ public class DiscoverRecyclerAdapter extends RecyclerView.Adapter<DiscoverRecycl
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        DiscoverMovieRequest.ResultsField currentFilm = filmList.get(position);
+        DiscoverMovieRequest.Result currentFilm = filmList.get(position);
         holder.nameFilm.setText(currentFilm.getTitle());
         String overview = currentFilm.getOverview();
         if (overview.length() >= 97) {
@@ -61,10 +61,16 @@ public class DiscoverRecyclerAdapter extends RecyclerView.Adapter<DiscoverRecycl
         return filmList.size();
     }
 
-    public void replaceImageViewFilm(DiscoverMovieRequest.ResultsField film) {
+    public void replaceImageViewFilm(DiscoverMovieRequest.Result film) {
         for (int pos = 0; pos < filmList.size(); pos++) {
-            DiscoverMovieRequest.ResultsField currentFilm = filmList.get(pos);
-            if (currentFilm.getBackdrop_path().equals(film.getBackdrop_path())) {
+            DiscoverMovieRequest.Result currentFilm = filmList.get(pos);
+            Boolean equalsImageFilm;
+            if (currentFilm.getBackdropPath() == null) {
+                equalsImageFilm = currentFilm.getPosterPath().equals(film.getBackdropPath());
+            } else {
+                equalsImageFilm = currentFilm.getBackdropPath().equals(film.getBackdropPath());
+            }
+            if (equalsImageFilm) {
                 filmList.set(pos, film);
                 notifyItemChanged(pos);
                 return;
@@ -72,7 +78,7 @@ public class DiscoverRecyclerAdapter extends RecyclerView.Adapter<DiscoverRecycl
         }
     }
 
-    public void addElements(List<DiscoverMovieRequest.ResultsField> filmList) {
+    public void addElements(List<DiscoverMovieRequest.Result> filmList) {
         this.filmList.addAll(filmList);
         notifyDataSetChanged();
     }

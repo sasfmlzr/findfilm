@@ -19,9 +19,6 @@ import com.sasfmlzr.findfilm.request.JsonParserRequest;
 import com.sasfmlzr.findfilm.request.RequestMovie;
 import com.sasfmlzr.findfilm.utils.Downloader;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import static com.sasfmlzr.findfilm.model.SystemSettings.URL_IMAGE_500PX;
 
 public class CurrentFilmFragment extends Fragment {
@@ -100,16 +97,10 @@ public class CurrentFilmFragment extends Fragment {
 
         @Override
         protected CurrentMovieRequest doInBackground(Void... voids) {
-            try {
-                RequestMovie requestMovie = new RequestMovie();
-                JsonParserRequest jsonParserRequest = new JsonParserRequest();
-                String json = requestMovie.viewMovie(idFilm);
-                JSONObject jsonObject = new JSONObject(json);
-                return jsonParserRequest.currentMovieParce(jsonObject);
-            } catch (JSONException e) {
-                e.printStackTrace();
-                return null;
-            }
+            RequestMovie requestMovie = new RequestMovie();
+            JsonParserRequest jsonParserRequest = new JsonParserRequest();
+            String json = requestMovie.viewMovie(idFilm);
+            return jsonParserRequest.currentMovieParce(json);
         }
 
         @Override
@@ -125,7 +116,7 @@ public class CurrentFilmFragment extends Fragment {
         CurrentFilmFragment.DownloadImage callback;
 
         DownloadImageTask(CurrentMovieRequest film, CurrentFilmFragment.DownloadImage callback) {
-            if (film.getBackdropPath().equals("null")) {
+            if (film.getBackdropPath() == null) {
                 this.url = URL_IMAGE_500PX + film.getPosterPath();
             } else {
                 this.url = URL_IMAGE_500PX + film.getBackdropPath();

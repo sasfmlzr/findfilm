@@ -2,62 +2,95 @@ package com.sasfmlzr.findfilm.request;
 
 import android.graphics.Bitmap;
 
+import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
+
 import java.util.List;
 
 @SuppressWarnings({"unused"})
 public class CurrentMovieRequest {
+    @SerializedName("adult")
+    @Expose
     private boolean adult;
+    @SerializedName("backdrop_path")
+    @Expose
     private String backdropPath;
-    private BelongsToCollection belongsToCollection;
+    @SerializedName("belongs_to_collection")
+    @Expose
+    private Object belongsToCollection;
+    @SerializedName("budget")
+    @Expose
     private int budget;
-    private List<Genre> genres;
+    @SerializedName("genres")
+    @Expose
+    private List<Genre> genres = null;
+    @SerializedName("homepage")
+    @Expose
     private String homepage;
+    @SerializedName("id")
+    @Expose
     private int id;
+    @SerializedName("imdb_id")
+    @Expose
     private String imdbId;
+    @SerializedName("original_language")
+    @Expose
     private String originalLanguage;
+    @SerializedName("original_title")
+    @Expose
     private String originalTitle;
+    @SerializedName("overview")
+    @Expose
     private String overview;
+    @SerializedName("popularity")
+    @Expose
     private double popularity;
-    private String posterPath;
-    private List<ProductionCompany> productionCompanies;
-    private List<ProductionCountry> productionCountries;
+    @SerializedName("poster_path")
+    @Expose
+    private Object posterPath;
+    @SerializedName("production_companies")
+    @Expose
+    private List<ProductionCompany> productionCompanies = null;
+    @SerializedName("production_countries")
+    @Expose
+    private List<ProductionCountry> productionCountries = null;
+    @SerializedName("release_date")
+    @Expose
     private String releaseDate;
+    @SerializedName("revenue")
+    @Expose
     private int revenue;
+    @SerializedName("runtime")
+    @Expose
     private int runtime;
-    private List<SpokenLanguage> spokenLanguages;
+    @SerializedName("spoken_languages")
+    @Expose
+    private List<SpokenLanguage> spokenLanguages = null;
+    @SerializedName("status")
+    @Expose
     private String status;
+    @SerializedName("tagline")
+    @Expose
     private String tagline;
+    @SerializedName("title")
+    @Expose
     private String title;
+    @SerializedName("video")
+    @Expose
     private boolean video;
+    @SerializedName("vote_average")
+    @Expose
     private double voteAverage;
+    @SerializedName("vote_count")
+    @Expose
     private int voteCount;
     private Bitmap backdropBitmap;
 
-    CurrentMovieRequest(boolean adult,
-                        String backdropPath,
-                        BelongsToCollection belongsToCollection,
-                        int budget,
-                        List<Genre> genres,
-                        String homepage,
-                        int id,
-                        String imdbId,
-                        String originalLanguage,
-                        String originalTitle,
-                        String overview,
-                        double popularity,
-                        String posterPath,
-                        List<ProductionCompany> productionCompanies,
-                        List<ProductionCountry> productionCountries,
-                        String releaseDate,
-                        int revenue,
-                        int runtime,
-                        List<SpokenLanguage> spokenLanguages,
-                        String status,
-                        String tagline,
-                        String title,
-                        boolean video,
-                        double voteAverage,
-                        int voteCount) {
+    public CurrentMovieRequest() {
+    }
+
+    public CurrentMovieRequest(boolean adult, String backdropPath, Object belongsToCollection, int budget, List<Genre> genres, String homepage, int id, String imdbId, String originalLanguage, String originalTitle, String overview, double popularity, Object posterPath, List<ProductionCompany> productionCompanies, List<ProductionCountry> productionCountries, String releaseDate, int revenue, int runtime, List<SpokenLanguage> spokenLanguages, String status, String tagline, String title, boolean video, double voteAverage, int voteCount) {
+        super();
         this.adult = adult;
         this.backdropPath = backdropPath;
         this.belongsToCollection = belongsToCollection;
@@ -93,7 +126,7 @@ public class CurrentMovieRequest {
         return backdropPath;
     }
 
-    public BelongsToCollection getBelongsToCollection() {
+    public Object getBelongsToCollection() {
         return belongsToCollection;
     }
 
@@ -133,7 +166,7 @@ public class CurrentMovieRequest {
         return popularity;
     }
 
-    public String getPosterPath() {
+    public Object getPosterPath() {
         return posterPath;
     }
 
@@ -193,41 +226,20 @@ public class CurrentMovieRequest {
         this.backdropBitmap = backdropBitmap;
     }
 
-    public static class BelongsToCollection {
-        private int id;
-        private String name;
-        private String posterPath;
-        private String backdropPath;
-
-        BelongsToCollection(int id, String name, String posterPath, String backdropPath) {
-            this.id = id;
-            this.name = name;
-            this.posterPath = posterPath;
-            this.backdropPath = backdropPath;
-        }
-
-        public int getId() {
-            return id;
-        }
-
-        public String getName() {
-            return name;
-        }
-
-        public String getPosterPath() {
-            return posterPath;
-        }
-
-        public String getBackdropPath() {
-            return backdropPath;
-        }
-    }
-
     public static class Genre {
+
+        @SerializedName("id")
+        @Expose
         private int id;
+        @SerializedName("name")
+        @Expose
         private String name;
 
-        Genre(int id, String name) {
+        public Genre() {
+        }
+
+        public Genre(int id, String name) {
+            super();
             this.id = id;
             this.name = name;
         }
@@ -242,12 +254,25 @@ public class CurrentMovieRequest {
     }
 
     public static class ProductionCompany {
+
+        @SerializedName("id")
+        @Expose
         private int id;
-        private Object logoPath;
+        @SerializedName("logo_path")
+        @Expose
+        private String logoPath;
+        @SerializedName("name")
+        @Expose
         private String name;
+        @SerializedName("origin_country")
+        @Expose
         private String originCountry;
 
-        ProductionCompany(int id, Object logoPath, String name, String originCountry) {
+        public ProductionCompany() {
+        }
+
+        public ProductionCompany(int id, String logoPath, String name, String originCountry) {
+            super();
             this.id = id;
             this.logoPath = logoPath;
             this.name = name;
@@ -258,7 +283,7 @@ public class CurrentMovieRequest {
             return id;
         }
 
-        public Object getLogoPath() {
+        public String getLogoPath() {
             return logoPath;
         }
 
@@ -272,10 +297,19 @@ public class CurrentMovieRequest {
     }
 
     public static class ProductionCountry {
+
+        @SerializedName("iso_3166_1")
+        @Expose
         private String iso31661;
+        @SerializedName("name")
+        @Expose
         private String name;
 
-        ProductionCountry(String iso31661, String name) {
+        public ProductionCountry() {
+        }
+
+        public ProductionCountry(String iso31661, String name) {
+            super();
             this.iso31661 = iso31661;
             this.name = name;
         }
@@ -290,10 +324,19 @@ public class CurrentMovieRequest {
     }
 
     public static class SpokenLanguage {
+
+        @SerializedName("iso_639_1")
+        @Expose
         private String iso6391;
+        @SerializedName("name")
+        @Expose
         private String name;
 
-        SpokenLanguage(String iso6391, String name) {
+        public SpokenLanguage() {
+        }
+
+        public SpokenLanguage(String iso6391, String name) {
+            super();
             this.iso6391 = iso6391;
             this.name = name;
         }

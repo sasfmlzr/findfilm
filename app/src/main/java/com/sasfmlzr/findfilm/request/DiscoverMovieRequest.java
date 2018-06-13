@@ -2,133 +2,125 @@ package com.sasfmlzr.findfilm.request;
 
 import android.graphics.Bitmap;
 
+import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
+
 import java.util.List;
 
 @SuppressWarnings({"unused"})
 public class DiscoverMovieRequest {
+    @SerializedName("page")
+    @Expose
     private int page;
-    private int total_results;
-    private int total_pages;
-    private List<ResultsField> resultsFields;
+    @SerializedName("results")
+    @Expose
+    private List<Result> results = null;
+    @SerializedName("total_results")
+    @Expose
+    private int totalResults;
+    @SerializedName("total_pages")
+    @Expose
+    private int totalPages;
 
+    public DiscoverMovieRequest() {
+    }
 
-    DiscoverMovieRequest(int page,
-                         int total_results,
-                         int total_pages,
-                         List<ResultsField> resultsFields) {
+    public DiscoverMovieRequest(int page, List<Result> results, int totalResults, int totalPages) {
+        super();
         this.page = page;
-        this.total_results = total_results;
-        this.total_pages = total_pages;
-        this.resultsFields = resultsFields;
+        this.results = results;
+        this.totalResults = totalResults;
+        this.totalPages = totalPages;
     }
 
     public int getPage() {
         return page;
     }
 
-    public int getTotal_results() {
-        return total_results;
+    public List<Result> getResults() {
+        return results;
     }
 
-    public int getTotal_pages() {
-        return total_pages;
+    public int getTotalResults() {
+        return totalResults;
     }
 
-    public List<ResultsField> getResultsFields() {
-        return resultsFields;
+    public int getTotalPages() {
+        return totalPages;
     }
 
-    public static class ResultsField {
-        private int vote_count;
-        private int id;
-        private Boolean video;
-        private float vote_average;
-        private String title;
-        private float popularity;
-        private String poster_path;
-        private String original_language;
-        private String original_title;
-        private List<Integer> genre_ids;
-        private String backdrop_path;
-        private Boolean adult;
+    public static class Result {
+
+        @SerializedName("poster_path")
+        @Expose
+        private Object posterPath;
+        @SerializedName("adult")
+        @Expose
+        private boolean adult;
+        @SerializedName("overview")
+        @Expose
         private String overview;
-        private String release_date;
+        @SerializedName("release_date")
+        @Expose
+        private String releaseDate;
+        @SerializedName("genre_ids")
+        @Expose
+        private List<Integer> genreIds = null;
+        @SerializedName("id")
+        @Expose
+        private int id;
+        @SerializedName("original_title")
+        @Expose
+        private String originalTitle;
+        @SerializedName("original_language")
+        @Expose
+        private String originalLanguage;
+        @SerializedName("title")
+        @Expose
+        private String title;
+        @SerializedName("backdrop_path")
+        @Expose
+        private Object backdropPath;
+        @SerializedName("popularity")
+        @Expose
+        private double popularity;
+        @SerializedName("vote_count")
+        @Expose
+        private int voteCount;
+        @SerializedName("video")
+        @Expose
+        private boolean video;
+        @SerializedName("vote_average")
+        @Expose
+        private double voteAverage;
         private Bitmap backdropBitmap;
 
-        ResultsField(int vote_count,
-                     int id, Boolean video,
-                     float vote_average,
-                     String title,
-                     float popularity,
-                     String poster_path,
-                     String original_language,
-                     String original_title,
-                     List<Integer> genre_ids,
-                     String backdrop_path,
-                     Boolean adult,
-                     String overview,
-                     String release_date) {
-            this.vote_count = vote_count;
-            this.id = id;
-            this.video = video;
-            this.vote_average = vote_average;
-            this.title = title;
-            this.popularity = popularity;
-            this.poster_path = poster_path;
-            this.original_language = original_language;
-            this.original_title = original_title;
-            this.genre_ids = genre_ids;
-            this.backdrop_path = backdrop_path;
+        public Result() {
+        }
+
+        public Result(Object posterPath, boolean adult, String overview, String releaseDate, List<Integer> genreIds, int id, String originalTitle, String originalLanguage, String title, Object backdropPath, double popularity, int voteCount, boolean video, double voteAverage) {
+            super();
+            this.posterPath = posterPath;
             this.adult = adult;
             this.overview = overview;
-            this.release_date = release_date;
+            this.releaseDate = releaseDate;
+            this.genreIds = genreIds;
+            this.id = id;
+            this.originalTitle = originalTitle;
+            this.originalLanguage = originalLanguage;
+            this.title = title;
+            this.backdropPath = backdropPath;
+            this.popularity = popularity;
+            this.voteCount = voteCount;
+            this.video = video;
+            this.voteAverage = voteAverage;
         }
 
-        public int getVote_count() {
-            return vote_count;
+        public Object getPosterPath() {
+            return posterPath;
         }
 
-        public int getId() {
-            return id;
-        }
-
-        public Boolean getVideo() {
-            return video;
-        }
-
-        public float getVote_average() {
-            return vote_average;
-        }
-
-        public String getTitle() {
-            return title;
-        }
-
-        public float getPopularity() {
-            return popularity;
-        }
-
-        public String getPoster_path() {
-            return poster_path;
-        }
-
-        public String getOriginal_language() {
-            return original_language;
-        }
-
-        public String getOriginal_title() {
-            return original_title;
-        }
-
-        public List<Integer> getGenre_ids() {
-            return genre_ids;
-        }
-
-        public String getBackdrop_path() {
-            return backdrop_path;
-        }
-
-        public Boolean getAdult() {
+        public boolean isAdult() {
             return adult;
         }
 
@@ -136,8 +128,48 @@ public class DiscoverMovieRequest {
             return overview;
         }
 
-        public String getRelease_date() {
-            return release_date;
+        public String getReleaseDate() {
+            return releaseDate;
+        }
+
+        public List<Integer> getGenreIds() {
+            return genreIds;
+        }
+
+        public int getId() {
+            return id;
+        }
+
+        public String getOriginalTitle() {
+            return originalTitle;
+        }
+
+        public String getOriginalLanguage() {
+            return originalLanguage;
+        }
+
+        public String getTitle() {
+            return title;
+        }
+
+        public Object getBackdropPath() {
+            return backdropPath;
+        }
+
+        public double getPopularity() {
+            return popularity;
+        }
+
+        public int getVoteCount() {
+            return voteCount;
+        }
+
+        public boolean isVideo() {
+            return video;
+        }
+
+        public double getVoteAverage() {
+            return voteAverage;
         }
 
         public Bitmap getBackdropBitmap() {

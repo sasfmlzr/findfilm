@@ -15,12 +15,12 @@ import com.sasfmlzr.findfilm.request.DiscoverMovieRequest;
 import java.util.List;
 
 public class SearchAdapter extends CursorAdapter {
-    private List<DiscoverMovieRequest.ResultsField> filmList;
+    private List<DiscoverMovieRequest.Result> filmList;
     private DiscoverFilmFragment.OnFilmSelectedListener filmSelectedListener;
 
     public SearchAdapter(Context context,
                          Cursor cursor,
-                         List<DiscoverMovieRequest.ResultsField> filmList,
+                         List<DiscoverMovieRequest.Result> filmList,
                          DiscoverFilmFragment.OnFilmSelectedListener filmSelectedListener) {
         super(context, cursor, false);
         this.filmList = filmList;

@@ -44,7 +44,7 @@ public class SearchFilmFragment extends AbstractFilmFragment {
 
         SearchCallback callback = filmList -> {
             setAdapterDiscoverFilm(filmList);
-            for (DiscoverMovieRequest.ResultsField film : filmList) {
+            for (DiscoverMovieRequest.Result film : filmList) {
                 new DownloadImageTask(film, downloadCallback)
                         .executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
             }
@@ -64,7 +64,7 @@ public class SearchFilmFragment extends AbstractFilmFragment {
         super.onSaveInstanceState(outState);
     }
 
-    private void setAdapterDiscoverFilm(List<DiscoverMovieRequest.ResultsField> filmList) {
+    private void setAdapterDiscoverFilm(List<DiscoverMovieRequest.Result> filmList) {
         DiscoverFilmFragment.RecyclerElementEnded callback = () ->
                 Log.d("ListEnded", "setAdapterDiscoverFilm()");
         RecyclerView.Adapter adapter =

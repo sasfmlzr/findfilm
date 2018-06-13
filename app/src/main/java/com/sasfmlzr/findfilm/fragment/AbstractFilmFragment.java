@@ -21,9 +21,6 @@ import com.sasfmlzr.findfilm.request.JsonParserRequest;
 import com.sasfmlzr.findfilm.request.RequestMovie;
 import com.sasfmlzr.findfilm.utils.Downloader;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import java.util.List;
 import java.util.Objects;
 import java.util.Timer;
@@ -62,7 +59,7 @@ public abstract class AbstractFilmFragment extends android.support.v4.app.Fragme
     }
 
     public interface SearchCallback {
-        void isFind(List<DiscoverMovieRequest.ResultsField> filmList);
+        void isFind(List<DiscoverMovieRequest.Result> filmList);
     }
 
     public DiscoverFilmFragment.DownloadImage downloadCallback = (film) -> {
@@ -97,7 +94,7 @@ public abstract class AbstractFilmFragment extends android.support.v4.app.Fragme
                     filmSelectedListener.filmSearched(query);
                     InputMethodManager imm = (InputMethodManager)
                             Objects.requireNonNull(getActivity())
-                            .getSystemService(Context.INPUT_METHOD_SERVICE);
+                                    .getSystemService(Context.INPUT_METHOD_SERVICE);
                     assert imm != null;
                     imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
                 }
@@ -155,7 +152,7 @@ public abstract class AbstractFilmFragment extends android.support.v4.app.Fragme
         }
     }
 
-    static class SearchFilmTask extends AsyncTask<Void, Void, List<DiscoverMovieRequest.ResultsField>> {
+    static class SearchFilmTask extends AsyncTask<Void, Void, List<DiscoverMovieRequest.Result>> {
         private String query;
         private SearchCallback callback;
 
@@ -165,50 +162,44 @@ public abstract class AbstractFilmFragment extends android.support.v4.app.Fragme
         }
 
         @Override
-        protected List<DiscoverMovieRequest.ResultsField> doInBackground(Void... voids) {
+        protected List<DiscoverMovieRequest.Result> doInBackground(Void... voids) {
             RequestMovie requestMovie = new RequestMovie();
-            try {
-                JSONObject jsonObject = new JSONObject(requestMovie.searchMovie(query));
-                JsonParserRequest jsonParserRequest = new JsonParserRequest();
-                DiscoverMovieRequest result = jsonParserRequest.searchMovieParce(jsonObject);
-                return result.getResultsFields();
-            } catch (JSONException e) {
-                e.printStackTrace();
-                return null;
-            }
+            JsonParserRequest jsonParserRequest = new JsonParserRequest();
+            DiscoverMovieRequest result = jsonParserRequest.searchMovieParce(requestMovie.searchMovie(query));
+            return result.getResults();
         }
 
         @Override
-        protected void onPostExecute(List<DiscoverMovieRequest.ResultsField> resultsFields) {
-            callback.isFind(resultsFields);
-            super.onPostExecute(resultsFields);
+        protected void onPostExecute(List<DiscoverMovieRequest.Result> Results) {
+            callback.isFind(Results);
+            super.onPostExecute(Results);
         }
     }
 
-    static class DownloadImageTask extends AsyncTask<Void, Void, DiscoverMovieRequest.ResultsField> {
-        private DiscoverMovieRequest.ResultsField film;
+    static class DownloadImageTask extends AsyncTask<Void, Void, DiscoverMovieRequest.Result> {
+        private DiscoverMovieRequest.Result film;
         private DiscoverFilmFragment.DownloadImage callback;
         private String url;
 
-        DownloadImageTask(DiscoverMovieRequest.ResultsField film, DiscoverFilmFragment.DownloadImage callback) {
-            if (film.getBackdrop_path().equals("null")) {
-                this.url = URL_IMAGE_154PX + film.getPoster_path();
+        DownloadImageTask(DiscoverMovieRequest.Result film, DiscoverFilmFragment.DownloadImage callback) {
+            if (film.getBackdropPath() == null) {
+                this.url = URL_IMAGE_154PX + film.getPosterPath();
             } else {
-                this.url = URL_IMAGE_154PX + film.getBackdrop_path();
+                this.url = URL_IMAGE_154PX + film.getBackdropPath();
             }
             this.film = film;
             this.callback = callback;
         }
 
         @Override
-        protected DiscoverMovieRequest.ResultsField doInBackground(Void... voids) {
+        protected DiscoverMovieRequest.Result doInBackground(Void... voids) {
             Bitmap bitmap = Downloader.downloadImage(url);
             film.setBackdropBitmap(bitmap);
             return film;
         }
 
         @Override
-        protected void onPostExecute(DiscoverMovieRequest.ResultsField film) {
+        protected void onPostExecute(DiscoverMovieRequest.Result film) {
             callback.isDownloaded(film);
             super.onPostExecute(film);
         }

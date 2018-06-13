@@ -9,14 +9,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.google.gson.JsonObject;
 import com.sasfmlzr.findfilm.R;
 import com.sasfmlzr.findfilm.adapter.DiscoverRecyclerAdapter;
 import com.sasfmlzr.findfilm.request.DiscoverMovieRequest;
 import com.sasfmlzr.findfilm.request.JsonParserRequest;
 import com.sasfmlzr.findfilm.request.RequestMovie;
-
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.util.List;
 
@@ -64,25 +62,25 @@ public class DiscoverFilmFragment extends AbstractFilmFragment {
     }
 
     public interface FilmListComplete {
-        void isCompleted(List<DiscoverMovieRequest.ResultsField> filmList);
+        void isCompleted(List<DiscoverMovieRequest.Result> filmList);
     }
 
     public interface DownloadImage {
-        void isDownloaded(DiscoverMovieRequest.ResultsField film);
+        void isDownloaded(DiscoverMovieRequest.Result film);
     }
 
     private FilmListComplete setFilmListListener() {
         return (filmList) -> {
             setAdapterDiscoverFilm(filmList);
             countLoadedPages++;
-            for (DiscoverMovieRequest.ResultsField film : filmList) {
+            for (DiscoverMovieRequest.Result film : filmList) {
                 new DownloadImageTask(film, downloadCallback)
                         .executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
             }
         };
     }
 
-    private void setAdapterDiscoverFilm(List<DiscoverMovieRequest.ResultsField> filmList) {
+    private void setAdapterDiscoverFilm(List<DiscoverMovieRequest.Result> filmList) {
         if (isFirstList) {
             DiscoverFilmFragment.RecyclerElementEnded callback = () ->
                     new RetrieveFeedTask(countLoadedPages, setFilmListListener())
@@ -96,7 +94,7 @@ public class DiscoverFilmFragment extends AbstractFilmFragment {
         }
     }
 
-    static class RetrieveFeedTask extends AsyncTask<Void, Void, List<DiscoverMovieRequest.ResultsField>> {
+    static class RetrieveFeedTask extends AsyncTask<Void, Void, List<DiscoverMovieRequest.Result>> {
         private int countLoadedPages;
         private FilmListComplete listener;
 
@@ -106,27 +104,17 @@ public class DiscoverFilmFragment extends AbstractFilmFragment {
         }
 
         @Override
-        protected List<DiscoverMovieRequest.ResultsField> doInBackground(Void... voids) {
+        protected List<DiscoverMovieRequest.Result> doInBackground(Void... voids) {
             RequestMovie requestMovie = new RequestMovie();
-            String json = "";
-            JSONObject jsonObject;
-            try {
-                JsonParserRequest jsonParserRequest = new JsonParserRequest();
-                json = requestMovie.discoverMovie(countLoadedPages);
-                jsonObject = new JSONObject(json);
-                DiscoverMovieRequest movieRequest = jsonParserRequest.discoverMovieParce(jsonObject);
-                return movieRequest.getResultsFields();
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-            System.out.println(json);
-            return null;
+            JsonParserRequest jsonParserRequest = new JsonParserRequest();
+            DiscoverMovieRequest movieRequest = jsonParserRequest.discoverMovieParce(requestMovie.discoverMovie(countLoadedPages));
+            return movieRequest.getResults();
         }
 
         @Override
-        protected void onPostExecute(List<DiscoverMovieRequest.ResultsField> resultsFields) {
-            listener.isCompleted(resultsFields);
-            super.onPostExecute(resultsFields);
+        protected void onPostExecute(List<DiscoverMovieRequest.Result> Results) {
+            listener.isCompleted(Results);
+            super.onPostExecute(Results);
         }
     }
 }
