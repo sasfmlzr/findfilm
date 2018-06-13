@@ -23,12 +23,12 @@ public class MainActivity extends AppCompatActivity implements ParentFilmFragmen
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        startServiceOnDestroy=true;
+        startServiceOnDestroy = true;
         setContentView(R.layout.activity_main);
         SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
         prefListener = (prefs, key) -> {
-            if (key.equals(SettingsFragment.KEY_LANGUAGE)){
-                startServiceOnDestroy=false;
+            if (key.equals(SettingsFragment.KEY_LANGUAGE)) {
+                startServiceOnDestroy = false;
                 recreate();
             }
         };
@@ -43,7 +43,7 @@ public class MainActivity extends AppCompatActivity implements ParentFilmFragmen
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        if (startServiceOnDestroy){
+        if (startServiceOnDestroy) {
             startService(new Intent(this, NotificationService.class));
         }
     }
