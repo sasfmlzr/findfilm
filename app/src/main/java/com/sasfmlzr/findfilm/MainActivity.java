@@ -18,15 +18,19 @@ import com.sasfmlzr.findfilm.service.NotificationService;
 
 public class MainActivity extends AppCompatActivity implements ParentFilmFragment.filmClickedListener {
     private SharedPreferences.OnSharedPreferenceChangeListener prefListener;
+    private boolean startServiceOnDestroy;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        startServiceOnDestroy=true;
         setContentView(R.layout.activity_main);
         SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
         prefListener = (prefs, key) -> {
-            if (key.equals(SettingsFragment.KEY_LANGUAGE))
+            if (key.equals(SettingsFragment.KEY_LANGUAGE)){
+                startServiceOnDestroy=false;
                 recreate();
+            }
         };
         sharedPref.registerOnSharedPreferenceChangeListener(prefListener);
 
@@ -37,9 +41,11 @@ public class MainActivity extends AppCompatActivity implements ParentFilmFragmen
     }
 
     @Override
-    protected void onStop() {
-        super.onStop();
-        startService(new Intent(this, NotificationService.class));
+    protected void onDestroy() {
+        super.onDestroy();
+        if (startServiceOnDestroy){
+            startService(new Intent(this, NotificationService.class));
+        }
     }
 
     @Override
