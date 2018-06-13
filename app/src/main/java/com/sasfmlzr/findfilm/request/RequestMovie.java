@@ -1,32 +1,23 @@
 package com.sasfmlzr.findfilm.request;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.URL;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
 
 import static com.sasfmlzr.findfilm.model.SystemSettings.API_KEY;
 import static com.sasfmlzr.findfilm.model.SystemSettings.LANGUAGE;
 
-public class Request {
+public class RequestMovie {
+
     private String connection(String link) {
-        HttpURLConnection uc;
+        OkHttpClient client = new OkHttpClient();
+        Request.Builder builder = new Request.Builder();
+        builder.url(link);
+        Request requestMovie = builder.build();
         try {
-            URL url = new URL(link);
-            uc = (HttpURLConnection) url.openConnection();
-            uc.setRequestMethod("GET");
-            uc.connect();
-            InputStream sd = uc.getInputStream();
-            String line;
-            StringBuffer tmp = new StringBuffer();
-            BufferedReader in = new BufferedReader(new InputStreamReader(sd));
-            while ((line = in.readLine()) != null) {
-                tmp.append(line);
-            }
-            return String.valueOf(tmp);
-        } catch (IOException e) {
+            Response response = client.newCall(requestMovie).execute();
+            return response.body().string();
+        } catch (Exception e) {
             e.printStackTrace();
             return null;
         }

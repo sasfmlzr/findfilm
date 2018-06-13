@@ -18,7 +18,7 @@ import com.sasfmlzr.findfilm.adapter.DiscoverRecyclerAdapter;
 import com.sasfmlzr.findfilm.adapter.SearchAdapter;
 import com.sasfmlzr.findfilm.request.DiscoverMovieRequest;
 import com.sasfmlzr.findfilm.request.JsonParserRequest;
-import com.sasfmlzr.findfilm.request.Request;
+import com.sasfmlzr.findfilm.request.RequestMovie;
 import com.sasfmlzr.findfilm.utils.Downloader;
 
 import org.json.JSONException;
@@ -166,9 +166,9 @@ public abstract class AbstractFilmFragment extends android.support.v4.app.Fragme
 
         @Override
         protected List<DiscoverMovieRequest.ResultsField> doInBackground(Void... voids) {
-            Request request = new Request();
+            RequestMovie requestMovie = new RequestMovie();
             try {
-                JSONObject jsonObject = new JSONObject(request.searchMovie(query));
+                JSONObject jsonObject = new JSONObject(requestMovie.searchMovie(query));
                 JsonParserRequest jsonParserRequest = new JsonParserRequest();
                 DiscoverMovieRequest result = jsonParserRequest.searchMovieParce(jsonObject);
                 return result.getResultsFields();

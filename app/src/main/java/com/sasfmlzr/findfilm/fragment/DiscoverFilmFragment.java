@@ -13,7 +13,7 @@ import com.sasfmlzr.findfilm.R;
 import com.sasfmlzr.findfilm.adapter.DiscoverRecyclerAdapter;
 import com.sasfmlzr.findfilm.request.DiscoverMovieRequest;
 import com.sasfmlzr.findfilm.request.JsonParserRequest;
-import com.sasfmlzr.findfilm.request.Request;
+import com.sasfmlzr.findfilm.request.RequestMovie;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -107,12 +107,12 @@ public class DiscoverFilmFragment extends AbstractFilmFragment {
 
         @Override
         protected List<DiscoverMovieRequest.ResultsField> doInBackground(Void... voids) {
-            Request request = new Request();
+            RequestMovie requestMovie = new RequestMovie();
             String json = "";
             JSONObject jsonObject;
             try {
                 JsonParserRequest jsonParserRequest = new JsonParserRequest();
-                json = request.discoverMovie(countLoadedPages);
+                json = requestMovie.discoverMovie(countLoadedPages);
                 jsonObject = new JSONObject(json);
                 DiscoverMovieRequest movieRequest = jsonParserRequest.discoverMovieParce(jsonObject);
                 return movieRequest.getResultsFields();

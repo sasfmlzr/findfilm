@@ -16,7 +16,7 @@ import android.widget.TextView;
 import com.sasfmlzr.findfilm.R;
 import com.sasfmlzr.findfilm.request.CurrentMovieRequest;
 import com.sasfmlzr.findfilm.request.JsonParserRequest;
-import com.sasfmlzr.findfilm.request.Request;
+import com.sasfmlzr.findfilm.request.RequestMovie;
 import com.sasfmlzr.findfilm.utils.Downloader;
 
 import org.json.JSONException;
@@ -101,9 +101,9 @@ public class CurrentFilmFragment extends Fragment {
         @Override
         protected CurrentMovieRequest doInBackground(Void... voids) {
             try {
-                Request request = new Request();
+                RequestMovie requestMovie = new RequestMovie();
                 JsonParserRequest jsonParserRequest = new JsonParserRequest();
-                String json = request.viewMovie(idFilm);
+                String json = requestMovie.viewMovie(idFilm);
                 JSONObject jsonObject = new JSONObject(json);
                 return jsonParserRequest.currentMovieParce(jsonObject);
             } catch (JSONException e) {
