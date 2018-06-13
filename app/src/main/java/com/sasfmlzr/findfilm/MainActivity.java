@@ -1,5 +1,6 @@
 package com.sasfmlzr.findfilm;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -13,6 +14,7 @@ import com.sasfmlzr.findfilm.fragment.CurrentFilmFragment;
 import com.sasfmlzr.findfilm.fragment.ParentFilmFragment;
 import com.sasfmlzr.findfilm.fragment.SettingsFragment;
 import com.sasfmlzr.findfilm.model.SystemSettings;
+import com.sasfmlzr.findfilm.service.NotificationService;
 
 public class MainActivity extends AppCompatActivity implements ParentFilmFragment.filmClickedListener {
     private SharedPreferences.OnSharedPreferenceChangeListener prefListener;
@@ -32,6 +34,12 @@ public class MainActivity extends AppCompatActivity implements ParentFilmFragmen
         if (savedInstanceState == null) {
             createParentFragment();
         }
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        startService(new Intent(this, NotificationService.class));
     }
 
     @Override
