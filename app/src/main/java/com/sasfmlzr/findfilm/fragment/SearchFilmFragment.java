@@ -49,8 +49,7 @@ public class SearchFilmFragment extends AbstractFilmFragment {
                         .executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
             }
         };
-        new SearchFilmTask(querySearch, callback).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
-
+        getSearchResultFilm(querySearch, callback);
         return view;
     }
 
