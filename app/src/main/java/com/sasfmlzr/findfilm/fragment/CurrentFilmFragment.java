@@ -19,8 +19,8 @@ import com.sasfmlzr.findfilm.request.CurrentMovieRequest;
 import com.sasfmlzr.findfilm.request.FindFilmApi;
 import com.sasfmlzr.findfilm.utils.Downloader;
 
-import java.io.IOException;
-
+import retrofit2.Call;
+import retrofit2.Callback;
 import retrofit2.Response;
 
 import static com.sasfmlzr.findfilm.model.SystemSettings.API_KEY;
@@ -89,38 +89,19 @@ public class CurrentFilmFragment extends Fragment {
             new DownloadImageTask(currentMovieRequest, imageDownloadCallback).execute();
         };
 
+        FindFilmApi findFilmApi = RetrofitSingleton.getFindFilmApi();
+        findFilmApi.getCurrentMovie(idFilm, API_KEY, LANGUAGE)
+                .enqueue(new Callback<CurrentMovieRequest>() {
+                    @Override
+                    public void onResponse(Call<CurrentMovieRequest> call, Response<CurrentMovieRequest> response) {
+                        filmLoadCallback.isLoaded(response.body());
+                    }
 
-        new LoadDataFilmTask(idFilm, filmLoadCallback).execute();
-    }
+                    @Override
+                    public void onFailure(Call<CurrentMovieRequest> call, Throwable t) {
 
-    static class LoadDataFilmTask extends AsyncTask<Void, Void, CurrentMovieRequest> {
-        private int idFilm;
-        private FilmLoaded callback;
-
-        LoadDataFilmTask(int idFilm, FilmLoaded callback) {
-            this.idFilm = idFilm;
-            this.callback = callback;
-        }
-
-        @Override
-        protected CurrentMovieRequest doInBackground(Void... voids) {
-            FindFilmApi findFilmApi = RetrofitSingleton.getFindFilmApi();
-            Response response;
-            try {
-                response = findFilmApi.getCurrentMovie(idFilm, API_KEY, LANGUAGE)
-                        .execute();
-                return (CurrentMovieRequest) response.body();
-            } catch (IOException e) {
-                e.printStackTrace();
-                return null;
-            }
-        }
-
-        @Override
-        protected void onPostExecute(CurrentMovieRequest currentMovieRequest) {
-            super.onPostExecute(currentMovieRequest);
-            callback.isLoaded(currentMovieRequest);
-        }
+                    }
+                });
     }
 
     static class DownloadImageTask extends AsyncTask<Void, Void, CurrentMovieRequest> {
