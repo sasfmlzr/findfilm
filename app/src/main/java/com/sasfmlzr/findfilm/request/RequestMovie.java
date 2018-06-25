@@ -1,40 +1,58 @@
 package com.sasfmlzr.findfilm.request;
 
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.Response;
+import java.io.IOException;
+
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 import static com.sasfmlzr.findfilm.model.SystemSettings.API_KEY;
 import static com.sasfmlzr.findfilm.model.SystemSettings.LANGUAGE;
 
 public class RequestMovie {
+    private static FindFilmApi findFilmApi;
 
-    private String connection(String link) {
-        OkHttpClient client = new OkHttpClient();
-        Request.Builder builder = new Request.Builder();
-        builder.url(link);
-        Request requestMovie = builder.build();
+    public RequestMovie() {
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl("https://api.themoviedb.org")
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+        findFilmApi = retrofit.create(FindFilmApi.class);
+    }
+
+    public DiscoverMovieRequest discoverMovie(int page) {
+        Response response;
         try {
-            Response response = client.newCall(requestMovie).execute();
-            return response.body().string();
-        } catch (Exception e) {
+            response = findFilmApi.getDiscoverMovie(API_KEY, LANGUAGE, page)
+                    .execute();
+            return (DiscoverMovieRequest) response.body();
+        } catch (IOException e) {
             e.printStackTrace();
             return null;
         }
     }
 
-    public String discoverMovie(int page) {
-        return connection("https://api.themoviedb.org/3/discover/movie?api_key=" + API_KEY + "" +
-                "&language=" + LANGUAGE + "&sort_by=popularity.desc&include_adult=false&include_video=false&page=" + page);
+    public DiscoverMovieRequest searchMovie(String movie) {
+        Response response;
+        try {
+            response = findFilmApi.getSearchMovie(API_KEY, LANGUAGE, movie, 1)
+                    .execute();
+            return (DiscoverMovieRequest) response.body();
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 
-    public String searchMovie(String movie) {
-        return connection("https://api.themoviedb.org/3/search/movie?api_key=" + API_KEY +
-                "&language=" + LANGUAGE + "&query=" + movie + "&page=1&include_adult=false");
-    }
-
-    public String viewMovie(int movie_id) {
-        return connection("https://api.themoviedb.org/3/movie/" + movie_id +
-                "?api_key=" + API_KEY + "&language=" + LANGUAGE);
+    public CurrentMovieRequest viewMovie(int movie_id) {
+        Response response;
+        try {
+            response = findFilmApi.getCurrentMovie(movie_id, API_KEY, LANGUAGE)
+                    .execute();
+            return (CurrentMovieRequest) response.body();
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 }

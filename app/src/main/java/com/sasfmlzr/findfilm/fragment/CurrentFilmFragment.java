@@ -15,7 +15,6 @@ import android.widget.TextView;
 
 import com.sasfmlzr.findfilm.R;
 import com.sasfmlzr.findfilm.request.CurrentMovieRequest;
-import com.sasfmlzr.findfilm.request.JsonParserRequest;
 import com.sasfmlzr.findfilm.request.RequestMovie;
 import com.sasfmlzr.findfilm.utils.Downloader;
 
@@ -98,9 +97,7 @@ public class CurrentFilmFragment extends Fragment {
         @Override
         protected CurrentMovieRequest doInBackground(Void... voids) {
             RequestMovie requestMovie = new RequestMovie();
-            JsonParserRequest jsonParserRequest = new JsonParserRequest();
-            String json = requestMovie.viewMovie(idFilm);
-            return jsonParserRequest.currentMovieParce(json);
+            return requestMovie.viewMovie(idFilm);
         }
 
         @Override

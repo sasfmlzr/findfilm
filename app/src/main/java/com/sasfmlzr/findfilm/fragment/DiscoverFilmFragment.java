@@ -9,11 +9,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.google.gson.JsonObject;
 import com.sasfmlzr.findfilm.R;
 import com.sasfmlzr.findfilm.adapter.DiscoverRecyclerAdapter;
 import com.sasfmlzr.findfilm.request.DiscoverMovieRequest;
-import com.sasfmlzr.findfilm.request.JsonParserRequest;
 import com.sasfmlzr.findfilm.request.RequestMovie;
 
 import java.util.List;
@@ -106,9 +104,7 @@ public class DiscoverFilmFragment extends AbstractFilmFragment {
         @Override
         protected List<DiscoverMovieRequest.Result> doInBackground(Void... voids) {
             RequestMovie requestMovie = new RequestMovie();
-            JsonParserRequest jsonParserRequest = new JsonParserRequest();
-            DiscoverMovieRequest movieRequest = jsonParserRequest.discoverMovieParce(requestMovie.discoverMovie(countLoadedPages));
-            return movieRequest.getResults();
+            return requestMovie.discoverMovie(countLoadedPages).getResults();
         }
 
         @Override
