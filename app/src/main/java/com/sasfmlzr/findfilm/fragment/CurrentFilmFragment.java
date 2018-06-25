@@ -14,7 +14,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.sasfmlzr.findfilm.R;
-import com.sasfmlzr.findfilm.model.FindFilmSingleton;
+import com.sasfmlzr.findfilm.model.RetrofitSingleton;
 import com.sasfmlzr.findfilm.request.CurrentMovieRequest;
 import com.sasfmlzr.findfilm.request.FindFilmApi;
 import com.sasfmlzr.findfilm.utils.Downloader;
@@ -104,7 +104,7 @@ public class CurrentFilmFragment extends Fragment {
 
         @Override
         protected CurrentMovieRequest doInBackground(Void... voids) {
-            FindFilmApi findFilmApi = FindFilmSingleton.getFindFilmApi();
+            FindFilmApi findFilmApi = RetrofitSingleton.getFindFilmApi();
             Response response;
             try {
                 response = findFilmApi.getCurrentMovie(idFilm, API_KEY, LANGUAGE)

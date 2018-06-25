@@ -5,10 +5,10 @@ import com.sasfmlzr.findfilm.request.FindFilmApi;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-public class FindFilmSingleton {
+public class RetrofitSingleton {
     private static FindFilmApi findFilmApi;
 
-    private FindFilmSingleton() {
+    private RetrofitSingleton() {
     }
 
     public static FindFilmApi getFindFilmApi() {

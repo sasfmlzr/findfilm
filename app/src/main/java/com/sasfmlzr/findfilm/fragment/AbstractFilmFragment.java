@@ -16,7 +16,7 @@ import android.view.inputmethod.InputMethodManager;
 import com.sasfmlzr.findfilm.R;
 import com.sasfmlzr.findfilm.adapter.DiscoverRecyclerAdapter;
 import com.sasfmlzr.findfilm.adapter.SearchAdapter;
-import com.sasfmlzr.findfilm.model.FindFilmSingleton;
+import com.sasfmlzr.findfilm.model.RetrofitSingleton;
 import com.sasfmlzr.findfilm.request.DiscoverMovieRequest;
 import com.sasfmlzr.findfilm.request.FindFilmApi;
 import com.sasfmlzr.findfilm.utils.Downloader;
@@ -168,7 +168,7 @@ public abstract class AbstractFilmFragment extends android.support.v4.app.Fragme
 
         @Override
         protected List<DiscoverMovieRequest.Result> doInBackground(Void... voids) {
-            FindFilmApi findFilmApi = FindFilmSingleton.getFindFilmApi();
+            FindFilmApi findFilmApi = RetrofitSingleton.getFindFilmApi();
             Response response;
             try {
                 response = findFilmApi.getSearchMovie(API_KEY, LANGUAGE, query, 1)

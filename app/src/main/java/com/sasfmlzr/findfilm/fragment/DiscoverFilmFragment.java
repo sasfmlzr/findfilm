@@ -11,7 +11,7 @@ import android.view.ViewGroup;
 
 import com.sasfmlzr.findfilm.R;
 import com.sasfmlzr.findfilm.adapter.DiscoverRecyclerAdapter;
-import com.sasfmlzr.findfilm.model.FindFilmSingleton;
+import com.sasfmlzr.findfilm.model.RetrofitSingleton;
 import com.sasfmlzr.findfilm.request.DiscoverMovieRequest;
 import com.sasfmlzr.findfilm.request.FindFilmApi;
 
@@ -110,7 +110,7 @@ public class DiscoverFilmFragment extends AbstractFilmFragment {
 
         @Override
         protected List<DiscoverMovieRequest.Result> doInBackground(Void... voids) {
-            FindFilmApi findFilmApi = FindFilmSingleton.getFindFilmApi();
+            FindFilmApi findFilmApi = RetrofitSingleton.getFindFilmApi();
             Response response;
             try {
                 response = findFilmApi.getDiscoverMovie(API_KEY, LANGUAGE, countLoadedPages)
