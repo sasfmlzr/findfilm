@@ -116,7 +116,7 @@ public abstract class AbstractFilmFragment extends android.support.v4.app.Fragme
         super.onCreateOptionsMenu(menu, inflater);
     }
 
-    public void getSearchResultFilm(String query, SearchCallback callback) {
+    public void runSearchRequestFilm(String query, SearchCallback callback) {
         FindFilmApi findFilmApi = RetrofitSingleton.getFindFilmApi();
         findFilmApi.getSearchMovie(API_KEY, LANGUAGE, query, 1)
                 .enqueue(new Callback<DiscoverMovieRequest>() {
@@ -161,7 +161,7 @@ public abstract class AbstractFilmFragment extends android.support.v4.app.Fragme
                 @Override
                 public void run() {
                     handler.post(() -> {
-                        getSearchResultFilm(query, callback);
+                        runSearchRequestFilm(query, callback);
                         timer = null;
                     });
                 }

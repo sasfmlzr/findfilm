@@ -15,9 +15,10 @@ import com.sasfmlzr.findfilm.model.RetrofitSingleton;
 import com.sasfmlzr.findfilm.request.DiscoverMovieRequest;
 import com.sasfmlzr.findfilm.request.FindFilmApi;
 
-import java.io.IOException;
 import java.util.List;
 
+import retrofit2.Call;
+import retrofit2.Callback;
 import retrofit2.Response;
 
 import static com.sasfmlzr.findfilm.model.SystemSettings.API_KEY;
@@ -41,8 +42,7 @@ public class DiscoverFilmFragment extends AbstractFilmFragment {
         isFirstList = true;
         loadRecyclerFilmView();
 
-        new RetrieveFeedTask(countLoadedPages, setFilmListListener())
-                .executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+        runRequestFilm(filmListListener());
         return view;
     }
 
@@ -74,7 +74,7 @@ public class DiscoverFilmFragment extends AbstractFilmFragment {
         void isDownloaded(DiscoverMovieRequest.Result film);
     }
 
-    private FilmListComplete setFilmListListener() {
+    private FilmListComplete filmListListener() {
         return (filmList) -> {
             setAdapterDiscoverFilm(filmList);
             countLoadedPages++;
@@ -88,8 +88,7 @@ public class DiscoverFilmFragment extends AbstractFilmFragment {
     private void setAdapterDiscoverFilm(List<DiscoverMovieRequest.Result> filmList) {
         if (isFirstList) {
             DiscoverFilmFragment.RecyclerElementEnded callback = () ->
-                    new RetrieveFeedTask(countLoadedPages, setFilmListListener())
-                            .executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+                    runRequestFilm(filmListListener());
             RecyclerView.Adapter adapter =
                     new DiscoverRecyclerAdapter(filmList, filmSelectedListener, callback);
             listFilmView.setAdapter(adapter);
@@ -99,34 +98,19 @@ public class DiscoverFilmFragment extends AbstractFilmFragment {
         }
     }
 
-    static class RetrieveFeedTask extends AsyncTask<Void, Void, List<DiscoverMovieRequest.Result>> {
-        private int countLoadedPages;
-        private FilmListComplete listener;
+    private void runRequestFilm(FilmListComplete callback) {
+        FindFilmApi findFilmApi = RetrofitSingleton.getFindFilmApi();
+        findFilmApi.getDiscoverMovie(API_KEY, LANGUAGE, countLoadedPages)
+                .enqueue(new Callback<DiscoverMovieRequest>() {
+                    @Override
+                    public void onResponse(Call<DiscoverMovieRequest> call, Response<DiscoverMovieRequest> response) {
+                        callback.isCompleted(response.body().getResults());
+                    }
 
-        RetrieveFeedTask(int countLoadedPages, FilmListComplete listener) {
-            this.countLoadedPages = countLoadedPages;
-            this.listener = listener;
-        }
+                    @Override
+                    public void onFailure(Call<DiscoverMovieRequest> call, Throwable t) {
 
-        @Override
-        protected List<DiscoverMovieRequest.Result> doInBackground(Void... voids) {
-            FindFilmApi findFilmApi = RetrofitSingleton.getFindFilmApi();
-            Response response;
-            try {
-                response = findFilmApi.getDiscoverMovie(API_KEY, LANGUAGE, countLoadedPages)
-                        .execute();
-                DiscoverMovieRequest discoverMovieRequest = (DiscoverMovieRequest) response.body();
-                return discoverMovieRequest.getResults();
-            } catch (IOException e) {
-                e.printStackTrace();
-                return null;
-            }
-        }
-
-        @Override
-        protected void onPostExecute(List<DiscoverMovieRequest.Result> Results) {
-            listener.isCompleted(Results);
-            super.onPostExecute(Results);
-        }
+                    }
+                });
     }
 }
