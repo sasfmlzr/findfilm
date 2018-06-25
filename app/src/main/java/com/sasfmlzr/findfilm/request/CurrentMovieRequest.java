@@ -59,7 +59,7 @@ public class CurrentMovieRequest {
     private String releaseDate;
     @SerializedName("revenue")
     @Expose
-    private int revenue;
+    private double revenue;
     @SerializedName("runtime")
     @Expose
     private int runtime;
@@ -182,7 +182,7 @@ public class CurrentMovieRequest {
         return releaseDate;
     }
 
-    public int getRevenue() {
+    public double getRevenue() {
         return revenue;
     }
 
