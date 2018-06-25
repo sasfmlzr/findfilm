@@ -77,7 +77,6 @@ public class CurrentFilmFragment extends Fragment {
     }
 
     public void loadFilm() {
-
         DownloadImage imageDownloadCallback = (film) -> {
             posterFilm.setImageBitmap(film.getBackdropBitmap());
             progressLoaderImage.setVisibility(View.INVISIBLE);
