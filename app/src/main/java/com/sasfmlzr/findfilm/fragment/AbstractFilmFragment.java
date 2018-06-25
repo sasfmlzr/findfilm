@@ -16,15 +16,21 @@ import android.view.inputmethod.InputMethodManager;
 import com.sasfmlzr.findfilm.R;
 import com.sasfmlzr.findfilm.adapter.DiscoverRecyclerAdapter;
 import com.sasfmlzr.findfilm.adapter.SearchAdapter;
+import com.sasfmlzr.findfilm.model.FindFilmSingleton;
 import com.sasfmlzr.findfilm.request.DiscoverMovieRequest;
-import com.sasfmlzr.findfilm.request.RequestMovie;
+import com.sasfmlzr.findfilm.request.FindFilmApi;
 import com.sasfmlzr.findfilm.utils.Downloader;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Objects;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import retrofit2.Response;
+
+import static com.sasfmlzr.findfilm.model.SystemSettings.API_KEY;
+import static com.sasfmlzr.findfilm.model.SystemSettings.LANGUAGE;
 import static com.sasfmlzr.findfilm.model.SystemSettings.URL_IMAGE_154PX;
 
 public abstract class AbstractFilmFragment extends android.support.v4.app.Fragment {
@@ -162,9 +168,17 @@ public abstract class AbstractFilmFragment extends android.support.v4.app.Fragme
 
         @Override
         protected List<DiscoverMovieRequest.Result> doInBackground(Void... voids) {
-            RequestMovie requestMovie = new RequestMovie();
-            DiscoverMovieRequest result = requestMovie.searchMovie(query);
-            return result.getResults();
+            FindFilmApi findFilmApi = FindFilmSingleton.getFindFilmApi();
+            Response response;
+            try {
+                response = findFilmApi.getSearchMovie(API_KEY, LANGUAGE, query, 1)
+                        .execute();
+                DiscoverMovieRequest discoverMovieRequest = (DiscoverMovieRequest) response.body();
+                return discoverMovieRequest.getResults();
+            } catch (IOException e) {
+                e.printStackTrace();
+                return null;
+            }
         }
 
         @Override

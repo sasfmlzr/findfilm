@@ -14,10 +14,17 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.sasfmlzr.findfilm.R;
+import com.sasfmlzr.findfilm.model.FindFilmSingleton;
 import com.sasfmlzr.findfilm.request.CurrentMovieRequest;
-import com.sasfmlzr.findfilm.request.RequestMovie;
+import com.sasfmlzr.findfilm.request.FindFilmApi;
 import com.sasfmlzr.findfilm.utils.Downloader;
 
+import java.io.IOException;
+
+import retrofit2.Response;
+
+import static com.sasfmlzr.findfilm.model.SystemSettings.API_KEY;
+import static com.sasfmlzr.findfilm.model.SystemSettings.LANGUAGE;
 import static com.sasfmlzr.findfilm.model.SystemSettings.URL_IMAGE_500PX;
 
 public class CurrentFilmFragment extends Fragment {
@@ -82,6 +89,7 @@ public class CurrentFilmFragment extends Fragment {
             new DownloadImageTask(currentMovieRequest, imageDownloadCallback).execute();
         };
 
+
         new LoadDataFilmTask(idFilm, filmLoadCallback).execute();
     }
 
@@ -96,8 +104,16 @@ public class CurrentFilmFragment extends Fragment {
 
         @Override
         protected CurrentMovieRequest doInBackground(Void... voids) {
-            RequestMovie requestMovie = new RequestMovie();
-            return requestMovie.viewMovie(idFilm);
+            FindFilmApi findFilmApi = FindFilmSingleton.getFindFilmApi();
+            Response response;
+            try {
+                response = findFilmApi.getCurrentMovie(idFilm, API_KEY, LANGUAGE)
+                        .execute();
+                return (CurrentMovieRequest) response.body();
+            } catch (IOException e) {
+                e.printStackTrace();
+                return null;
+            }
         }
 
         @Override

@@ -11,10 +11,17 @@ import android.view.ViewGroup;
 
 import com.sasfmlzr.findfilm.R;
 import com.sasfmlzr.findfilm.adapter.DiscoverRecyclerAdapter;
+import com.sasfmlzr.findfilm.model.FindFilmSingleton;
 import com.sasfmlzr.findfilm.request.DiscoverMovieRequest;
-import com.sasfmlzr.findfilm.request.RequestMovie;
+import com.sasfmlzr.findfilm.request.FindFilmApi;
 
+import java.io.IOException;
 import java.util.List;
+
+import retrofit2.Response;
+
+import static com.sasfmlzr.findfilm.model.SystemSettings.API_KEY;
+import static com.sasfmlzr.findfilm.model.SystemSettings.LANGUAGE;
 
 public class DiscoverFilmFragment extends AbstractFilmFragment {
     private int countLoadedPages = 1;
@@ -103,8 +110,17 @@ public class DiscoverFilmFragment extends AbstractFilmFragment {
 
         @Override
         protected List<DiscoverMovieRequest.Result> doInBackground(Void... voids) {
-            RequestMovie requestMovie = new RequestMovie();
-            return requestMovie.discoverMovie(countLoadedPages).getResults();
+            FindFilmApi findFilmApi = FindFilmSingleton.getFindFilmApi();
+            Response response;
+            try {
+                response = findFilmApi.getDiscoverMovie(API_KEY, LANGUAGE, countLoadedPages)
+                        .execute();
+                DiscoverMovieRequest discoverMovieRequest = (DiscoverMovieRequest) response.body();
+                return discoverMovieRequest.getResults();
+            } catch (IOException e) {
+                e.printStackTrace();
+                return null;
+            }
         }
 
         @Override
