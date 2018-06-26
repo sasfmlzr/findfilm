@@ -8,6 +8,7 @@ import android.os.Handler;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.View;
@@ -22,6 +23,7 @@ import com.sasfmlzr.findfilm.request.FindFilmApi;
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Target;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Timer;
@@ -175,6 +177,7 @@ public abstract class AbstractFilmFragment extends android.support.v4.app.Fragme
         }
     }
 
+    private List<DownloadImageTarget> targetList = new ArrayList<>();
     public void downloadImage(DiscoverMovieRequest.Result film,
                               DiscoverFilmFragment.DownloadImage imageDownloadCallback) {
         String url;
@@ -183,23 +186,37 @@ public abstract class AbstractFilmFragment extends android.support.v4.app.Fragme
         } else {
             url = URL_IMAGE_154PX + film.getBackdropPath();
         }
-        Target target = new Target() {
-            @Override
-            public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
-                film.setBackdropBitmap(bitmap);
-                imageDownloadCallback.isDownloaded(film);
-            }
-
-            @Override
-            public void onBitmapFailed(Exception e, Drawable errorDrawable) {
-                System.out.println();
-            }
-
-            @Override
-            public void onPrepareLoad(Drawable placeHolderDrawable) {
-
-            }
-        };
+        DownloadImageTarget target = new DownloadImageTarget(film, imageDownloadCallback);
+        targetList.add(target);
         Picasso.get().load(url).into(target);
+    }
+
+    private final class DownloadImageTarget implements Target {
+        private DiscoverMovieRequest.Result film;
+        private DiscoverFilmFragment.DownloadImage imageDownloadCallback;
+        private String TAG = "bitmap";
+
+        DownloadImageTarget(DiscoverMovieRequest.Result film,
+                            DiscoverFilmFragment.DownloadImage imageDownloadCallback) {
+            this.film = film;
+            this.imageDownloadCallback = imageDownloadCallback;
+        }
+
+        @Override
+        public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
+            film.setBackdropBitmap(bitmap);
+            imageDownloadCallback.isDownloaded(film);
+            Log.d(TAG, "onBitmapLoaded() called with: bitmap = [" + bitmap + "], from = [" + from + "]");
+        }
+
+        @Override
+        public void onBitmapFailed(Exception e, Drawable errorDrawable) {
+            Log.d(TAG, "onBitmapFailed() called with: e = [" + e + "], errorDrawable = [" + errorDrawable + "]");
+        }
+
+        @Override
+        public void onPrepareLoad(Drawable placeHolderDrawable) {
+            Log.d(TAG, "onPrepareLoad() called with: placeHolderDrawable = [" + placeHolderDrawable + "]");
+        }
     }
 }
