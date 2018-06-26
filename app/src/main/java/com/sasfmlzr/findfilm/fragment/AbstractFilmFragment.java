@@ -1,29 +1,22 @@
 package com.sasfmlzr.findfilm.fragment;
 import android.content.Context;
 import android.database.MatrixCursor;
-import android.graphics.Bitmap;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 
 import com.sasfmlzr.findfilm.R;
-import com.sasfmlzr.findfilm.adapter.DiscoverRecyclerAdapter;
 import com.sasfmlzr.findfilm.adapter.SearchAdapter;
 import com.sasfmlzr.findfilm.model.RetrofitSingleton;
 import com.sasfmlzr.findfilm.request.DiscoverMovieRequest;
 import com.sasfmlzr.findfilm.request.FindFilmApi;
-import com.squareup.picasso.Picasso;
-import com.squareup.picasso.Target;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Timer;
@@ -35,7 +28,6 @@ import retrofit2.Response;
 
 import static com.sasfmlzr.findfilm.model.SystemSettings.API_KEY;
 import static com.sasfmlzr.findfilm.model.SystemSettings.LANGUAGE;
-import static com.sasfmlzr.findfilm.model.SystemSettings.URL_IMAGE_154PX;
 
 public abstract class AbstractFilmFragment extends android.support.v4.app.Fragment {
     public DiscoverFilmFragment.OnFilmSelectedListener filmSelectedListener;
@@ -70,13 +62,6 @@ public abstract class AbstractFilmFragment extends android.support.v4.app.Fragme
     public interface SearchCallback {
         void isFind(List<DiscoverMovieRequest.Result> filmList);
     }
-
-    public DiscoverFilmFragment.DownloadImage downloadCallback = (film) -> {
-        DiscoverRecyclerAdapter adapter = (DiscoverRecyclerAdapter) listFilmView.getAdapter();
-        if (adapter != null) {
-            adapter.replaceImageViewFilm(film);
-        }
-    };
 
     public void loadRecyclerFilmView() {
         listFilmView = view.findViewById(R.id.discoverFilmList);
@@ -174,49 +159,6 @@ public abstract class AbstractFilmFragment extends android.support.v4.app.Fragme
             }
             timer = new Timer();
             timer.schedule(timerTask, 2000);
-        }
-    }
-
-    private List<DownloadImageTarget> targetList = new ArrayList<>();
-    public void downloadImage(DiscoverMovieRequest.Result film,
-                              DiscoverFilmFragment.DownloadImage imageDownloadCallback) {
-        String url;
-        if (film.getBackdropPath() == null) {
-            url = URL_IMAGE_154PX + film.getPosterPath();
-        } else {
-            url = URL_IMAGE_154PX + film.getBackdropPath();
-        }
-        DownloadImageTarget target = new DownloadImageTarget(film, imageDownloadCallback);
-        targetList.add(target);
-        Picasso.get().load(url).into(target);
-    }
-
-    private final class DownloadImageTarget implements Target {
-        private DiscoverMovieRequest.Result film;
-        private DiscoverFilmFragment.DownloadImage imageDownloadCallback;
-        private String TAG = "bitmap";
-
-        DownloadImageTarget(DiscoverMovieRequest.Result film,
-                            DiscoverFilmFragment.DownloadImage imageDownloadCallback) {
-            this.film = film;
-            this.imageDownloadCallback = imageDownloadCallback;
-        }
-
-        @Override
-        public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
-            film.setBackdropBitmap(bitmap);
-            imageDownloadCallback.isDownloaded(film);
-            Log.d(TAG, "onBitmapLoaded() called with: bitmap = [" + bitmap + "], from = [" + from + "]");
-        }
-
-        @Override
-        public void onBitmapFailed(Exception e, Drawable errorDrawable) {
-            Log.d(TAG, "onBitmapFailed() called with: e = [" + e + "], errorDrawable = [" + errorDrawable + "]");
-        }
-
-        @Override
-        public void onPrepareLoad(Drawable placeHolderDrawable) {
-            Log.d(TAG, "onPrepareLoad() called with: placeHolderDrawable = [" + placeHolderDrawable + "]");
         }
     }
 }

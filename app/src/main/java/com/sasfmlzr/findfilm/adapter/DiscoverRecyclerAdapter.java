@@ -1,6 +1,7 @@
 package com.sasfmlzr.findfilm.adapter;
 
 import android.graphics.Bitmap;
+import android.graphics.drawable.Drawable;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -13,8 +14,12 @@ import android.widget.TextView;
 import com.sasfmlzr.findfilm.R;
 import com.sasfmlzr.findfilm.fragment.DiscoverFilmFragment;
 import com.sasfmlzr.findfilm.request.DiscoverMovieRequest;
+import com.squareup.picasso.Picasso;
+import com.squareup.picasso.Target;
 
 import java.util.List;
+
+import static com.sasfmlzr.findfilm.model.SystemSettings.URL_IMAGE_154PX;
 
 public class DiscoverRecyclerAdapter extends RecyclerView.Adapter<DiscoverRecyclerAdapter.ViewHolder> {
     private List<DiscoverMovieRequest.Result> filmList;
@@ -46,11 +51,15 @@ public class DiscoverRecyclerAdapter extends RecyclerView.Adapter<DiscoverRecycl
             overview = overview.substring(0, 97) + "...";
         }
         holder.descriptionFilm.setText(overview);
-        Bitmap bitmap = currentFilm.getBackdropBitmap();
-        holder.imageFilmView.setImageBitmap(bitmap);
-        if (bitmap != null) {
-            holder.progressLoaderImage.setVisibility(View.INVISIBLE);
+
+        String url;
+        if (currentFilm.getBackdropPath() == null) {
+            url = URL_IMAGE_154PX + currentFilm.getPosterPath();
+        } else {
+            url = URL_IMAGE_154PX + currentFilm.getBackdropPath();
         }
+        Picasso.get().load(url).into(holder.target);
+
         if (position == filmList.size() - 1) {
             elementEndedCallback.isEnded();
         }
@@ -59,23 +68,6 @@ public class DiscoverRecyclerAdapter extends RecyclerView.Adapter<DiscoverRecycl
     @Override
     public int getItemCount() {
         return filmList.size();
-    }
-
-    public void replaceImageViewFilm(DiscoverMovieRequest.Result film) {
-        for (int pos = 0; pos < filmList.size(); pos++) {
-            DiscoverMovieRequest.Result currentFilm = filmList.get(pos);
-            Boolean equalsImageFilm;
-            if (currentFilm.getBackdropPath() == null) {
-                equalsImageFilm = currentFilm.getPosterPath().equals(film.getBackdropPath());
-            } else {
-                equalsImageFilm = currentFilm.getBackdropPath().equals(film.getBackdropPath());
-            }
-            if (equalsImageFilm) {
-                filmList.set(pos, film);
-                notifyItemChanged(pos);
-                return;
-            }
-        }
     }
 
     public void addElements(List<DiscoverMovieRequest.Result> filmList) {
@@ -88,6 +80,7 @@ public class DiscoverRecyclerAdapter extends RecyclerView.Adapter<DiscoverRecycl
         final TextView descriptionFilm;
         final ImageView imageFilmView;
         final ProgressBar progressLoaderImage;
+        final Target target;
 
         ViewHolder(View itemView) {
             super(itemView);
@@ -95,6 +88,23 @@ public class DiscoverRecyclerAdapter extends RecyclerView.Adapter<DiscoverRecycl
             descriptionFilm = itemView.findViewById(R.id.descriptionFilm);
             imageFilmView = itemView.findViewById(R.id.previewFilmImageView);
             progressLoaderImage = itemView.findViewById(R.id.progressBarLoaderImage);
+            target = new Target() {
+                @Override
+                public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
+                    imageFilmView.setImageBitmap(bitmap);
+                    progressLoaderImage.setVisibility(View.INVISIBLE);
+                }
+
+                @Override
+                public void onBitmapFailed(Exception e, Drawable errorDrawable) {
+
+                }
+
+                @Override
+                public void onPrepareLoad(Drawable placeHolderDrawable) {
+
+                }
+            };
             itemView.setOnClickListener(this);
         }
 

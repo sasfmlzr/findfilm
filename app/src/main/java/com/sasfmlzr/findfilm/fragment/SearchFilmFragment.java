@@ -43,9 +43,6 @@ public class SearchFilmFragment extends AbstractFilmFragment {
 
         SearchCallback callback = filmList -> {
             setAdapterDiscoverFilm(filmList);
-            for (DiscoverMovieRequest.Result film : filmList) {
-                downloadImage(film, downloadCallback);
-            }
         };
         runSearchRequestFilm(querySearch, callback);
         return view;

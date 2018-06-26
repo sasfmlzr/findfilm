@@ -69,17 +69,10 @@ public class DiscoverFilmFragment extends AbstractFilmFragment {
         void isCompleted(List<DiscoverMovieRequest.Result> filmList);
     }
 
-    public interface DownloadImage {
-        void isDownloaded(DiscoverMovieRequest.Result film);
-    }
-
     private FilmListComplete filmListListener() {
         return (filmList) -> {
             setAdapterDiscoverFilm(filmList);
             countLoadedPages++;
-            for (DiscoverMovieRequest.Result film : filmList) {
-                downloadImage(film, downloadCallback);
-            }
         };
     }
 
