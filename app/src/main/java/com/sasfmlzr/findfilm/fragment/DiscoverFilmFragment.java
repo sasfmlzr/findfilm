@@ -1,6 +1,5 @@
 package com.sasfmlzr.findfilm.fragment;
 
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -79,8 +78,7 @@ public class DiscoverFilmFragment extends AbstractFilmFragment {
             setAdapterDiscoverFilm(filmList);
             countLoadedPages++;
             for (DiscoverMovieRequest.Result film : filmList) {
-                new DownloadImageTask(film, downloadCallback)
-                        .executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+                downloadImage(film, downloadCallback);
             }
         };
     }

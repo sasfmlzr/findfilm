@@ -1,7 +1,7 @@
 package com.sasfmlzr.findfilm.fragment;
 
 import android.graphics.Bitmap;
-import android.os.AsyncTask;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -17,7 +17,8 @@ import com.sasfmlzr.findfilm.R;
 import com.sasfmlzr.findfilm.model.RetrofitSingleton;
 import com.sasfmlzr.findfilm.request.CurrentMovieRequest;
 import com.sasfmlzr.findfilm.request.FindFilmApi;
-import com.sasfmlzr.findfilm.utils.Downloader;
+import com.squareup.picasso.Picasso;
+import com.squareup.picasso.Target;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -85,7 +86,31 @@ public class CurrentFilmFragment extends Fragment {
         FilmLoaded filmLoadCallback = (currentMovieRequest) -> {
             nameFilm.setText(currentMovieRequest.getTitle());
             description.setText(currentMovieRequest.getOverview());
-            new DownloadImageTask(currentMovieRequest, imageDownloadCallback).execute();
+            String url;
+            if (currentMovieRequest.getBackdropPath() == null) {
+                url = URL_IMAGE_500PX + currentMovieRequest.getPosterPath();
+            } else {
+                url = URL_IMAGE_500PX + currentMovieRequest.getBackdropPath();
+            }
+            Target target = new Target() {
+                @Override
+                public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
+                    currentMovieRequest.setBackdropBitmap(bitmap);
+                    imageDownloadCallback.isDownloaded(currentMovieRequest);
+                }
+
+                @Override
+                public void onBitmapFailed(Exception e, Drawable errorDrawable) {
+
+                }
+
+                @Override
+                public void onPrepareLoad(Drawable placeHolderDrawable) {
+
+                }
+            };
+
+            Picasso.get().load(url).into(target);
         };
 
         FindFilmApi findFilmApi = RetrofitSingleton.getFindFilmApi();
@@ -101,34 +126,5 @@ public class CurrentFilmFragment extends Fragment {
 
                     }
                 });
-    }
-
-    static class DownloadImageTask extends AsyncTask<Void, Void, CurrentMovieRequest> {
-        private String url;
-        CurrentMovieRequest film;
-        CurrentFilmFragment.DownloadImage callback;
-
-        DownloadImageTask(CurrentMovieRequest film, CurrentFilmFragment.DownloadImage callback) {
-            if (film.getBackdropPath() == null) {
-                this.url = URL_IMAGE_500PX + film.getPosterPath();
-            } else {
-                this.url = URL_IMAGE_500PX + film.getBackdropPath();
-            }
-            this.film = film;
-            this.callback = callback;
-        }
-
-        @Override
-        protected CurrentMovieRequest doInBackground(Void... voids) {
-            Bitmap bitmap = Downloader.downloadImage(url);
-            film.setBackdropBitmap(bitmap);
-            return film;
-        }
-
-        @Override
-        protected void onPostExecute(CurrentMovieRequest film) {
-            callback.isDownloaded(film);
-            super.onPostExecute(film);
-        }
     }
 }

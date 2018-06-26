@@ -2,7 +2,7 @@ package com.sasfmlzr.findfilm.fragment;
 import android.content.Context;
 import android.database.MatrixCursor;
 import android.graphics.Bitmap;
-import android.os.AsyncTask;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.widget.LinearLayoutManager;
@@ -19,7 +19,8 @@ import com.sasfmlzr.findfilm.adapter.SearchAdapter;
 import com.sasfmlzr.findfilm.model.RetrofitSingleton;
 import com.sasfmlzr.findfilm.request.DiscoverMovieRequest;
 import com.sasfmlzr.findfilm.request.FindFilmApi;
-import com.sasfmlzr.findfilm.utils.Downloader;
+import com.squareup.picasso.Picasso;
+import com.squareup.picasso.Target;
 
 import java.util.List;
 import java.util.Objects;
@@ -174,32 +175,31 @@ public abstract class AbstractFilmFragment extends android.support.v4.app.Fragme
         }
     }
 
-    static class DownloadImageTask extends AsyncTask<Void, Void, DiscoverMovieRequest.Result> {
-        private DiscoverMovieRequest.Result film;
-        private DiscoverFilmFragment.DownloadImage callback;
-        private String url;
-
-        DownloadImageTask(DiscoverMovieRequest.Result film, DiscoverFilmFragment.DownloadImage callback) {
-            if (film.getBackdropPath() == null) {
-                this.url = URL_IMAGE_154PX + film.getPosterPath();
-            } else {
-                this.url = URL_IMAGE_154PX + film.getBackdropPath();
+    public void downloadImage(DiscoverMovieRequest.Result film,
+                              DiscoverFilmFragment.DownloadImage imageDownloadCallback) {
+        String url;
+        if (film.getBackdropPath() == null) {
+            url = URL_IMAGE_154PX + film.getPosterPath();
+        } else {
+            url = URL_IMAGE_154PX + film.getBackdropPath();
+        }
+        Target target = new Target() {
+            @Override
+            public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
+                film.setBackdropBitmap(bitmap);
+                imageDownloadCallback.isDownloaded(film);
             }
-            this.film = film;
-            this.callback = callback;
-        }
 
-        @Override
-        protected DiscoverMovieRequest.Result doInBackground(Void... voids) {
-            Bitmap bitmap = Downloader.downloadImage(url);
-            film.setBackdropBitmap(bitmap);
-            return film;
-        }
+            @Override
+            public void onBitmapFailed(Exception e, Drawable errorDrawable) {
+                System.out.println();
+            }
 
-        @Override
-        protected void onPostExecute(DiscoverMovieRequest.Result film) {
-            callback.isDownloaded(film);
-            super.onPostExecute(film);
-        }
+            @Override
+            public void onPrepareLoad(Drawable placeHolderDrawable) {
+
+            }
+        };
+        Picasso.get().load(url).into(target);
     }
 }
