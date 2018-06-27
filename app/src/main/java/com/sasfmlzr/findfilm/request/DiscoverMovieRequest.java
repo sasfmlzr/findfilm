@@ -1,7 +1,5 @@
 package com.sasfmlzr.findfilm.request;
 
-import android.graphics.Bitmap;
-
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
@@ -93,12 +91,24 @@ public class DiscoverMovieRequest {
         @SerializedName("vote_average")
         @Expose
         private double voteAverage;
-        private Bitmap backdropBitmap;
 
         public Result() {
         }
 
-        public Result(Object posterPath, boolean adult, String overview, String releaseDate, List<Integer> genreIds, int id, String originalTitle, String originalLanguage, String title, Object backdropPath, double popularity, int voteCount, boolean video, double voteAverage) {
+        public Result(Object posterPath,
+                      boolean adult,
+                      String overview,
+                      String releaseDate,
+                      List<Integer> genreIds,
+                      int id,
+                      String originalTitle,
+                      String originalLanguage,
+                      String title,
+                      Object backdropPath,
+                      double popularity,
+                      int voteCount,
+                      boolean video,
+                      double voteAverage) {
             super();
             this.posterPath = posterPath;
             this.adult = adult;
@@ -170,14 +180,6 @@ public class DiscoverMovieRequest {
 
         public double getVoteAverage() {
             return voteAverage;
-        }
-
-        public Bitmap getBackdropBitmap() {
-            return backdropBitmap;
-        }
-
-        public void setBackdropBitmap(Bitmap backdropBitmap) {
-            this.backdropBitmap = backdropBitmap;
         }
     }
 }

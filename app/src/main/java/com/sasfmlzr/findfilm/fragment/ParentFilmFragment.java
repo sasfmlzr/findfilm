@@ -20,7 +20,7 @@ import java.util.Objects;
 public class ParentFilmFragment extends Fragment implements DiscoverFilmFragment.OnFilmSelectedListener {
     private String query;
     private filmClickedListener searchedListener;
-    Fragment.SavedState myFragmentState;
+    private Fragment.SavedState myFragmentState;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -36,7 +36,9 @@ public class ParentFilmFragment extends Fragment implements DiscoverFilmFragment
 
     @Nullable
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater,
+                             @Nullable ViewGroup container,
+                             @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.container_fragment, container, false);
         setHasOptionsMenu(true);
         return view;
@@ -71,6 +73,7 @@ public class ParentFilmFragment extends Fragment implements DiscoverFilmFragment
         SearchManager searchManager = (SearchManager) Objects.requireNonNull(
                 getActivity()).getSystemService(Context.SEARCH_SERVICE);
         SearchView searchView = (SearchView) menu.findItem(R.id.search).getActionView();
+        assert searchManager != null;
         searchView.setSearchableInfo(searchManager.getSearchableInfo(getActivity().getComponentName()));
         searchView.setIconifiedByDefault(true);
         if (query != null && !query.isEmpty()) {
@@ -94,6 +97,7 @@ public class ParentFilmFragment extends Fragment implements DiscoverFilmFragment
 
     @Override
     public void onDestroyView() {
+        assert getFragmentManager() != null;
         myFragmentState = getFragmentManager().saveFragmentInstanceState(this);
         super.onDestroyView();
     }

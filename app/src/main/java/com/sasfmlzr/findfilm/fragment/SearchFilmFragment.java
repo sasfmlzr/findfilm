@@ -41,9 +41,7 @@ public class SearchFilmFragment extends AbstractFilmFragment {
         isFirstList = true;
         loadRecyclerFilmView();
 
-        SearchCallback callback = filmList -> {
-            setAdapterDiscoverFilm(filmList);
-        };
+        SearchCallback callback = this::setAdapterDiscoverFilm;
         runSearchRequestFilm(querySearch, callback);
         return view;
     }

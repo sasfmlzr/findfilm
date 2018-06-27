@@ -17,7 +17,6 @@ import com.sasfmlzr.findfilm.model.SystemSettings;
 import com.sasfmlzr.findfilm.service.NotificationService;
 
 public class MainActivity extends AppCompatActivity implements ParentFilmFragment.filmClickedListener {
-    private SharedPreferences.OnSharedPreferenceChangeListener prefListener;
     private boolean startServiceOnDestroy;
 
     @Override
@@ -26,7 +25,7 @@ public class MainActivity extends AppCompatActivity implements ParentFilmFragmen
         startServiceOnDestroy = true;
         setContentView(R.layout.activity_main);
         SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
-        prefListener = (prefs, key) -> {
+        SharedPreferences.OnSharedPreferenceChangeListener prefListener = (prefs, key) -> {
             if (key.equals(SettingsFragment.KEY_LANGUAGE)) {
                 startServiceOnDestroy = false;
                 recreate();
@@ -50,8 +49,7 @@ public class MainActivity extends AppCompatActivity implements ParentFilmFragmen
 
     @Override
     public void isClicked(int idFilm) {
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        fragmentManager.beginTransaction()
+        getSupportFragmentManager().beginTransaction()
                 .replace(R.id.containerForFragment, CurrentFilmFragment.newInstance(idFilm))
                 .addToBackStack(null)
                 .commit();
@@ -75,9 +73,6 @@ public class MainActivity extends AppCompatActivity implements ParentFilmFragmen
 
     @Override
     public void onBackPressed() {
-        // https://alexfu.github.io/android/2013/12/09/managing-fragment-states-manually.html
-        // http://android.joao.jp/2013/09/back-stack-with-nested-fragments-back.html
-        // http://d.hatena.ne.jp/yohpapa/20130317/1363509114
         FragmentManager fm = getSupportFragmentManager();
         for (Fragment frag : fm.getFragments()) {
             if (frag.isVisible()) {
@@ -93,15 +88,13 @@ public class MainActivity extends AppCompatActivity implements ParentFilmFragmen
     }
 
     private void createParentFragment() {
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        fragmentManager.beginTransaction()
+        getSupportFragmentManager().beginTransaction()
                 .add(R.id.containerForFragment, new ParentFilmFragment())
                 .commit();
     }
 
     private void setSettings() {
-        FragmentManager fm = getSupportFragmentManager();
-        fm.beginTransaction()
+        getSupportFragmentManager().beginTransaction()
                 .replace(R.id.containerForFragment, new SettingsFragment())
                 .addToBackStack(null)
                 .commit();

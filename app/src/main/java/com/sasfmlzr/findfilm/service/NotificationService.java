@@ -1,4 +1,5 @@
 package com.sasfmlzr.findfilm.service;
+
 import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
@@ -51,14 +52,14 @@ public class NotificationService extends Service {
     private void sendNotification() {
         Bitmap icon = BitmapFactory.decodeResource(getApplicationContext().getResources(),
                 R.drawable.ic_app);
-        NotificationCompat.Builder notifBuilder = new NotificationCompat.Builder(getApplicationContext(), "notify_001");
+        NotificationCompat.Builder notifyBuilder = new NotificationCompat.Builder(getApplicationContext(), "notify_001");
         Intent ii = new Intent(getApplicationContext(), MainActivity.class);
         PendingIntent pendingIntent = PendingIntent.getActivity(getApplicationContext(), 0, ii, 0);
         NotificationCompat.BigTextStyle bigText = new NotificationCompat.BigTextStyle();
         bigText.bigText("More, more film!");
         bigText.setBigContentTitle("Looking film!");
 
-        notifBuilder
+        notifyBuilder
                 .setContentIntent(pendingIntent)
                 .setContentTitle("Looking film!")
                 .setContentText("More, more film!")
@@ -66,7 +67,7 @@ public class NotificationService extends Service {
                 .setPriority(Notification.PRIORITY_MAX)
                 .setSmallIcon(R.drawable.ic_app)
                 .setLargeIcon(icon);
-        Notification notification = notifBuilder.build();
+        Notification notification = notifyBuilder.build();
         notification.flags |= Notification.FLAG_AUTO_CANCEL;
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
