@@ -6,6 +6,7 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 public class RetrofitSingleton {
+    private final static String BASE_URL = "https://api.themoviedb.org";
     private static FindFilmApi findFilmApi;
 
     private RetrofitSingleton() {
@@ -14,7 +15,7 @@ public class RetrofitSingleton {
     public static FindFilmApi getFindFilmApi() {
         if (findFilmApi == null) {
             Retrofit retrofit = new Retrofit.Builder()
-                    .baseUrl("https://api.themoviedb.org")
+                    .baseUrl(BASE_URL)
                     .addConverterFactory(GsonConverterFactory.create())
                     .build();
             findFilmApi = retrofit.create(FindFilmApi.class);
