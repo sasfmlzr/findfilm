@@ -1,4 +1,4 @@
-package com.sasfmlzr.findfilm.fragment;
+package com.sasfmlzr.findfilm.activity;
 import android.app.SearchManager;
 import android.content.Context;
 import android.os.Bundle;
@@ -14,13 +14,26 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.sasfmlzr.findfilm.R;
+import com.sasfmlzr.findfilm.fragment.DiscoverFilmFragment;
+import com.sasfmlzr.findfilm.fragment.SearchFilmFragment;
+import com.sasfmlzr.findfilm.request.DiscoverMovieRequest;
 
+import java.util.List;
 import java.util.Objects;
 
-public class ParentFilmFragment extends Fragment implements DiscoverFilmFragment.OnFilmSelectedListener {
+public class ParentFilmFragment extends Fragment implements MainContract.View, DiscoverFilmFragment.OnFilmSelectedListener {
+    private MainContract.Presenter presenter;
+
     private String query;
     private filmClickedListener searchedListener;
     private Fragment.SavedState myFragmentState;
+
+    public ParentFilmFragment() {
+    }
+
+    public static ParentFilmFragment newInstance() {
+        return new ParentFilmFragment();
+    }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -47,7 +60,7 @@ public class ParentFilmFragment extends Fragment implements DiscoverFilmFragment
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         if (myFragmentState == null) {
-            replaceChildFragment();
+            presenter.loadChildFragment(getChildFragmentManager());
         }
         super.onViewCreated(view, savedInstanceState);
     }
@@ -91,8 +104,8 @@ public class ParentFilmFragment extends Fragment implements DiscoverFilmFragment
 
     @Override
     public void onDetach() {
-        searchedListener = null;
         super.onDetach();
+        searchedListener = null;
     }
 
     @Override
@@ -109,14 +122,21 @@ public class ParentFilmFragment extends Fragment implements DiscoverFilmFragment
         super.onSaveInstanceState(outState);
     }
 
-    public interface filmClickedListener {
-        void isClicked(int idFilm);
+    @Override
+    public void showFilms(List<DiscoverMovieRequest> filmList) {
+
     }
 
-    public void replaceChildFragment() {
-        DiscoverFilmFragment childFragment = new DiscoverFilmFragment();
-        getChildFragmentManager().beginTransaction()
-                .replace(R.id.container_child_fragment, childFragment)
-                .commit();
+    @Override
+    public void setPresenter(MainContract.Presenter presenter) {
+        if(presenter==null){
+            throw new NullPointerException();
+        } else {
+            this.presenter = presenter;
+        }
+    }
+
+    public interface filmClickedListener {
+        void isClicked(int idFilm);
     }
 }

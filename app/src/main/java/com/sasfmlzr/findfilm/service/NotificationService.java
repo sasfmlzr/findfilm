@@ -13,7 +13,7 @@ import android.os.IBinder;
 import android.support.annotation.Nullable;
 import android.support.v4.app.NotificationCompat;
 
-import com.sasfmlzr.findfilm.MainActivity;
+import com.sasfmlzr.findfilm.activity.MainActivity;
 import com.sasfmlzr.findfilm.R;
 
 import java.util.concurrent.TimeUnit;

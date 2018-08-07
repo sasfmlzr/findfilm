@@ -1,23 +1,25 @@
-package com.sasfmlzr.findfilm;
+package com.sasfmlzr.findfilm.activity;
 
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.sasfmlzr.findfilm.R;
 import com.sasfmlzr.findfilm.fragment.CurrentFilmFragment;
-import com.sasfmlzr.findfilm.fragment.ParentFilmFragment;
 import com.sasfmlzr.findfilm.fragment.SettingsFragment;
 import com.sasfmlzr.findfilm.model.SystemSettings;
-import com.sasfmlzr.findfilm.service.NotificationService;
 
 public class MainActivity extends AppCompatActivity implements ParentFilmFragment.filmClickedListener {
     private boolean startServiceOnDestroy;
+
+    private MainPresenter mainPresenter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,6 +39,8 @@ public class MainActivity extends AppCompatActivity implements ParentFilmFragmen
         if (savedInstanceState == null) {
             createParentFragment();
         }
+
+
         //startService(new Intent(this, NotificationService.class));
     }
 
@@ -90,7 +94,7 @@ public class MainActivity extends AppCompatActivity implements ParentFilmFragmen
 
     private void createParentFragment() {
         getSupportFragmentManager().beginTransaction()
-                .add(R.id.containerForFragment, new ParentFilmFragment())
+                .add(R.id.containerForFragment, ParentFilmFragment.newInstance())
                 .commit();
     }
 
