@@ -3,10 +3,8 @@ package com.sasfmlzr.findfilm.activity;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -36,9 +34,17 @@ public class MainActivity extends AppCompatActivity implements ParentFilmFragmen
         sharedPref.registerOnSharedPreferenceChangeListener(prefListener);
 
         SystemSettings.LANGUAGE = sharedPref.getString(SettingsFragment.KEY_LANGUAGE, "en_US");
-        if (savedInstanceState == null) {
-            createParentFragment();
+
+        ParentFilmFragment parentFragment =
+                (ParentFilmFragment) getSupportFragmentManager().findFragmentById(R.id.containerForFragment);
+        if (parentFragment == null) {
+            parentFragment = ParentFilmFragment.newInstance();
+            getSupportFragmentManager().beginTransaction()
+                    .add(R.id.containerForFragment, parentFragment)
+                    .commit();
         }
+
+        mainPresenter = new MainPresenter(parentFragment);
 
 
         //startService(new Intent(this, NotificationService.class));
@@ -47,9 +53,9 @@ public class MainActivity extends AppCompatActivity implements ParentFilmFragmen
     @Override
     protected void onDestroy() {
         super.onDestroy();
-      //  if (startServiceOnDestroy) {
-      //      startService(new Intent(this, NotificationService.class));
-      //  }
+        //  if (startServiceOnDestroy) {
+        //      startService(new Intent(this, NotificationService.class));
+        //  }
     }
 
     @Override
@@ -90,12 +96,6 @@ public class MainActivity extends AppCompatActivity implements ParentFilmFragmen
                 }
             }
         }
-    }
-
-    private void createParentFragment() {
-        getSupportFragmentManager().beginTransaction()
-                .add(R.id.containerForFragment, ParentFilmFragment.newInstance())
-                .commit();
     }
 
     private void setSettings() {
