@@ -19,7 +19,7 @@ import com.squareup.picasso.Target;
 
 import java.util.List;
 
-import static com.sasfmlzr.findfilm.model.SystemSettings.URL_IMAGE_154PX;
+import static com.sasfmlzr.findfilm.model.SystemSettings.URL_IMAGE_500PX;
 
 public class DiscoverRecyclerAdapter extends RecyclerView.Adapter<DiscoverRecyclerAdapter.ViewHolder> {
     private List<DiscoverMovieRequest.Result> filmList;
@@ -46,17 +46,12 @@ public class DiscoverRecyclerAdapter extends RecyclerView.Adapter<DiscoverRecycl
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         DiscoverMovieRequest.Result currentFilm = filmList.get(position);
         holder.nameFilm.setText(currentFilm.getTitle());
-        String overview = currentFilm.getOverview();
-        if (overview.length() >= 97) {
-            overview = overview.substring(0, 97) + "...";
-        }
-        holder.descriptionFilm.setText(overview);
 
         String url;
         if (currentFilm.getBackdropPath() == null) {
-            url = URL_IMAGE_154PX + currentFilm.getPosterPath();
+            url = URL_IMAGE_500PX + currentFilm.getPosterPath();
         } else {
-            url = URL_IMAGE_154PX + currentFilm.getBackdropPath();
+            url = URL_IMAGE_500PX + currentFilm.getBackdropPath();
         }
         Picasso.get().load(url).into(holder.target);
 
@@ -77,7 +72,6 @@ public class DiscoverRecyclerAdapter extends RecyclerView.Adapter<DiscoverRecycl
 
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         final TextView nameFilm;
-        final TextView descriptionFilm;
         final ImageView imageFilmView;
         final ProgressBar progressLoaderImage;
         final Target target;
@@ -85,7 +79,6 @@ public class DiscoverRecyclerAdapter extends RecyclerView.Adapter<DiscoverRecycl
         ViewHolder(View itemView) {
             super(itemView);
             nameFilm = itemView.findViewById(R.id.nameFilm);
-            descriptionFilm = itemView.findViewById(R.id.descriptionFilm);
             imageFilmView = itemView.findViewById(R.id.previewFilmImageView);
             progressLoaderImage = itemView.findViewById(R.id.progressBarLoaderImage);
             target = new Target() {
