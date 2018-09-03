@@ -1,4 +1,5 @@
 package com.sasfmlzr.findfilm.fragment;
+
 import android.content.Context;
 import android.database.MatrixCursor;
 import android.os.Bundle;
@@ -13,6 +14,7 @@ import android.view.inputmethod.InputMethodManager;
 
 import com.sasfmlzr.findfilm.R;
 import com.sasfmlzr.findfilm.adapter.SearchAdapter;
+import com.sasfmlzr.findfilm.adapter.VerticalItemDecoration;
 import com.sasfmlzr.findfilm.model.RetrofitSingleton;
 import com.sasfmlzr.findfilm.request.DiscoverMovieRequest;
 import com.sasfmlzr.findfilm.request.FindFilmApi;
@@ -66,6 +68,7 @@ public abstract class AbstractFilmFragment extends android.support.v4.app.Fragme
     public void loadRecyclerFilmView() {
         listFilmView = view.findViewById(R.id.discoverFilmList);
         listFilmView.setLayoutManager(new LinearLayoutManager(view.getContext()));
+        listFilmView.addItemDecoration(new VerticalItemDecoration(50));
     }
 
     public Bundle saveState() {
