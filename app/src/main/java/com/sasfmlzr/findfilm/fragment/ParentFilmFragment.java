@@ -1,4 +1,5 @@
 package com.sasfmlzr.findfilm.fragment;
+
 import android.app.SearchManager;
 import android.content.Context;
 import android.os.Bundle;

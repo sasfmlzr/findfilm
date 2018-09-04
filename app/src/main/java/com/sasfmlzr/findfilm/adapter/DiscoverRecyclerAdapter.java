@@ -19,6 +19,9 @@ import com.squareup.picasso.Target;
 
 import java.util.List;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 import static com.sasfmlzr.findfilm.model.SystemSettings.URL_IMAGE_500PX;
 
 public class DiscoverRecyclerAdapter extends RecyclerView.Adapter<DiscoverRecyclerAdapter.ViewHolder> {
@@ -46,7 +49,7 @@ public class DiscoverRecyclerAdapter extends RecyclerView.Adapter<DiscoverRecycl
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         DiscoverMovieRequest.Result currentFilm = filmList.get(position);
         holder.nameFilm.setText(currentFilm.getTitle());
-
+        holder.scoreFilm.setText(String.valueOf(currentFilm.getVoteAverage()));
         String url;
         if (currentFilm.getBackdropPath() == null) {
             url = URL_IMAGE_500PX + currentFilm.getPosterPath();
@@ -71,16 +74,20 @@ public class DiscoverRecyclerAdapter extends RecyclerView.Adapter<DiscoverRecycl
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-        final TextView nameFilm;
-        final ImageView imageFilmView;
-        final ProgressBar progressLoaderImage;
         final Target target;
+
+        @BindView(R.id.nameFilm)
+        TextView nameFilm;
+        @BindView(R.id.scoreFilm)
+        TextView scoreFilm;
+        @BindView(R.id.previewFilmImageView)
+        ImageView imageFilmView;
+        @BindView(R.id.progressBarLoaderImage)
+        ProgressBar progressLoaderImage;
 
         ViewHolder(View itemView) {
             super(itemView);
-            nameFilm = itemView.findViewById(R.id.nameFilm);
-            imageFilmView = itemView.findViewById(R.id.previewFilmImageView);
-            progressLoaderImage = itemView.findViewById(R.id.progressBarLoaderImage);
+            ButterKnife.bind(this, itemView);
             target = new Target() {
                 @Override
                 public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {

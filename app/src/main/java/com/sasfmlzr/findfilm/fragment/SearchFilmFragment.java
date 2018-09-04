@@ -1,4 +1,5 @@
 package com.sasfmlzr.findfilm.fragment;
+
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -13,6 +14,8 @@ import com.sasfmlzr.findfilm.adapter.DiscoverRecyclerAdapter;
 import com.sasfmlzr.findfilm.request.DiscoverMovieRequest;
 
 import java.util.List;
+
+import butterknife.ButterKnife;
 
 public class SearchFilmFragment extends AbstractFilmFragment {
     private String querySearch;
@@ -39,6 +42,7 @@ public class SearchFilmFragment extends AbstractFilmFragment {
         savedState = null;
         view = inflater.inflate(R.layout.discover_fragment, container, false);
         isFirstList = true;
+        unbinder = ButterKnife.bind(this, view);
         loadRecyclerFilmView();
 
         SearchCallback callback = this::setAdapterDiscoverFilm;
@@ -49,6 +53,7 @@ public class SearchFilmFragment extends AbstractFilmFragment {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
+        unbinder.unbind();
     }
 
     @Override

@@ -20,6 +20,9 @@ import com.sasfmlzr.findfilm.request.FindFilmApi;
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Target;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.Unbinder;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -30,10 +33,16 @@ import static com.sasfmlzr.findfilm.model.SystemSettings.URL_IMAGE_500PX;
 
 public class CurrentFilmFragment extends Fragment {
     private int idFilm;
-    private ImageView posterFilm;
-    private TextView nameFilm;
-    private TextView description;
-    private ProgressBar progressLoaderImage;
+    private Unbinder unbinder;
+
+    @BindView(R.id.current_film_image_view)
+    ImageView posterFilm;
+    @BindView(R.id.name_current_film)
+    TextView nameFilm;
+    @BindView(R.id.description_current_film)
+    TextView description;
+    @BindView(R.id.progressBarLoaderCurrentFilm)
+    ProgressBar progressLoaderImage;
 
     public static CurrentFilmFragment newInstance(int idFilm) {
         Bundle args = new Bundle();
@@ -56,10 +65,7 @@ public class CurrentFilmFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.current_film_fragment, container, false);
         setHasOptionsMenu(true);
-        posterFilm = view.findViewById(R.id.current_film_image_view);
-        progressLoaderImage = view.findViewById(R.id.progressBarLoaderCurrentFilm);
-        nameFilm = view.findViewById(R.id.name_current_film);
-        description = view.findViewById(R.id.description_current_film);
+        unbinder = ButterKnife.bind(this, view);
         return view;
     }
 
@@ -126,5 +132,11 @@ public class CurrentFilmFragment extends Fragment {
 
                     }
                 });
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        unbinder.unbind();
     }
 }

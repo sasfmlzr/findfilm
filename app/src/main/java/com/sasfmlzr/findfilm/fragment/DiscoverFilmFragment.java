@@ -17,6 +17,7 @@ import com.sasfmlzr.findfilm.request.FindFilmApi;
 
 import java.util.List;
 
+import butterknife.ButterKnife;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -40,6 +41,7 @@ public class DiscoverFilmFragment extends AbstractFilmFragment {
         setHasOptionsMenu(true);
         countLoadedPages = 1;
         isFirstList = true;
+        unbinder = ButterKnife.bind(this, view);
         loadRecyclerFilmView();
 
         runRequestFilm(filmListListener());
@@ -50,6 +52,7 @@ public class DiscoverFilmFragment extends AbstractFilmFragment {
     public void onDestroyView() {
         super.onDestroyView();
         savedState = saveState();
+        unbinder.unbind();
     }
 
     @Override

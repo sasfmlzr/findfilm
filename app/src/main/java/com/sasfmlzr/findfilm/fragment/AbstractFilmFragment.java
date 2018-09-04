@@ -24,6 +24,9 @@ import java.util.Objects;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.Unbinder;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -34,10 +37,12 @@ import static com.sasfmlzr.findfilm.model.SystemSettings.LANGUAGE;
 public abstract class AbstractFilmFragment extends android.support.v4.app.Fragment {
     public DiscoverFilmFragment.OnFilmSelectedListener filmSelectedListener;
     public boolean isFirstList = true;
+    @BindView(R.id.discoverFilmList)
     public RecyclerView listFilmView;
     public View view;
     public SearchView searchView;
     public Bundle savedState = null;
+    public Unbinder unbinder;
     private Timer timer;
     private Menu menu;
 
@@ -66,7 +71,6 @@ public abstract class AbstractFilmFragment extends android.support.v4.app.Fragme
     }
 
     public void loadRecyclerFilmView() {
-        listFilmView = view.findViewById(R.id.discoverFilmList);
         listFilmView.setLayoutManager(new LinearLayoutManager(view.getContext()));
         listFilmView.addItemDecoration(new VerticalItemDecoration(50));
     }
