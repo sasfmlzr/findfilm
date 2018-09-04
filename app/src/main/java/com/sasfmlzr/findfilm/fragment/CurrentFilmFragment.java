@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toolbar;
 
 import com.sasfmlzr.findfilm.R;
 import com.sasfmlzr.findfilm.model.RetrofitSingleton;
@@ -43,6 +44,8 @@ public class CurrentFilmFragment extends Fragment {
     TextView description;
     @BindView(R.id.progressBarLoaderCurrentFilm)
     ProgressBar progressLoaderImage;
+    @BindView(R.id.current_film_toolbar)
+    Toolbar toolbar;
 
     public static CurrentFilmFragment newInstance(int idFilm) {
         Bundle args = new Bundle();
@@ -66,6 +69,8 @@ public class CurrentFilmFragment extends Fragment {
         View view = inflater.inflate(R.layout.current_film_fragment, container, false);
         setHasOptionsMenu(true);
         unbinder = ButterKnife.bind(this, view);
+        toolbar.setTitle("");
+        getActivity().setActionBar(toolbar);
         return view;
     }
 

@@ -41,7 +41,7 @@ public class ParentFilmFragment extends Fragment implements DiscoverFilmFragment
                              @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.container_fragment, container, false);
-        setHasOptionsMenu(true);
+        setHasOptionsMenu(false);
         return view;
     }
 
