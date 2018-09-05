@@ -7,13 +7,15 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toolbar;
+
 
 import com.sasfmlzr.findfilm.R;
 import com.sasfmlzr.findfilm.model.RetrofitSingleton;
@@ -39,10 +41,12 @@ public class CurrentFilmFragment extends Fragment {
 
     @BindView(R.id.current_film_image_view)
     ImageView posterFilm;
-    @BindView(R.id.name_current_film)
-    TextView nameFilm;
     @BindView(R.id.description_current_film)
     TextView description;
+    @BindView(R.id.vote_average)
+    TextView voteAverage;
+    @BindView(R.id.release_date)
+    TextView releaseDate;
     @BindView(R.id.progressBarLoaderCurrentFilm)
     ProgressBar progressLoaderImage;
     @BindView(R.id.current_film_toolbar)
@@ -72,8 +76,8 @@ public class CurrentFilmFragment extends Fragment {
         View view = inflater.inflate(R.layout.current_film_fragment, container, false);
         setHasOptionsMenu(true);
         unbinder = ButterKnife.bind(this, view);
-        toolbar.setTitle("");
-        getActivity().setActionBar(toolbar);
+        ((AppCompatActivity)getActivity()).setSupportActionBar(toolbar);
+        ((AppCompatActivity)getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         return view;
     }
 
@@ -98,8 +102,11 @@ public class CurrentFilmFragment extends Fragment {
         };
 
         FilmLoaded filmLoadCallback = (currentMovieRequest) -> {
-            nameFilm.setText(currentMovieRequest.getTitle());
             collapsingToolbarLayout.setTitle(currentMovieRequest.getTitle());
+            releaseDate.setText(releaseDate.getText().toString()
+                    .concat(currentMovieRequest.getReleaseDate()));
+            voteAverage.setText(voteAverage.getText().toString()
+                    .concat(String.valueOf(currentMovieRequest.getVoteAverage())));
             description.setText(currentMovieRequest.getOverview());
             String url;
             if (currentMovieRequest.getBackdropPath() == null) {
