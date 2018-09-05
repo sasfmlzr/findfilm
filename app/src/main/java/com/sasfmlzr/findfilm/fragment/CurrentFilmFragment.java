@@ -5,6 +5,7 @@ import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -46,6 +47,8 @@ public class CurrentFilmFragment extends Fragment {
     ProgressBar progressLoaderImage;
     @BindView(R.id.current_film_toolbar)
     Toolbar toolbar;
+    @BindView(R.id.collapsing_toolbar)
+    CollapsingToolbarLayout collapsingToolbarLayout;
 
     public static CurrentFilmFragment newInstance(int idFilm) {
         Bundle args = new Bundle();
@@ -96,6 +99,7 @@ public class CurrentFilmFragment extends Fragment {
 
         FilmLoaded filmLoadCallback = (currentMovieRequest) -> {
             nameFilm.setText(currentMovieRequest.getTitle());
+            collapsingToolbarLayout.setTitle(currentMovieRequest.getTitle());
             description.setText(currentMovieRequest.getOverview());
             String url;
             if (currentMovieRequest.getBackdropPath() == null) {
