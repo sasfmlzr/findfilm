@@ -52,7 +52,12 @@ public class ParentFilmFragment extends Fragment implements DiscoverFilmFragment
                              @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.container_fragment, container, false);
         unbinder = ButterKnife.bind(this, view);
-        ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
+
+        AppCompatActivity activity = (AppCompatActivity) getActivity();
+        if (activity != null) {
+            activity.setSupportActionBar(toolbar);
+        }
+
         setHasOptionsMenu(true);
         return view;
     }

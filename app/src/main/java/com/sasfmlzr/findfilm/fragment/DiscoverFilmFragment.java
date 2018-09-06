@@ -10,12 +10,12 @@ import android.view.ViewGroup;
 
 import com.sasfmlzr.findfilm.R;
 import com.sasfmlzr.findfilm.adapter.DiscoverRecyclerAdapter;
-import com.sasfmlzr.findfilm.adapter.VerticalItemDecoration;
 import com.sasfmlzr.findfilm.model.RetrofitSingleton;
 import com.sasfmlzr.findfilm.request.DiscoverMovieRequest;
 import com.sasfmlzr.findfilm.request.FindFilmApi;
 
 import java.util.List;
+import java.util.Objects;
 
 import butterknife.ButterKnife;
 import retrofit2.Call;
@@ -89,7 +89,8 @@ public class DiscoverFilmFragment extends AbstractFilmFragment {
             listFilmView.setAdapter(adapter);
             isFirstList = false;
         } else {
-            ((DiscoverRecyclerAdapter) listFilmView.getAdapter()).addElements(filmList);
+            ((DiscoverRecyclerAdapter) Objects.requireNonNull(listFilmView.getAdapter()))
+                    .addElements(filmList);
         }
     }
 

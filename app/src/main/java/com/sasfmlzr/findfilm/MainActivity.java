@@ -47,9 +47,9 @@ public class MainActivity extends AppCompatActivity implements ParentFilmFragmen
     @Override
     protected void onDestroy() {
         super.onDestroy();
-      //  if (startServiceOnDestroy) {
-      //      startService(new Intent(this, NotificationService.class));
-      //  }
+        //  if (startServiceOnDestroy) {
+        //      startService(new Intent(this, NotificationService.class));
+        //  }
     }
 
     @Override
