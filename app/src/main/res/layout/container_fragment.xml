@@ -29,15 +29,15 @@
 
             <android.support.design.button.MaterialButton
                 android:id="@+id/button_now"
+                style="@style/Widget.MaterialComponents.Button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="10dp"
                 android:layout_marginTop="10dp"
                 android:layout_weight="1"
-                style="@style/Widget.MaterialComponents.Button"
-                android:background="@color/colorPrimary"
                 android:text="@string/button_now"
                 android:textAppearance="@string/button_three"
+                android:textColor="@android:color/black"
                 android:textSize="16sp" />
 
             <android.support.design.button.MaterialButton
@@ -48,9 +48,9 @@
                 android:layout_marginBottom="10dp"
                 android:layout_marginTop="10dp"
                 android:layout_weight="1"
-                android:background="@color/colorPrimary"
                 android:text="@string/button_soon"
                 android:textAppearance="@string/button_three"
+                android:textColor="@android:color/black"
                 android:textSize="16sp" />
 
         </LinearLayout>

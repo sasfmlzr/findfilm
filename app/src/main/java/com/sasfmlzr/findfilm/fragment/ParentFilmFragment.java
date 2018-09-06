@@ -180,12 +180,14 @@ public class ParentFilmFragment extends Fragment implements DiscoverFilmFragment
         leftShapePathModel.setBottomLeftCorner(new RoundedCornerTreatment(40));
         leftShapePathModel.setTopLeftCorner(new RoundedCornerTreatment(40));
         MaterialShapeDrawable leftRoundedMaterialShape = new MaterialShapeDrawable(leftShapePathModel);
+        leftRoundedMaterialShape.setTint(getResources().getColor(R.color.colorPrimary));
         buttonNow.setBackground(leftRoundedMaterialShape);
 
         ShapePathModel rightShapePathModel = new ShapePathModel();
         rightShapePathModel.setBottomRightCorner(new RoundedCornerTreatment(40));
         rightShapePathModel.setTopRightCorner(new RoundedCornerTreatment(40));
         MaterialShapeDrawable rightRoundedMaterialShape = new MaterialShapeDrawable(rightShapePathModel);
+        rightRoundedMaterialShape.setTint(getResources().getColor(R.color.colorPrimary));
         buttonSoon.setBackground(rightRoundedMaterialShape);
 
         buttonSoon.setAlpha(0.5f);
