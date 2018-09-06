@@ -7,6 +7,7 @@ import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
@@ -16,8 +17,14 @@ import com.sasfmlzr.findfilm.fragment.SettingsFragment;
 import com.sasfmlzr.findfilm.model.SystemSettings;
 import com.sasfmlzr.findfilm.service.NotificationService;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 public class MainActivity extends AppCompatActivity implements ParentFilmFragment.filmClickedListener {
     private boolean startServiceOnDestroy;
+
+    @BindView(R.id.toolbar)
+    Toolbar toolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,6 +44,9 @@ public class MainActivity extends AppCompatActivity implements ParentFilmFragmen
         if (savedInstanceState == null) {
             createParentFragment();
         }
+
+        ButterKnife.bind(this);
+        setSupportActionBar(toolbar);
         //startService(new Intent(this, NotificationService.class));
     }
 
