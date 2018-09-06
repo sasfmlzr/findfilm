@@ -42,8 +42,7 @@
         android:layout_gravity="bottom"
         android:visibility="visible"
         app:itemBackground="@color/colorPrimary"
-        app:itemIconTint="@color/colorPrimaryDark"
-        app:itemTextColor="@color/colorPrimary"
-        app:menu="@menu/navigation_bottom_menu"
-        app:labelVisibilityMode="unlabeled"/>
+        app:itemTextColor="@android:color/darker_gray"
+        app:labelVisibilityMode="unlabeled"
+        app:menu="@menu/navigation_bottom_menu" />
 </android.support.design.widget.CoordinatorLayout>
