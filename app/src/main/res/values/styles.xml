@@ -3,6 +3,7 @@
     <style name="AppTheme" parent="BaseTheme">
         <item name="colorPrimary">@color/colorPrimaryUp</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="coordinatorLayoutStyle">@style/Widget.Support.CoordinatorLayout</item>
     </style>
 
     <style name="BaseTheme" parent="Theme.AppCompat.Light.NoActionBar">
@@ -10,13 +11,11 @@
         <item name="colorPrimaryDark">@color/primary_dark</item>
         <item name="colorControlHighlight">@color/accent_translucent</item>
         <item name="colorAccent">@color/accent</item>
-
     </style>
 
     <style name="FabStyle">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
-
         <item name="borderWidth">0dp</item>
         <item name="elevation">6dp</item>
         <item name="pressedTranslationZ">12dp</item>
