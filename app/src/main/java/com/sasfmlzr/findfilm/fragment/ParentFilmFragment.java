@@ -5,6 +5,7 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
@@ -15,6 +16,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.sasfmlzr.findfilm.R;
 
@@ -32,6 +34,8 @@ public class ParentFilmFragment extends Fragment implements DiscoverFilmFragment
 
     @BindView(R.id.toolbar)
     Toolbar toolbar;
+    @BindView(R.id.bottom_navigation)
+    BottomNavigationView bottomNavigationView;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -57,6 +61,8 @@ public class ParentFilmFragment extends Fragment implements DiscoverFilmFragment
         if (activity != null) {
             activity.setSupportActionBar(toolbar);
         }
+
+        configureBottomNavigation();
 
         setHasOptionsMenu(true);
         return view;
@@ -137,5 +143,26 @@ public class ParentFilmFragment extends Fragment implements DiscoverFilmFragment
         getChildFragmentManager().beginTransaction()
                 .replace(R.id.container_child_fragment, childFragment)
                 .commit();
+    }
+
+    private void configureBottomNavigation(){
+        bottomNavigationView.setOnNavigationItemSelectedListener(
+                item -> {
+                    switch (item.getItemId()) {
+                        case R.id.action_child:
+                            Toast.makeText(getContext(),
+                                    "Child pushed", Toast.LENGTH_SHORT).show();
+                            break;
+                        case R.id.action_favorites:
+                            Toast.makeText(getContext(),
+                                    "Favorites pushed", Toast.LENGTH_SHORT).show();
+                            break;
+                        case R.id.action_invalid:
+                            Toast.makeText(getContext(),
+                                    "Invalid pushed", Toast.LENGTH_SHORT).show();
+                            break;
+                    }
+                    return true;
+                });
     }
 }
