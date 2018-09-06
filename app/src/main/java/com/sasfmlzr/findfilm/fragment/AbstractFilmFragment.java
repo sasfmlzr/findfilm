@@ -83,7 +83,7 @@ public abstract class AbstractFilmFragment extends android.support.v4.app.Fragme
         return state;
     }
 
-    /*@Override
+    @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         this.menu = menu;
 
@@ -167,5 +167,5 @@ public abstract class AbstractFilmFragment extends android.support.v4.app.Fragme
             timer = new Timer();
             timer.schedule(timerTask, 2000);
         }
-    }*/
+    }
 }

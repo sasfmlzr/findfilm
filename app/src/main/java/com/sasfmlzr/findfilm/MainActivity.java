@@ -23,9 +23,6 @@ import butterknife.ButterKnife;
 public class MainActivity extends AppCompatActivity implements ParentFilmFragment.filmClickedListener {
     private boolean startServiceOnDestroy;
 
-    @BindView(R.id.toolbar)
-    Toolbar toolbar;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -44,9 +41,6 @@ public class MainActivity extends AppCompatActivity implements ParentFilmFragmen
         if (savedInstanceState == null) {
             createParentFragment();
         }
-
-        ButterKnife.bind(this);
-        setSupportActionBar(toolbar);
         //startService(new Intent(this, NotificationService.class));
     }
 

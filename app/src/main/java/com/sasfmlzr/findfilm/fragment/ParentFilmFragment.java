@@ -7,7 +7,9 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.SearchView;
+import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -18,10 +20,18 @@ import com.sasfmlzr.findfilm.R;
 
 import java.util.Objects;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.Unbinder;
+
 public class ParentFilmFragment extends Fragment implements DiscoverFilmFragment.OnFilmSelectedListener {
     private String query;
     private filmClickedListener searchedListener;
     private Fragment.SavedState myFragmentState;
+    private Unbinder unbinder;
+
+    @BindView(R.id.toolbar)
+    Toolbar toolbar;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -41,7 +51,9 @@ public class ParentFilmFragment extends Fragment implements DiscoverFilmFragment
                              @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.container_fragment, container, false);
-        setHasOptionsMenu(false);
+        unbinder = ButterKnife.bind(this, view);
+        ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
+        setHasOptionsMenu(true);
         return view;
     }
 
@@ -101,6 +113,7 @@ public class ParentFilmFragment extends Fragment implements DiscoverFilmFragment
         assert getFragmentManager() != null;
         myFragmentState = getFragmentManager().saveFragmentInstanceState(this);
         super.onDestroyView();
+        unbinder.unbind();
     }
 
     @Override
