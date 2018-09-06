@@ -5,6 +5,9 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.shape.MaterialShapeDrawable;
+import android.support.design.shape.RoundedCornerTreatment;
+import android.support.design.shape.ShapePathModel;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -16,6 +19,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.Toast;
 
 import com.sasfmlzr.findfilm.R;
@@ -36,7 +40,10 @@ public class ParentFilmFragment extends Fragment implements DiscoverFilmFragment
     Toolbar toolbar;
     @BindView(R.id.bottom_navigation)
     BottomNavigationView bottomNavigationView;
-
+    @BindView(R.id.button_now)
+    Button buttonNow;
+    @BindView(R.id.button_soon)
+    Button buttonSoon;
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -59,10 +66,12 @@ public class ParentFilmFragment extends Fragment implements DiscoverFilmFragment
 
         AppCompatActivity activity = (AppCompatActivity) getActivity();
         if (activity != null) {
+            toolbar.setTitle("TMDB");
             activity.setSupportActionBar(toolbar);
         }
 
         configureBottomNavigation();
+        configureTopButtons();
 
         setHasOptionsMenu(true);
         return view;
@@ -164,5 +173,33 @@ public class ParentFilmFragment extends Fragment implements DiscoverFilmFragment
                     }
                     return true;
                 });
+    }
+
+    private void configureTopButtons(){
+        ShapePathModel leftShapePathModel = new ShapePathModel();
+        leftShapePathModel.setBottomLeftCorner(new RoundedCornerTreatment(40));
+        leftShapePathModel.setTopLeftCorner(new RoundedCornerTreatment(40));
+        MaterialShapeDrawable leftRoundedMaterialShape = new MaterialShapeDrawable(leftShapePathModel);
+        buttonNow.setBackground(leftRoundedMaterialShape);
+
+        ShapePathModel rightShapePathModel = new ShapePathModel();
+        rightShapePathModel.setBottomRightCorner(new RoundedCornerTreatment(40));
+        rightShapePathModel.setTopRightCorner(new RoundedCornerTreatment(40));
+        MaterialShapeDrawable rightRoundedMaterialShape = new MaterialShapeDrawable(rightShapePathModel);
+        buttonSoon.setBackground(rightRoundedMaterialShape);
+
+        buttonSoon.setAlpha(0.5f);
+
+        buttonNow.setOnClickListener(item -> {
+            Toast.makeText(getContext(), "Now clicked", Toast.LENGTH_SHORT).show();
+            buttonNow.setAlpha(1f);
+            buttonSoon.setAlpha(0.5f);
+        });
+
+        buttonSoon.setOnClickListener(item -> {
+            Toast.makeText(getContext(), "Now clicked", Toast.LENGTH_SHORT).show();
+            buttonNow.setAlpha(0.5f);
+            buttonSoon.setAlpha(1);
+        });
     }
 }

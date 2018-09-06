@@ -11,4 +11,6 @@
     <string name="button_one">Button one</string>
     <string name="button_two">Button two</string>
     <string name="button_three">Button three</string>
+    <string name="button_now">Now</string>
+    <string name="button_soon">Soon</string>
 </resources>
