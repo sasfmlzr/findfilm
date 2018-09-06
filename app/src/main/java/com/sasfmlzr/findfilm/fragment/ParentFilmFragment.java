@@ -197,7 +197,7 @@ public class ParentFilmFragment extends Fragment implements DiscoverFilmFragment
         });
 
         buttonSoon.setOnClickListener(item -> {
-            Toast.makeText(getContext(), "Now clicked", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getContext(), "Soon clicked", Toast.LENGTH_SHORT).show();
             buttonNow.setAlpha(0.5f);
             buttonSoon.setAlpha(1);
         });
