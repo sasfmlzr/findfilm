@@ -9,7 +9,7 @@
 
     <item
         android:id="@+id/settings"
-        android:icon="@drawable/baseline_settings_black_48"
+        android:icon="@drawable/outline_settings_24"
         android:title="@string/settings"
         app:showAsAction="ifRoom" />
 </menu>

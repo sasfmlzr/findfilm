@@ -4,6 +4,7 @@
         <item name="colorPrimary">@color/colorPrimaryUp</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="coordinatorLayoutStyle">@style/Widget.Support.CoordinatorLayout</item>
+        <item name="colorAccent">@android:color/black</item>
     </style>
 
     <style name="BaseTheme" parent="Theme.AppCompat.Light.NoActionBar">
