@@ -1,31 +1,30 @@
 package com.sasfmlzr.findfilm.fragment;
 
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.graphics.drawable.Drawable;
+import android.graphics.drawable.GradientDrawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.button.MaterialButton;
+import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.graphics.Palette;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.request.Request;
-import com.bumptech.glide.request.RequestOptions;
-import com.bumptech.glide.request.target.SizeReadyCallback;
-import com.bumptech.glide.request.transition.Transition;
 import com.sasfmlzr.findfilm.R;
 import com.sasfmlzr.findfilm.model.RetrofitSingleton;
 import com.sasfmlzr.findfilm.request.CurrentMovieRequest;
@@ -38,12 +37,10 @@ import java.util.Objects;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
-import jp.wasabeef.glide.transformations.BlurTransformation;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-import static com.bumptech.glide.request.RequestOptions.bitmapTransform;
 import static com.sasfmlzr.findfilm.model.SystemSettings.API_KEY;
 import static com.sasfmlzr.findfilm.model.SystemSettings.LANGUAGE;
 import static com.sasfmlzr.findfilm.model.SystemSettings.URL_IMAGE_500PX;
@@ -52,6 +49,10 @@ public class CurrentFilmFragment extends Fragment {
     private int idFilm;
     private Unbinder unbinder;
 
+    @BindView(R.id.linear_layout_parent)
+    LinearLayout linearLayout;
+    @BindView(R.id.app_bar_layout)
+    AppBarLayout appBarLayout;
     @BindView(R.id.coordinator_layout)
     CoordinatorLayout coordinatorLayout;
     @BindView(R.id.current_film_image_view)
@@ -101,9 +102,11 @@ public class CurrentFilmFragment extends Fragment {
             Objects.requireNonNull(activity.getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
         }
         voteAverage.setCompoundDrawablesWithIntrinsicBounds
-                (R.drawable.baseline_favorite_24,0,0,0);
+                (R.drawable.baseline_favorite_24, 0, 0, 0);
+        voteAverage.setCompoundDrawablePadding(10);
         buttonBuyTickets.setOnClickListener(item -> Toast.makeText
-                (getContext(),"Buy tickets pressed", Toast.LENGTH_SHORT).show());
+                (getContext(), "Buy tickets pressed", Toast.LENGTH_SHORT).show());
+
         setVisibleItems(false);
         return view;
     }
@@ -124,8 +127,9 @@ public class CurrentFilmFragment extends Fragment {
 
     public void loadFilm() {
         DownloadImage imageDownloadCallback = (film) -> {
-            posterFilm.setImageBitmap(film.getBackdropBitmap());
-
+            Bitmap imageFilm = film.getBackdropBitmap();
+            posterFilm.setImageBitmap(imageFilm);
+            linearLayout.setBackground(createShadow(imageFilm));
             progressLoaderImage.setVisibility(View.INVISIBLE);
         };
 
@@ -183,17 +187,33 @@ public class CurrentFilmFragment extends Fragment {
         unbinder.unbind();
     }
 
-    private void setVisibleItems(boolean visible){
+    private void setVisibleItems(boolean visible) {
         int visibleItem;
-        if (visible){
-            visibleItem= View.VISIBLE;
+        if (visible) {
+            visibleItem = View.VISIBLE;
         } else {
-            visibleItem=View.INVISIBLE;
+            visibleItem = View.INVISIBLE;
         }
         posterFilm.setVisibility(visibleItem);
         description.setVisibility(visibleItem);
         voteAverage.setVisibility(visibleItem);
         releaseDate.setVisibility(visibleItem);
         buttonBuyTickets.setVisibility(visibleItem);
+    }
+
+    private Drawable createShadow(Bitmap bitmap) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            Palette palette = Palette.from(bitmap).generate();
+            palette.getLightMutedSwatch();
+            int color = Objects.requireNonNull(palette.getDarkMutedSwatch()).getRgb();
+            int radiousValue = 2;
+            int[] colors = {color, Color.WHITE, Color.WHITE};
+            GradientDrawable shadow = new GradientDrawable(GradientDrawable.Orientation.TOP_BOTTOM, colors);
+            shadow.setCornerRadius(radiousValue);
+            shadow.setAlpha(80);
+            return shadow;
+        } else {
+            return null;
+        }
     }
 }
