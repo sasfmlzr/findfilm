@@ -1,24 +1,19 @@
 package com.sasfmlzr.findfilm;
 
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 
 import com.sasfmlzr.findfilm.fragment.CurrentFilmFragment;
 import com.sasfmlzr.findfilm.fragment.ParentFilmFragment;
 import com.sasfmlzr.findfilm.fragment.SettingsFragment;
 import com.sasfmlzr.findfilm.model.SystemSettings;
-import com.sasfmlzr.findfilm.service.NotificationService;
-
-import butterknife.BindView;
-import butterknife.ButterKnife;
 
 public class MainActivity extends AppCompatActivity implements ParentFilmFragment.filmClickedListener {
     private boolean startServiceOnDestroy;

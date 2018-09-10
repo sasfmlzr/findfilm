@@ -14,4 +14,6 @@
     <string name="button_now">Now</string>
     <string name="button_soon">Soon</string>
     <string name="buy_tickets">Buy tickets</string>
+    <string name="_16">16+</string>
+    <string name="_3d">3D</string>
 </resources>

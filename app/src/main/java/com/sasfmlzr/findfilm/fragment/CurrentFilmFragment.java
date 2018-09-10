@@ -101,9 +101,11 @@ public class CurrentFilmFragment extends Fragment {
             activity.setSupportActionBar(toolbar);
             Objects.requireNonNull(activity.getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
         }
-        voteAverage.setCompoundDrawablesWithIntrinsicBounds
-                (R.drawable.baseline_favorite_24, 0, 0, 0);
-        voteAverage.setCompoundDrawablePadding(10);
+        Drawable drawable = getResources().getDrawable(R.drawable.baseline_favorite_24);
+        int color = 0xFFAD563B;
+        drawable.setTint(color);
+        voteAverage.setCompoundDrawablesWithIntrinsicBounds(drawable,null,null,null);
+        voteAverage.setCompoundDrawablePadding(20);
         buttonBuyTickets.setOnClickListener(item -> Toast.makeText
                 (getContext(), "Buy tickets pressed", Toast.LENGTH_SHORT).show());
 
@@ -206,11 +208,11 @@ public class CurrentFilmFragment extends Fragment {
             Palette palette = Palette.from(bitmap).generate();
             palette.getLightMutedSwatch();
             int color = Objects.requireNonNull(palette.getDarkMutedSwatch()).getRgb();
-            int radiousValue = 2;
-            int[] colors = {color, Color.WHITE, Color.WHITE};
+            int radiusValue = 2;
+            int[] colors = {color, Color.WHITE, Color.WHITE, Color.WHITE, Color.WHITE};
             GradientDrawable shadow = new GradientDrawable(GradientDrawable.Orientation.TOP_BOTTOM, colors);
-            shadow.setCornerRadius(radiousValue);
-            shadow.setAlpha(80);
+            shadow.setCornerRadius(radiusValue);
+            shadow.setAlpha(60);
             return shadow;
         } else {
             return null;

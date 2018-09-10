@@ -68,10 +68,9 @@ public class ParentFilmFragment extends Fragment implements DiscoverFilmFragment
 
         AppCompatActivity activity = (AppCompatActivity) getActivity();
         if (activity != null) {
-            toolbar.setTitle(" TMDB");
+            toolbar.setTitle("TMDB");
             activity.setSupportActionBar(toolbar);
         }
-
         configureBottomNavigation();
         configureTopButtons();
 
@@ -105,9 +104,11 @@ public class ParentFilmFragment extends Fragment implements DiscoverFilmFragment
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         inflater.inflate(R.menu.search_menu, menu);
+
+        View viewSearch = menu.findItem(R.id.search).getActionView();
         SearchManager searchManager = (SearchManager) Objects.requireNonNull(
                 getActivity()).getSystemService(Context.SEARCH_SERVICE);
-        SearchView searchView = (SearchView) menu.findItem(R.id.search).getActionView();
+        SearchView searchView = (SearchView) viewSearch;
         assert searchManager != null;
         searchView.setSearchableInfo(searchManager.getSearchableInfo(getActivity().getComponentName()));
         searchView.setIconifiedByDefault(true);
@@ -115,6 +116,16 @@ public class ParentFilmFragment extends Fragment implements DiscoverFilmFragment
             searchView.setQuery(query, false);
             searchView.clearFocus();
         }
+
+     /*   MenuItem itemSettings = menu.findItem(R.id.settings);
+        View viewSettings = itemSettings.getActionView();
+        viewSettings.setPadding(0, 0, 50, 0);
+        viewSettings.setOnClickListener(item ->
+        System.out.println());
+        itemSettings.setActionView(viewSettings);
+
+*/
+
         super.onCreateOptionsMenu(menu, inflater);
     }
 
