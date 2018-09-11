@@ -17,8 +17,11 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.graphics.Palette;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
@@ -49,6 +52,8 @@ public class CurrentFilmFragment extends Fragment {
     private int idFilm;
     private Unbinder unbinder;
 
+    @BindView(R.id.button_play_video)
+    ImageButton buttonPlayVideo;
     @BindView(R.id.linear_layout_parent)
     LinearLayout linearLayout;
     @BindView(R.id.app_bar_layout)
@@ -97,18 +102,21 @@ public class CurrentFilmFragment extends Fragment {
         setHasOptionsMenu(true);
         unbinder = ButterKnife.bind(this, view);
         AppCompatActivity activity = (AppCompatActivity) getActivity();
+
         if (activity != null) {
             activity.setSupportActionBar(toolbar);
+            toolbar.setNavigationOnClickListener(item -> activity.onBackPressed());
             Objects.requireNonNull(activity.getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
         }
         Drawable drawable = getResources().getDrawable(R.drawable.baseline_favorite_24);
         int color = 0xFFAD563B;
         drawable.setTint(color);
-        voteAverage.setCompoundDrawablesWithIntrinsicBounds(drawable,null,null,null);
+        voteAverage.setCompoundDrawablesWithIntrinsicBounds(drawable, null, null, null);
         voteAverage.setCompoundDrawablePadding(20);
         buttonBuyTickets.setOnClickListener(item -> Toast.makeText
                 (getContext(), "Buy tickets pressed", Toast.LENGTH_SHORT).show());
-
+        buttonPlayVideo.setOnClickListener(item ->
+                Toast.makeText(getContext(), "Play video is pressed", Toast.LENGTH_SHORT).show());
         setVisibleItems(false);
         return view;
     }
@@ -117,6 +125,18 @@ public class CurrentFilmFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         loadFilm();
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        unbinder.unbind();
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.current_film_menu, menu);
+        super.onCreateOptionsMenu(menu, inflater);
     }
 
     public interface FilmLoaded {
@@ -181,12 +201,6 @@ public class CurrentFilmFragment extends Fragment {
 
                     }
                 });
-    }
-
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        unbinder.unbind();
     }
 
     private void setVisibleItems(boolean visible) {

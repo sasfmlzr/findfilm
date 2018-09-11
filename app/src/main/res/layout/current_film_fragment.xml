@@ -2,6 +2,7 @@
 
 <android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/coordinator_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
@@ -39,102 +40,113 @@
                 android:id="@+id/current_film_toolbar"
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
+                android:minHeight="?attr/actionBarSize"
                 app:layout_collapseMode="pin"
-                app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
+                app:popupTheme="@style/ThemeOverlay.AppCompat.Light">
 
+
+            </android.support.v7.widget.Toolbar>
+
+            <ImageButton xmlns:android="http://schemas.android.com/apk/res/android"
+                android:id="@+id/button_play_video"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="right"
+                android:layout_marginRight="15dp"
+                android:layout_marginTop="?attr/actionBarSize"
+                android:background="@drawable/outline_play_circle_outline_24" />
         </android.support.design.widget.CollapsingToolbarLayout>
+
 
     </android.support.design.widget.AppBarLayout>
 
-    <android.support.v4.widget.NestedScrollView
+<android.support.v4.widget.NestedScrollView
+android:layout_width="match_parent"
+android:layout_height="match_parent"
+app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+<LinearLayout
+    android:id="@+id/linear_layout_parent"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+        android:layout_height="wrap_content"
+        android:layout_weight="6"
+        android:paddingBottom="20dp"
+        android:paddingTop="20dp">
 
         <LinearLayout
-            android:id="@+id/linear_layout_parent"
+            android:id="@+id/linear_layout"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:layout_height="match_parent">
 
-            <RelativeLayout
+            <TextView
+                android:id="@+id/vote_average"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="6"
-                android:paddingBottom="20dp"
-                android:paddingTop="20dp">
-
-                <LinearLayout
-                    android:id="@+id/linear_layout"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_marginLeft="20dp"
-                    android:layout_marginRight="20dp">
-
-                    <TextView
-                        android:id="@+id/vote_average"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:paddingEnd="10dp"
-                        android:paddingLeft="10dp"
-                        android:text="@string/vote"
-                        android:textSize="16sp"
-                        android:textStyle="bold" />
-
-                    <TextView
-                        android:id="@+id/release_date"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:paddingEnd="10dp"
-                        android:paddingLeft="10dp"
-                        android:text="@string/release_date"
-                        android:textSize="16sp"
-                        android:textStyle="bold" />
-
-                </LinearLayout>
-
-                <View
-                    android:id="@+id/divider"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/linear_layout"
-                    android:layout_marginBottom="10dp"
-                    android:layout_marginTop="10dp"
-                    android:background="?android:attr/listDivider" />
-
-                <TextView
-                    android:id="@+id/description_current_film"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/divider"
-                    android:layout_marginLeft="20dp"
-                    android:layout_marginRight="20dp"
-                    android:paddingLeft="10dp"
-                    android:textAlignment="textStart"
-                    android:textSize="16sp" />
-
-
-            </RelativeLayout>
-
-            <android.support.design.button.MaterialButton
-                android:id="@+id/button_buy_tickets"
-                style="@style/Widget.MaterialComponents.Button"
-                android:layout_width="match_parent"
-                android:layout_height="60dp"
-                android:layout_gravity="bottom"
-                android:layout_marginBottom="20dp"
                 android:layout_marginLeft="20dp"
+                android:layout_weight="1"
+                android:text="@string/vote"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/release_date"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_marginRight="20dp"
-                android:layout_marginTop="20dp"
-                android:layout_weight="2"
-                android:background="@color/colorPrimaryUp"
-                android:text="@string/buy_tickets"
-                android:textAppearance="?android:textAppearanceMedium"
-                app:cornerRadius="40dp" />
+                android:layout_weight="1"
+                android:text="@string/release_date"
+                android:textSize="16sp"
+                android:textStyle="bold" />
 
         </LinearLayout>
-    </android.support.v4.widget.NestedScrollView>
 
-</android.support.design.widget.CoordinatorLayout>
+        <View
+            android:id="@+id/divider"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/linear_layout"
+            android:layout_marginBottom="10dp"
+            android:layout_marginTop="10dp"
+            android:background="?android:attr/listDivider" />
+
+        <TextView
+            android:id="@+id/description_current_film"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/divider"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:paddingLeft="10dp"
+            android:textAlignment="textStart"
+            android:textSize="16sp" />
+
+
+    </RelativeLayout>
+
+    <android.support.design.button.MaterialButton
+        android:id="@+id/button_buy_tickets"
+        style="@style/Widget.MaterialComponents.Button"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_gravity="bottom"
+        android:layout_marginBottom="20dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginTop="20dp"
+        android:layout_weight="2"
+        android:background="@color/colorPrimaryUp"
+        android:text="@string/buy_tickets"
+        android:textAppearance="?android:textAppearanceMedium"
+        app:cornerRadius="40dp" />
+
+</LinearLayout>
+</android.support.v4.widget.NestedScrollView>
+
+    </android.support.design.widget.CoordinatorLayout>
