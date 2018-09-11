@@ -86,6 +86,10 @@ public class DiscoverFilmFragment extends AbstractFilmFragment {
                     runRequestFilm(filmListListener());
             RecyclerView.Adapter adapter =
                     new DiscoverRecyclerAdapter(filmList, filmSelectedListener, callback);
+            if(listFilmView==null){
+                unbinder = ButterKnife.bind(this, view);
+                loadRecyclerFilmView();
+            }
             listFilmView.setAdapter(adapter);
             isFirstList = false;
         } else {

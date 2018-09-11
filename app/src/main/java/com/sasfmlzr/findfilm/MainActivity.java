@@ -8,7 +8,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
+import android.widget.Toast;
 
 import com.sasfmlzr.findfilm.fragment.CurrentFilmFragment;
 import com.sasfmlzr.findfilm.fragment.ParentFilmFragment;
@@ -16,6 +16,7 @@ import com.sasfmlzr.findfilm.fragment.SettingsFragment;
 import com.sasfmlzr.findfilm.model.SystemSettings;
 
 public class MainActivity extends AppCompatActivity implements ParentFilmFragment.filmClickedListener {
+    public static SharedPreferences.OnSharedPreferenceChangeListener prefListener;
     private boolean startServiceOnDestroy;
 
     @Override
@@ -24,12 +25,14 @@ public class MainActivity extends AppCompatActivity implements ParentFilmFragmen
         startServiceOnDestroy = true;
         setContentView(R.layout.activity_main);
         SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
-        SharedPreferences.OnSharedPreferenceChangeListener prefListener = (prefs, key) -> {
+        prefListener = (prefs, key) -> {
+            Toast.makeText(this, "wow", Toast.LENGTH_SHORT).show();
             if (key.equals(SettingsFragment.KEY_LANGUAGE)) {
                 startServiceOnDestroy = false;
                 recreate();
             }
         };
+
         sharedPref.registerOnSharedPreferenceChangeListener(prefListener);
 
         SystemSettings.LANGUAGE = sharedPref.getString(SettingsFragment.KEY_LANGUAGE, "en_US");
