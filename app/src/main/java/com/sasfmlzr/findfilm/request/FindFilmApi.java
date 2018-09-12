@@ -11,12 +11,6 @@ public interface FindFilmApi {
                                                 @Query("language") String language,
                                                 @Query("page") int page);
 
-    @GET("https://api.themoviedb.org/3/discover/movie")
-    Call<DiscoverMovieRequest> getDiscoverMovie(@Query("api_key") String API_KEY,
-                                                @Query("language") String language,
-                                                @Query("page") int page,
-                                                @Query("sort_by") String sortBy);
-
     @GET("https://api.themoviedb.org/3/search/movie")
     Call<DiscoverMovieRequest> getSearchMovie(@Query("api_key") String API_KEY,
                                               @Query("language") String language,
