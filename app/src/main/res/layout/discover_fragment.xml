@@ -13,6 +13,7 @@
             android:id="@+id/imageView2"
             android:layout_width="match_parent"
             android:layout_height="@dimen/search_item_height"
+            android:contentDescription="@string/fill_color_area"
             app:srcCompat="@color/colorPrimaryUp" />
 
         <android.support.v7.widget.RecyclerView

@@ -14,13 +14,10 @@
         <item name="colorAccent">@color/accent</item>
     </style>
 
-    <style name="FabStyle">
-        <item name="android:layout_width">wrap_content</item>
-        <item name="android:layout_height">wrap_content</item>
-        <item name="borderWidth">0dp</item>
-        <item name="elevation">6dp</item>
-        <item name="pressedTranslationZ">12dp</item>
-        <item name="rippleColor">@android:color/white</item>
+    <style name="CardViewforOld" parent="Theme.AppCompat.Light">
+        <item name="cardCornerRadius">10dp</item>
+        <item name="cardElevation">3dp</item>
+        <item name="cardBackgroundColor">@color/colorWhite</item>
     </style>
 
     <color name="primary">#00BCD4</color>
