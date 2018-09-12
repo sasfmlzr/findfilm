@@ -34,10 +34,12 @@ import static com.sasfmlzr.findfilm.model.SystemSettings.API_KEY;
 import static com.sasfmlzr.findfilm.model.SystemSettings.LANGUAGE;
 
 public abstract class AbstractFilmFragment extends android.support.v4.app.Fragment {
-    public DiscoverFilmFragment.OnFilmSelectedListener filmSelectedListener;
-    public boolean isFirstList = true;
+
     @BindView(R.id.discoverFilmList)
     public RecyclerView listFilmView;
+
+    public DiscoverFilmFragment.OnFilmSelectedListener filmSelectedListener;
+    public boolean isFirstList = true;
     public View view;
     public SearchView searchView;
     public Bundle savedState = null;
@@ -59,27 +61,6 @@ public abstract class AbstractFilmFragment extends android.support.v4.app.Fragme
     public void onDetach() {
         super.onDetach();
         filmSelectedListener = null;
-    }
-
-    public interface RecyclerElementEnded {
-        void isEnded();
-    }
-
-    public interface SearchCallback {
-        void isFind(List<DiscoverMovieRequest.Result> filmList);
-    }
-
-    public void loadRecyclerFilmView() {
-        listFilmView.setLayoutManager(new LinearLayoutManager(view.getContext()));
-        listFilmView.addItemDecoration(new VerticalItemDecoration(50));
-    }
-
-    public Bundle saveState() {
-        Bundle state = new Bundle();
-        if (searchView != null) {
-            state.putString("currentSearchQuery", searchView.getQuery().toString());
-        }
-        return state;
     }
 
     @Override
@@ -108,6 +89,27 @@ public abstract class AbstractFilmFragment extends android.support.v4.app.Fragme
             }
         });
         super.onCreateOptionsMenu(menu, inflater);
+    }
+
+    public interface RecyclerElementEnded {
+        void isEnded();
+    }
+
+    public interface SearchCallback {
+        void isFind(List<DiscoverMovieRequest.Result> filmList);
+    }
+
+    public void loadRecyclerFilmView() {
+        listFilmView.setLayoutManager(new LinearLayoutManager(view.getContext()));
+        listFilmView.addItemDecoration(new VerticalItemDecoration(50));
+    }
+
+    public Bundle saveState() {
+        Bundle state = new Bundle();
+        if (searchView != null) {
+            state.putString("currentSearchQuery", searchView.getQuery().toString());
+        }
+        return state;
     }
 
     public void runSearchRequestFilm(String query, SearchCallback callback) {

@@ -116,16 +116,6 @@ public class ParentFilmFragment extends Fragment implements DiscoverFilmFragment
             searchView.setQuery(query, false);
             searchView.clearFocus();
         }
-
-     /*   MenuItem itemSettings = menu.findItem(R.id.settings);
-        View viewSettings = itemSettings.getActionView();
-        viewSettings.setPadding(0, 0, 50, 0);
-        viewSettings.setOnClickListener(item ->
-        System.out.println());
-        itemSettings.setActionView(viewSettings);
-
-*/
-
         super.onCreateOptionsMenu(menu, inflater);
     }
 

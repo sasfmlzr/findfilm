@@ -18,11 +18,13 @@ import java.util.List;
 import butterknife.ButterKnife;
 
 public class SearchFilmFragment extends AbstractFilmFragment {
+    private static final String QUERY_SEARCH_ARGS = "querySearch";
+    private static final String RECYCLER_VIEW_TAG = "RecyclerView";
     private String querySearch;
 
     public static SearchFilmFragment newInstance(String querySearch) {
         Bundle args = new Bundle();
-        args.putString("querySearch", querySearch);
+        args.putString(QUERY_SEARCH_ARGS, querySearch);
         SearchFilmFragment fragment = new SearchFilmFragment();
         fragment.setArguments(args);
         return fragment;
@@ -32,15 +34,16 @@ public class SearchFilmFragment extends AbstractFilmFragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            querySearch = getArguments().getString("querySearch");
+            querySearch = getArguments().getString(QUERY_SEARCH_ARGS);
         }
     }
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        savedState = null;
         view = inflater.inflate(R.layout.discover_fragment, container, false);
+
+        savedState = null;
         isFirstList = true;
         unbinder = ButterKnife.bind(this, view);
         loadRecyclerFilmView();
@@ -63,7 +66,7 @@ public class SearchFilmFragment extends AbstractFilmFragment {
 
     private void setAdapterDiscoverFilm(List<DiscoverMovieRequest.Result> filmList) {
         DiscoverFilmFragment.RecyclerElementEnded callback = () ->
-                Log.d("ListEnded", "setAdapterDiscoverFilm()");
+                Log.d(RECYCLER_VIEW_TAG, "setAdapterDiscoverFilm()");
         RecyclerView.Adapter adapter =
                 new DiscoverRecyclerAdapter(filmList, filmSelectedListener, callback);
         listFilmView.setAdapter(adapter);
