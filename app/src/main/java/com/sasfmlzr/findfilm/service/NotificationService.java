@@ -1,10 +1,10 @@
 package com.sasfmlzr.findfilm.service;
 
+import android.app.IntentService;
 import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
-import android.app.Service;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -18,8 +18,14 @@ import com.sasfmlzr.findfilm.R;
 
 import java.util.concurrent.TimeUnit;
 
-public class NotificationService extends Service {
-    NotificationManager nm;
+public class NotificationService extends IntentService {
+    private static final String BIG_TEXT = "Looking film!";
+    private static final String LOW_TEXT = "More, more film!";
+    private NotificationManager nm;
+
+    public NotificationService() {
+        super("Notify");
+    }
 
     @Override
     public void onCreate() {
@@ -27,26 +33,20 @@ public class NotificationService extends Service {
         nm = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
     }
 
+    @Nullable
     @Override
-    public void onDestroy() {
-        super.onDestroy();
+    public IBinder onBind(Intent intent) {
+        return null;
     }
 
     @Override
-    public int onStartCommand(Intent intent, int flags, int startId) {
+    protected void onHandleIntent(@Nullable Intent intent) {
         try {
             TimeUnit.SECONDS.sleep(60);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
         sendNotification();
-        return START_NOT_STICKY;
-    }
-
-    @Nullable
-    @Override
-    public IBinder onBind(Intent intent) {
-        return null;
     }
 
     private void sendNotification() {
@@ -56,13 +56,13 @@ public class NotificationService extends Service {
         Intent ii = new Intent(getApplicationContext(), MainActivity.class);
         PendingIntent pendingIntent = PendingIntent.getActivity(getApplicationContext(), 0, ii, 0);
         NotificationCompat.BigTextStyle bigText = new NotificationCompat.BigTextStyle();
-        bigText.bigText("More, more film!");
-        bigText.setBigContentTitle("Looking film!");
+        bigText.bigText(LOW_TEXT);
+        bigText.setBigContentTitle(BIG_TEXT);
 
         notifyBuilder
                 .setContentIntent(pendingIntent)
-                .setContentTitle("Looking film!")
-                .setContentText("More, more film!")
+                .setContentTitle(BIG_TEXT)
+                .setContentText(LOW_TEXT)
                 .setStyle(bigText)
                 .setPriority(Notification.PRIORITY_MAX)
                 .setSmallIcon(R.drawable.ic_app)
@@ -72,7 +72,7 @@ public class NotificationService extends Service {
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             NotificationChannel channel = new NotificationChannel("notify_001",
-                    "Looking film!",
+                    BIG_TEXT,
                     NotificationManager.IMPORTANCE_DEFAULT);
             nm.createNotificationChannel(channel);
         }

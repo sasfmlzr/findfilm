@@ -1,5 +1,6 @@
 package com.sasfmlzr.findfilm;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -8,12 +9,12 @@ import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.Toast;
 
 import com.sasfmlzr.findfilm.fragment.CurrentFilmFragment;
 import com.sasfmlzr.findfilm.fragment.ParentFilmFragment;
 import com.sasfmlzr.findfilm.fragment.SettingsFragment;
 import com.sasfmlzr.findfilm.model.SystemSettings;
+import com.sasfmlzr.findfilm.service.NotificationService;
 
 public class MainActivity extends AppCompatActivity implements ParentFilmFragment.filmClickedListener {
     public static SharedPreferences.OnSharedPreferenceChangeListener prefListener;
@@ -26,7 +27,6 @@ public class MainActivity extends AppCompatActivity implements ParentFilmFragmen
         setContentView(R.layout.activity_main);
         SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
         prefListener = (prefs, key) -> {
-            Toast.makeText(this, "wow", Toast.LENGTH_SHORT).show();
             if (key.equals(SettingsFragment.KEY_LANGUAGE)) {
                 startServiceOnDestroy = false;
                 recreate();
@@ -45,9 +45,9 @@ public class MainActivity extends AppCompatActivity implements ParentFilmFragmen
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        //  if (startServiceOnDestroy) {
-        //      startService(new Intent(this, NotificationService.class));
-        //  }
+          if (startServiceOnDestroy) {
+              startService(new Intent(this, NotificationService.class));
+          }
     }
 
     @Override
