@@ -12,7 +12,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.sasfmlzr.findfilm.R;
-import com.sasfmlzr.findfilm.fragment.DiscoverFilmFragment;
+import com.sasfmlzr.findfilm.fragment.discoverfilm.DiscoverFilmFragment;
 import com.sasfmlzr.findfilm.request.DiscoverMovieRequest;
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Target;

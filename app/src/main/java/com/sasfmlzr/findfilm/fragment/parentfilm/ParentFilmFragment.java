@@ -1,4 +1,4 @@
-package com.sasfmlzr.findfilm.fragment;
+package com.sasfmlzr.findfilm.fragment.parentfilm;
 
 import android.app.SearchManager;
 import android.content.Context;
@@ -24,6 +24,8 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.sasfmlzr.findfilm.R;
+import com.sasfmlzr.findfilm.fragment.searchfilm.SearchFilmFragment;
+import com.sasfmlzr.findfilm.fragment.discoverfilm.DiscoverFilmFragment;
 
 import java.util.Objects;
 

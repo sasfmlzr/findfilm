@@ -1,4 +1,4 @@
-package com.sasfmlzr.findfilm.fragment;
+package com.sasfmlzr.findfilm.fragment.discoverfilm;
 
 import android.content.Context;
 import android.database.MatrixCursor;

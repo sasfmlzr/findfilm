@@ -1,4 +1,4 @@
-package com.sasfmlzr.findfilm.fragment;
+package com.sasfmlzr.findfilm.fragment.currentfilm;
 
 import android.graphics.Bitmap;
 import android.graphics.Color;

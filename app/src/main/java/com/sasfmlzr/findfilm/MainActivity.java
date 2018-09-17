@@ -10,9 +10,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 
-import com.sasfmlzr.findfilm.fragment.CurrentFilmFragment;
-import com.sasfmlzr.findfilm.fragment.ParentFilmFragment;
-import com.sasfmlzr.findfilm.fragment.SettingsFragment;
+import com.sasfmlzr.findfilm.fragment.currentfilm.CurrentFilmFragment;
+import com.sasfmlzr.findfilm.fragment.parentfilm.ParentFilmFragment;
+import com.sasfmlzr.findfilm.fragment.settings.SettingsFragment;
 import com.sasfmlzr.findfilm.model.SystemSettings;
 import com.sasfmlzr.findfilm.service.NotificationService;
 

@@ -9,7 +9,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.sasfmlzr.findfilm.R;
-import com.sasfmlzr.findfilm.fragment.DiscoverFilmFragment;
+import com.sasfmlzr.findfilm.fragment.discoverfilm.DiscoverFilmFragment;
 import com.sasfmlzr.findfilm.request.DiscoverMovieRequest;
 
 import java.util.List;

@@ -1,4 +1,4 @@
-package com.sasfmlzr.findfilm.fragment;
+package com.sasfmlzr.findfilm.fragment.searchfilm;
 
 import android.content.Context;
 import android.database.MatrixCursor;
@@ -22,6 +22,7 @@ import com.sasfmlzr.findfilm.R;
 import com.sasfmlzr.findfilm.adapter.DiscoverRecyclerAdapter;
 import com.sasfmlzr.findfilm.adapter.SearchAdapter;
 import com.sasfmlzr.findfilm.adapter.VerticalItemDecoration;
+import com.sasfmlzr.findfilm.fragment.discoverfilm.DiscoverFilmFragment;
 import com.sasfmlzr.findfilm.model.RetrofitSingleton;
 import com.sasfmlzr.findfilm.request.DiscoverMovieRequest;
 import com.sasfmlzr.findfilm.request.FindFilmApi;

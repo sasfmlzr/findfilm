@@ -1,4 +1,4 @@
-package com.sasfmlzr.findfilm.fragment;
+package com.sasfmlzr.findfilm.fragment.settings;
 
 import android.content.SharedPreferences;
 import android.os.Bundle;
