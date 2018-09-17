@@ -221,7 +221,14 @@ public class CurrentFilmFragment extends Fragment {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             Palette palette = Palette.from(bitmap).generate();
             palette.getLightMutedSwatch();
-            int color = Objects.requireNonNull(palette.getLightMutedSwatch()).getRgb();
+            int color;
+            Palette.Swatch swatch = palette.getLightMutedSwatch();
+            if (swatch!=null){
+                color = swatch.getRgb();
+            } else {
+                color = palette.getDominantSwatch().getRgb();
+            }
+
             int radiusValue = 2;
             int[] colors = {color, Color.WHITE, Color.WHITE, Color.WHITE, Color.WHITE, Color.WHITE, Color.WHITE};
             GradientDrawable shadow = new GradientDrawable(GradientDrawable.Orientation.TOP_BOTTOM, colors);
