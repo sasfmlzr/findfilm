@@ -2,29 +2,16 @@ package com.sasfmlzr.findfilm.fragment.currentfilm;
 
 import android.databinding.BaseObservable;
 import android.databinding.Bindable;
-import android.databinding.BindingAdapter;
 import android.databinding.ObservableBoolean;
 import android.databinding.ObservableField;
 import android.graphics.Bitmap;
 import android.graphics.Color;
-import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Build;
-import android.support.design.button.MaterialButton;
-import android.support.design.widget.AppBarLayout;
-import android.support.design.widget.CollapsingToolbarLayout;
-import android.support.design.widget.CoordinatorLayout;
 import android.support.v7.graphics.Palette;
-import android.support.v7.widget.Toolbar;
-import android.view.View;
-import android.widget.ImageButton;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.ProgressBar;
-import android.widget.TextView;
 
-import com.bumptech.glide.load.engine.Resource;
+import com.android.databinding.library.baseAdapters.BR;
 import com.sasfmlzr.findfilm.model.RetrofitSingleton;
 import com.sasfmlzr.findfilm.request.CurrentMovieRequest;
 import com.sasfmlzr.findfilm.request.FindFilmApi;
@@ -34,54 +21,25 @@ import com.squareup.picasso.Target;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-import com.android.databinding.library.baseAdapters.BR;
 
 import static com.sasfmlzr.findfilm.model.SystemSettings.API_KEY;
 import static com.sasfmlzr.findfilm.model.SystemSettings.LANGUAGE;
 import static com.sasfmlzr.findfilm.model.SystemSettings.URL_IMAGE_500PX;
 
 public class CurrentFilmViewModel extends BaseObservable {
-
+    private static final ObservableField<String> materialMessage = new ObservableField<>("Buy tickets pressed");
+    private static final ObservableField<String> videoMessage = new ObservableField<>("Play video pressed");
 
     public ObservableField<Bitmap> posterFilm = new ObservableField<>();
-    public ObservableField<Bitmap> shadow = new ObservableField<>();
+    public ObservableField<Drawable> shadow = new ObservableField<>();
     public ObservableField<String> description = new ObservableField<>();
-    public  ObservableField<String> voteAverage = new ObservableField<>();
-    public  ObservableField<String> releaseDate = new ObservableField<>();
-    public  ObservableField<String> title = new ObservableField<>();
+    public ObservableField<String> voteAverage = new ObservableField<>();
+    public ObservableField<String> releaseDate = new ObservableField<>();
+    public ObservableField<String> title = new ObservableField<>();
     public final ObservableBoolean dataLoading = new ObservableBoolean(false);
 
-
-    private String materialMessage = "Buy tickets pressed";
-    private String videoMessage = "Play video pressed";
-
-
     @Bindable
-    public String toastMessage = null;
-
-
-    public String getToastMessage() {
-        return toastMessage;
-    }
-
-
-    private void setToastMessage(String toastMessage) {
-        this.toastMessage = toastMessage;
-        notifyPropertyChanged(BR.toastMessage);
-    }
-
-    public void emptyButtonClicked(){
-        setToastMessage(videoMessage);
-    }
-
-    public ObservableField<String> getTitle() {
-        return title;
-    }
-
-    public void setTitle(ObservableField<String> title) {
-        this.title = title;
-    }
-
+    private String toastMessage = null;
     private int idFilm;
 
     public interface FilmLoaded {
@@ -92,19 +50,18 @@ public class CurrentFilmViewModel extends BaseObservable {
         void isDownloaded(CurrentMovieRequest currentMovieRequest);
     }
 
-
     public void start(int filmId) {
         this.idFilm = filmId;
         loadFilm();
     }
 
-    public void loadFilm() {
+    private void loadFilm() {
         DownloadImage imageDownloadCallback = (film) -> {
             Bitmap imageFilm = film.getBackdropBitmap();
 
             posterFilm.set(imageFilm);
 
-         //   shadow.set(createShadow(imageFilm));
+            shadow.set(createShadow(imageFilm));
             dataLoading.set(true);
         };
 
@@ -113,7 +70,6 @@ public class CurrentFilmViewModel extends BaseObservable {
             releaseDate.set(currentMovieRequest.getReleaseDate());
             voteAverage.set(String.valueOf(currentMovieRequest.getVoteAverage()));
             description.set(currentMovieRequest.getOverview());
-           //setVisibleItems(true);
             String url;
             if (currentMovieRequest.getBackdropPath() == null) {
                 url = URL_IMAGE_500PX + currentMovieRequest.getPosterPath();
@@ -137,7 +93,6 @@ public class CurrentFilmViewModel extends BaseObservable {
 
                 }
             };
-
             Picasso.get().load(url).into(target);
         };
 
@@ -156,14 +111,6 @@ public class CurrentFilmViewModel extends BaseObservable {
                 });
     }
 
-    public void buttonBuyTicketsPressed() {
-
-    }
-
-    public void buttonPlayVideoPressed() {
-
-    }
-
     private Drawable createShadow(Bitmap bitmap) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             Palette palette = Palette.from(bitmap).generate();
@@ -173,6 +120,7 @@ public class CurrentFilmViewModel extends BaseObservable {
             if (swatch != null) {
                 color = swatch.getRgb();
             } else {
+                assert palette.getDominantSwatch() != null;
                 color = palette.getDominantSwatch().getRgb();
             }
 
@@ -185,5 +133,25 @@ public class CurrentFilmViewModel extends BaseObservable {
         } else {
             return null;
         }
+    }
+
+    /**
+     * Toast message methods
+     */
+    public String getToastMessage() {
+        return toastMessage;
+    }
+
+    private void setToastMessage(ObservableField<String> toastMessage) {
+        this.toastMessage = toastMessage.get();
+        notifyPropertyChanged(BR.toastMessage);
+    }
+
+    public void materialButtonClicked() {
+        setToastMessage(materialMessage);
+    }
+
+    public void videoButtonClicked() {
+        setToastMessage(videoMessage);
     }
 }
