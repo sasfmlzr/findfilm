@@ -1,5 +1,6 @@
 package com.sasfmlzr.findfilm.adapter;
 
+import android.databinding.DataBindingUtil;
 import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
 import android.support.annotation.NonNull;
@@ -12,6 +13,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.sasfmlzr.findfilm.R;
+import com.sasfmlzr.findfilm.databinding.DiscoverFilmItemBinding;
 import com.sasfmlzr.findfilm.fragment.discoverfilm.DiscoverFilmFragment;
 import com.sasfmlzr.findfilm.request.DiscoverMovieRequest;
 import com.squareup.picasso.Picasso;
@@ -40,16 +42,18 @@ public class DiscoverRecyclerAdapter extends RecyclerView.Adapter<DiscoverRecycl
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.discover_film_item, parent, false);
-        return new ViewHolder(view);
+        DiscoverFilmItemBinding binding = DataBindingUtil.inflate(LayoutInflater.from(parent.getContext()),
+                R.layout.discover_film_item, parent, false);
+        return new ViewHolder(binding);
     }
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         DiscoverMovieRequest.Result currentFilm = filmList.get(position);
-        holder.nameFilm.setText(currentFilm.getTitle());
-        holder.scoreFilm.setText(String.valueOf(currentFilm.getVoteAverage()));
+        DiscoverFilmItemBinding binding = holder.binding;
+
+        binding.nameFilm.setText(currentFilm.getTitle());
+        binding.scoreFilm.setText(String.valueOf(currentFilm.getVoteAverage()));
         String url;
         if (currentFilm.getBackdropPath() == null) {
             url = URL_IMAGE_500PX + currentFilm.getPosterPath();
@@ -74,25 +78,19 @@ public class DiscoverRecyclerAdapter extends RecyclerView.Adapter<DiscoverRecycl
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+        private DiscoverFilmItemBinding binding;
+
         final Target target;
 
-        @BindView(R.id.nameFilm)
-        TextView nameFilm;
-        @BindView(R.id.scoreFilm)
-        TextView scoreFilm;
-        @BindView(R.id.previewFilmImageView)
-        ImageView imageFilmView;
-        @BindView(R.id.progressBarLoaderImage)
-        ProgressBar progressLoaderImage;
+        ViewHolder(DiscoverFilmItemBinding binding) {
+            super(binding.itemCardView);
 
-        ViewHolder(View itemView) {
-            super(itemView);
-            ButterKnife.bind(this, itemView);
+            this.binding = binding;
             target = new Target() {
                 @Override
                 public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
-                    imageFilmView.setImageBitmap(bitmap);
-                    progressLoaderImage.setVisibility(View.INVISIBLE);
+                    binding.previewFilmImageView.setImageBitmap(bitmap);
+                    binding.progressBarLoaderImage.setVisibility(View.INVISIBLE);
                 }
 
                 @Override
