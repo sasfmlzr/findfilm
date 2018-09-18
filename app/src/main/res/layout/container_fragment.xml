@@ -3,6 +3,11 @@
 
     <data>
 
+        <variable
+            name="viewmodel"
+            type="com.sasfmlzr.findfilm.fragment.parentfilm.ParentFilmViewModel" />
+
+        <import type="android.view.View" />
     </data>
 
     <android.support.design.widget.CoordinatorLayout
@@ -42,6 +47,7 @@
                     android:layout_marginBottom="25dp"
                     android:layout_marginTop="10dp"
                     android:layout_weight="1"
+                    android:src="@{viewmodel.configureLeftButton(255)}"
                     android:text="@string/button_now"
                     android:textAppearance="@string/button_three"
                     android:textColor="@android:color/black"
@@ -55,9 +61,10 @@
                     android:layout_marginBottom="25dp"
                     android:layout_marginTop="10dp"
                     android:layout_weight="1"
+                    android:src="@{viewmodel.configureRightButton(128)}"
                     android:text="@string/button_soon"
                     android:textAppearance="@string/button_three"
-                    android:textColor="@android:color/black"
+                    android:textColor="@android:color/white"
                     android:textSize="16sp" />
 
             </LinearLayout>

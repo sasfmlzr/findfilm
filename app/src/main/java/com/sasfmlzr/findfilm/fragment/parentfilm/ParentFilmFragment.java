@@ -2,14 +2,12 @@ package com.sasfmlzr.findfilm.fragment.parentfilm;
 
 import android.app.SearchManager;
 import android.content.Context;
+import android.databinding.BindingAdapter;
 import android.os.Bundle;
-import android.support.annotation.IntRange;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.button.MaterialButton;
 import android.support.design.shape.MaterialShapeDrawable;
-import android.support.design.shape.RoundedCornerTreatment;
-import android.support.design.shape.ShapePathModel;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -24,29 +22,24 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.sasfmlzr.findfilm.R;
-import com.sasfmlzr.findfilm.fragment.searchfilm.SearchFilmFragment;
+import com.sasfmlzr.findfilm.databinding.ContainerFragmentBinding;
 import com.sasfmlzr.findfilm.fragment.discoverfilm.DiscoverFilmFragment;
+import com.sasfmlzr.findfilm.fragment.searchfilm.SearchFilmFragment;
 
 import java.util.Objects;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.Unbinder;
-
 public class ParentFilmFragment extends Fragment implements DiscoverFilmFragment.OnFilmSelectedListener {
+    private ParentFilmViewModel viewModel;
+    private ContainerFragmentBinding viewDataBinding;
+
     private String query;
     private filmClickedListener searchedListener;
     private Fragment.SavedState myFragmentState;
-    private Unbinder unbinder;
 
-    @BindView(R.id.toolbar)
-    Toolbar toolbar;
-    @BindView(R.id.bottom_navigation)
-    BottomNavigationView bottomNavigationView;
-    @BindView(R.id.button_now)
-    MaterialButton buttonNow;
-    @BindView(R.id.button_soon)
-    MaterialButton buttonSoon;
+    @BindingAdapter("android:src")
+    public static void setButtonDrawable(MaterialButton materialButton, MaterialShapeDrawable drawable){
+        materialButton.setBackground(drawable);
+    }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -66,18 +59,16 @@ public class ParentFilmFragment extends Fragment implements DiscoverFilmFragment
                              @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.container_fragment, container, false);
-        unbinder = ButterKnife.bind(this, view);
+        setHasOptionsMenu(true);
 
-        AppCompatActivity activity = (AppCompatActivity) getActivity();
-        if (activity != null) {
-            toolbar.setTitle("TMDB");
-            activity.setSupportActionBar(toolbar);
-        }
+        viewModel = new ParentFilmViewModel();
+        viewDataBinding = ContainerFragmentBinding.bind(view);
+        viewDataBinding.setViewmodel(viewModel);
+
+        setupToolbar();
         configureBottomNavigation();
         configureTopButtons();
-
-        setHasOptionsMenu(true);
-        return view;
+        return viewDataBinding.getRoot();
     }
 
     @Override
@@ -138,7 +129,6 @@ public class ParentFilmFragment extends Fragment implements DiscoverFilmFragment
         assert getFragmentManager() != null;
         myFragmentState = getFragmentManager().saveFragmentInstanceState(this);
         super.onDestroyView();
-        unbinder.unbind();
     }
 
     @Override
@@ -152,6 +142,15 @@ public class ParentFilmFragment extends Fragment implements DiscoverFilmFragment
         void isClicked(int idFilm);
     }
 
+    private void setupToolbar() {
+        AppCompatActivity activity = (AppCompatActivity) getActivity();
+        Toolbar toolbar = viewDataBinding.getRoot().findViewById(R.id.toolbar);
+        if (activity != null) {
+            toolbar.setTitle("TMDB");
+            activity.setSupportActionBar(toolbar);
+        }
+    }
+
     public void replaceChildFragment() {
         DiscoverFilmFragment childFragment = new DiscoverFilmFragment();
         getChildFragmentManager().beginTransaction()
@@ -159,7 +158,29 @@ public class ParentFilmFragment extends Fragment implements DiscoverFilmFragment
                 .commit();
     }
 
+    private void configureTopButtons() {
+        MaterialButton buttonNow = viewDataBinding.getRoot().findViewById(R.id.button_now);
+        MaterialButton buttonSoon = viewDataBinding.getRoot().findViewById(R.id.button_soon);
+        buttonNow.setOnClickListener(item -> {
+            Toast.makeText(getContext(), "Now clicked", Toast.LENGTH_SHORT).show();
+            buttonNow.setBackground(viewModel.configureLeftButton(255));
+            buttonSoon.setBackground(viewModel.configureRightButton(128));
+            buttonNow.setTextColor(getResources().getColor(R.color.colorBlack));
+            buttonSoon.setTextColor(getResources().getColor(R.color.colorWhite));
+        });
+
+        buttonSoon.setOnClickListener(item -> {
+            Toast.makeText(getContext(), "Soon clicked", Toast.LENGTH_SHORT).show();
+            buttonNow.setBackground(viewModel.configureLeftButton(128));
+            buttonSoon.setBackground(viewModel.configureRightButton(255));
+            buttonSoon.setTextColor(getResources().getColor(R.color.colorBlack));
+            buttonNow.setTextColor(getResources().getColor(R.color.colorWhite));
+        });
+    }
+
     private void configureBottomNavigation() {
+        BottomNavigationView bottomNavigationView =
+                viewDataBinding.getRoot().findViewById(R.id.bottom_navigation);
         bottomNavigationView.setOnNavigationItemSelectedListener(
                 item -> {
                     switch (item.getItemId()) {
@@ -178,48 +199,5 @@ public class ParentFilmFragment extends Fragment implements DiscoverFilmFragment
                     }
                     return true;
                 });
-    }
-
-    private void configureTopButtons() {
-        buttonNow.setBackground(configureLeftButton(255));
-
-        buttonSoon.setBackground(configureRightButton(128));
-        buttonSoon.setTextColor(getResources().getColor(R.color.colorWhite));
-
-        buttonNow.setOnClickListener(item -> {
-            Toast.makeText(getContext(), "Now clicked", Toast.LENGTH_SHORT).show();
-            buttonNow.setBackground(configureLeftButton(255));
-            buttonSoon.setBackground(configureRightButton(128));
-            buttonNow.setTextColor(getResources().getColor(R.color.colorBlack));
-            buttonSoon.setTextColor(getResources().getColor(R.color.colorWhite));
-        });
-
-        buttonSoon.setOnClickListener(item -> {
-            Toast.makeText(getContext(), "Soon clicked", Toast.LENGTH_SHORT).show();
-            buttonNow.setBackground(configureLeftButton(128));
-            buttonSoon.setBackground(configureRightButton(255));
-            buttonSoon.setTextColor(getResources().getColor(R.color.colorBlack));
-            buttonNow.setTextColor(getResources().getColor(R.color.colorWhite));
-        });
-    }
-
-    private MaterialShapeDrawable configureLeftButton(@IntRange(from = 0L, to = 255L) int opacity) {
-        ShapePathModel leftShapePathModel = new ShapePathModel();
-        leftShapePathModel.setBottomLeftCorner(new RoundedCornerTreatment(40));
-        leftShapePathModel.setTopLeftCorner(new RoundedCornerTreatment(40));
-        MaterialShapeDrawable leftRoundedMaterialShape = new MaterialShapeDrawable(leftShapePathModel);
-        leftRoundedMaterialShape.setTint(getResources().getColor(R.color.colorPrimary));
-        leftRoundedMaterialShape.setAlpha(opacity);
-        return leftRoundedMaterialShape;
-    }
-
-    private MaterialShapeDrawable configureRightButton(@IntRange(from = 0L, to = 255L) int opacity) {
-        ShapePathModel rightShapePathModel = new ShapePathModel();
-        rightShapePathModel.setBottomRightCorner(new RoundedCornerTreatment(40));
-        rightShapePathModel.setTopRightCorner(new RoundedCornerTreatment(40));
-        MaterialShapeDrawable rightRoundedMaterialShape = new MaterialShapeDrawable(rightShapePathModel);
-        rightRoundedMaterialShape.setTint(getResources().getColor(R.color.colorPrimary));
-        rightRoundedMaterialShape.setAlpha(opacity);
-        return rightRoundedMaterialShape;
     }
 }
