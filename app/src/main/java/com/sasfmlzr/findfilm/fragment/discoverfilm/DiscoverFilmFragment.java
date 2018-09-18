@@ -21,6 +21,7 @@ import com.sasfmlzr.findfilm.R;
 import com.sasfmlzr.findfilm.adapter.DiscoverRecyclerAdapter;
 import com.sasfmlzr.findfilm.adapter.SearchAdapter;
 import com.sasfmlzr.findfilm.adapter.VerticalItemDecoration;
+import com.sasfmlzr.findfilm.databinding.DiscoverFragmentBinding;
 import com.sasfmlzr.findfilm.model.RetrofitSingleton;
 import com.sasfmlzr.findfilm.request.DiscoverMovieRequest;
 import com.sasfmlzr.findfilm.request.FindFilmApi;
@@ -30,9 +31,6 @@ import java.util.Objects;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.Unbinder;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -43,17 +41,48 @@ import static com.sasfmlzr.findfilm.model.SystemSettings.LANGUAGE;
 public class DiscoverFilmFragment extends Fragment {
     private int countLoadedPages = 1;
 
-    @BindView(R.id.discoverFilmList)
-    public RecyclerView listFilmView;
+    private DiscoverFilmViewModel viewModel;
+    private DiscoverFragmentBinding viewDataBinding;
 
     public DiscoverFilmFragment.OnFilmSelectedListener filmSelectedListener;
     public boolean isFirstList = true;
     public View view;
     public SearchView searchView;
     public Bundle savedState = null;
-    public Unbinder unbinder;
     private Timer timer;
     private Menu menu;
+
+    @Nullable
+    @Override
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
+        view = inflater.inflate(R.layout.discover_fragment, container, false);
+        setHasOptionsMenu(true);
+
+        savedState = null;
+        countLoadedPages = 1;
+        isFirstList = true;
+
+        viewModel = new DiscoverFilmViewModel();
+        viewDataBinding = DiscoverFragmentBinding.bind(view);
+        viewDataBinding.setViewmodel(viewModel);
+        loadRecyclerFilmView();
+        runRequestFilm(filmListListener());
+        return viewDataBinding.getRoot();
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        savedState = saveState();
+    }
+
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+        if (searchView != null) {
+            outState.putString("currentSearchQuery", searchView.getQuery().toString());
+        }
+    }
 
     @Override
     public void onAttach(Context context) {
@@ -99,41 +128,6 @@ public class DiscoverFilmFragment extends Fragment {
         super.onCreateOptionsMenu(menu, inflater);
     }
 
-    @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-    }
-
-    @Nullable
-    @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
-        savedState = null;
-        view = inflater.inflate(R.layout.discover_fragment, container, false);
-        setHasOptionsMenu(true);
-        countLoadedPages = 1;
-        isFirstList = true;
-        unbinder = ButterKnife.bind(this, view);
-        loadRecyclerFilmView();
-
-        runRequestFilm(filmListListener());
-        return view;
-    }
-
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        savedState = saveState();
-        unbinder.unbind();
-    }
-
-    @Override
-    public void onSaveInstanceState(@NonNull Bundle outState) {
-        super.onSaveInstanceState(outState);
-        if (searchView != null) {
-            outState.putString("currentSearchQuery", searchView.getQuery().toString());
-        }
-    }
-
     public interface RecyclerElementEnded {
         void isEnded();
     }
@@ -153,8 +147,8 @@ public class DiscoverFilmFragment extends Fragment {
     }
 
     public void loadRecyclerFilmView() {
-        listFilmView.setLayoutManager(new LinearLayoutManager(view.getContext()));
-        listFilmView.addItemDecoration(new VerticalItemDecoration(50));
+        viewDataBinding.discoverFilmList.setLayoutManager(new LinearLayoutManager(view.getContext()));
+        viewDataBinding.discoverFilmList.addItemDecoration(new VerticalItemDecoration(50));
     }
 
     public Bundle saveState() {
@@ -236,14 +230,13 @@ public class DiscoverFilmFragment extends Fragment {
                     runRequestFilm(filmListListener());
             RecyclerView.Adapter adapter =
                     new DiscoverRecyclerAdapter(filmList, filmSelectedListener, callback);
-            if (listFilmView == null) {
-                unbinder = ButterKnife.bind(this, view);
-                loadRecyclerFilmView();
-            }
-            listFilmView.setAdapter(adapter);
+            loadRecyclerFilmView();
+
+            viewDataBinding.discoverFilmList.setAdapter(adapter);
             isFirstList = false;
         } else {
-            ((DiscoverRecyclerAdapter) Objects.requireNonNull(listFilmView.getAdapter()))
+            ((DiscoverRecyclerAdapter) Objects.requireNonNull(
+                    viewDataBinding.discoverFilmList.getAdapter()))
                     .addElements(filmList);
         }
     }
@@ -253,7 +246,8 @@ public class DiscoverFilmFragment extends Fragment {
         findFilmApi.getDiscoverMovie(API_KEY, LANGUAGE, countLoadedPages)
                 .enqueue(new Callback<DiscoverMovieRequest>() {
                     @Override
-                    public void onResponse(Call<DiscoverMovieRequest> call, Response<DiscoverMovieRequest> response) {
+                    public void onResponse(Call<DiscoverMovieRequest> call,
+                                           Response<DiscoverMovieRequest> response) {
                         callback.isCompleted(response.body().getResults());
                     }
 
