@@ -24,7 +24,6 @@ import android.widget.Toast;
 import com.sasfmlzr.findfilm.R;
 import com.sasfmlzr.findfilm.databinding.ContainerFragmentBinding;
 import com.sasfmlzr.findfilm.fragment.discoverfilm.DiscoverFilmFragment;
-import com.sasfmlzr.findfilm.fragment.searchfilm.SearchFilmFragment;
 
 import java.util.Objects;
 
@@ -37,7 +36,7 @@ public class ParentFilmFragment extends Fragment implements DiscoverFilmFragment
     private Fragment.SavedState myFragmentState;
 
     @BindingAdapter("android:src")
-    public static void setButtonDrawable(MaterialButton materialButton, MaterialShapeDrawable drawable){
+    public static void setButtonDrawable(MaterialButton materialButton, MaterialShapeDrawable drawable) {
         materialButton.setBackground(drawable);
     }
 
@@ -89,7 +88,7 @@ public class ParentFilmFragment extends Fragment implements DiscoverFilmFragment
         this.query = query;
         FragmentManager fragmentManager = getChildFragmentManager();
         fragmentManager.beginTransaction()
-                .replace(R.id.container_child_fragment, SearchFilmFragment.newInstance(query))
+                .replace(R.id.container_child_fragment, DiscoverFilmFragment.newInstance(query))
                 .addToBackStack(null)
                 .commit();
     }

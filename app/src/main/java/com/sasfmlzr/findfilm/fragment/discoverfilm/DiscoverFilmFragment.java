@@ -39,6 +39,8 @@ import static com.sasfmlzr.findfilm.model.SystemSettings.API_KEY;
 import static com.sasfmlzr.findfilm.model.SystemSettings.LANGUAGE;
 
 public class DiscoverFilmFragment extends Fragment {
+    private static final String QUERY_SEARCH_ARGS = "querySearch";
+    private String querySearch;
     private int countLoadedPages = 1;
 
     private DiscoverFilmViewModel viewModel;
@@ -51,6 +53,22 @@ public class DiscoverFilmFragment extends Fragment {
     public Bundle savedState = null;
     private Timer timer;
     private Menu menu;
+
+    public static DiscoverFilmFragment newInstance(String querySearch) {
+        Bundle args = new Bundle();
+        args.putString(QUERY_SEARCH_ARGS, querySearch);
+        DiscoverFilmFragment fragment = new DiscoverFilmFragment();
+        fragment.setArguments(args);
+        return fragment;
+    }
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        if (getArguments() != null) {
+            querySearch = getArguments().getString(QUERY_SEARCH_ARGS);
+        }
+    }
 
     @Nullable
     @Override
@@ -66,7 +84,13 @@ public class DiscoverFilmFragment extends Fragment {
         viewDataBinding = DiscoverFragmentBinding.bind(view);
         viewDataBinding.setViewmodel(viewModel);
         loadRecyclerFilmView();
-        runRequestFilm(filmListListener());
+        if (querySearch == null) {
+            runRequestFilm(filmListListener());
+        } else {
+            SearchCallback callback = this::setAdapterDiscoverFilm;
+            runSearchRequestFilm(querySearch, callback);
+        }
+
         return viewDataBinding.getRoot();
     }
 
@@ -226,8 +250,11 @@ public class DiscoverFilmFragment extends Fragment {
 
     private void setAdapterDiscoverFilm(List<DiscoverMovieRequest.Result> filmList) {
         if (isFirstList) {
-            DiscoverFilmFragment.RecyclerElementEnded callback = () ->
+            DiscoverFilmFragment.RecyclerElementEnded callback = () -> {
+                if (querySearch == null) {
                     runRequestFilm(filmListListener());
+                }
+            };
             RecyclerView.Adapter adapter =
                     new DiscoverRecyclerAdapter(filmList, filmSelectedListener, callback);
             loadRecyclerFilmView();
