@@ -1,7 +1,6 @@
 package com.sasfmlzr.findfilm.fragment.currentfilm;
 
 import android.databinding.BindingAdapter;
-import android.databinding.DataBindingUtil;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -19,14 +18,11 @@ import android.widget.Toast;
 
 import com.sasfmlzr.findfilm.R;
 import com.sasfmlzr.findfilm.databinding.CurrentFilmFragmentBinding;
-import com.squareup.picasso.Picasso;
 
-import java.io.File;
 import java.util.Objects;
 
 public class CurrentFilmFragment extends Fragment{
     public static final String ARGUMENT_FILM_ID = "idFilm";
-    private int idFilm;
     private CurrentFilmViewModel viewModel;
     private CurrentFilmFragmentBinding viewDataBinding;
 
@@ -66,22 +62,15 @@ public class CurrentFilmFragment extends Fragment{
         }
     }
 
-
-
-
     private void setupToolbar(){
         AppCompatActivity activity = (AppCompatActivity) getActivity();
-        Toolbar toolbar = (Toolbar) viewDataBinding.getRoot().findViewById(R.id.current_film_toolbar);
+        Toolbar toolbar = viewDataBinding.getRoot().findViewById(R.id.current_film_toolbar);
         setHasOptionsMenu(true);
         if (activity != null) {
             activity.setSupportActionBar(toolbar);
             toolbar.setNavigationOnClickListener(item -> activity.onBackPressed());
             Objects.requireNonNull(activity.getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
         }
-    }
-
-    public void setViewModel(CurrentFilmViewModel taskViewModel) {
-        viewModel = taskViewModel;
     }
 
     @BindingAdapter("android:src")
