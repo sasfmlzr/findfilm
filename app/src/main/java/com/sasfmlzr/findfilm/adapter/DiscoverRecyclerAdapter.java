@@ -30,6 +30,7 @@ public class DiscoverRecyclerAdapter extends RecyclerView.Adapter<DiscoverRecycl
     private List<DiscoverMovieRequest.Result> filmList;
     private DiscoverFilmFragment.OnFilmSelectedListener filmSelectedListener;
     private DiscoverFilmFragment.RecyclerElementEnded elementEndedCallback;
+    private ItemViewModel viewModel;
 
     public DiscoverRecyclerAdapter(List<DiscoverMovieRequest.Result> filmList,
                                    DiscoverFilmFragment.OnFilmSelectedListener filmSelectedListener,
@@ -50,17 +51,15 @@ public class DiscoverRecyclerAdapter extends RecyclerView.Adapter<DiscoverRecycl
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         DiscoverMovieRequest.Result currentFilm = filmList.get(position);
+
+        viewModel = new ItemViewModel();
+        holder.binding.setViewmodel(viewModel);
         DiscoverFilmItemBinding binding = holder.binding;
 
         binding.nameFilm.setText(currentFilm.getTitle());
         binding.scoreFilm.setText(String.valueOf(currentFilm.getVoteAverage()));
-        String url;
-        if (currentFilm.getBackdropPath() == null) {
-            url = URL_IMAGE_500PX + currentFilm.getPosterPath();
-        } else {
-            url = URL_IMAGE_500PX + currentFilm.getBackdropPath();
-        }
-        Picasso.get().load(url).into(holder.target);
+
+        viewModel.loadBitmap(currentFilm, holder.target);
 
         if (position == filmList.size() - 1) {
             elementEndedCallback.isEnded();
