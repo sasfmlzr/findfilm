@@ -1,7 +1,9 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:wow="http://schemas.android.com/tools">
 
     <data>
+
         <variable
             name="viewmodel"
             type="com.sasfmlzr.findfilm.fragment.discoverfilm.DiscoverFilmViewModel" />
@@ -28,7 +30,8 @@
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/discoverFilmList"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="match_parent"
+                app:adapter="@{viewmodel.recyclerViewAdapter}">
 
             </android.support.v7.widget.RecyclerView>
 

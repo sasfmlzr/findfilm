@@ -2,6 +2,7 @@ package com.sasfmlzr.findfilm.fragment.discoverfilm;
 
 import android.content.Context;
 import android.database.MatrixCursor;
+import android.databinding.BindingAdapter;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;
@@ -16,38 +17,28 @@ import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.TextView;
 
 import com.sasfmlzr.findfilm.R;
-import com.sasfmlzr.findfilm.adapter.DiscoverRecyclerAdapter;
 import com.sasfmlzr.findfilm.adapter.SearchAdapter;
 import com.sasfmlzr.findfilm.adapter.VerticalItemDecoration;
 import com.sasfmlzr.findfilm.databinding.DiscoverFragmentBinding;
-import com.sasfmlzr.findfilm.model.RetrofitSingleton;
 import com.sasfmlzr.findfilm.request.DiscoverMovieRequest;
-import com.sasfmlzr.findfilm.request.FindFilmApi;
 
 import java.util.List;
 import java.util.Objects;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
-
-import static com.sasfmlzr.findfilm.model.SystemSettings.API_KEY;
-import static com.sasfmlzr.findfilm.model.SystemSettings.LANGUAGE;
-
 public class DiscoverFilmFragment extends Fragment {
     private static final String QUERY_SEARCH_ARGS = "querySearch";
     private String querySearch;
-    private int countLoadedPages = 1;
 
     private DiscoverFilmViewModel viewModel;
     private DiscoverFragmentBinding viewDataBinding;
-
     public DiscoverFilmFragment.OnFilmSelectedListener filmSelectedListener;
-    public boolean isFirstList = true;
+
+
     public View view;
     public SearchView searchView;
     public Bundle savedState = null;
@@ -77,19 +68,13 @@ public class DiscoverFilmFragment extends Fragment {
         setHasOptionsMenu(true);
 
         savedState = null;
-        countLoadedPages = 1;
-        isFirstList = true;
 
-        viewModel = new DiscoverFilmViewModel();
+        viewModel = new DiscoverFilmViewModel(filmSelectedListener);
         viewDataBinding = DiscoverFragmentBinding.bind(view);
         viewDataBinding.setViewmodel(viewModel);
         loadRecyclerFilmView();
-        if (querySearch == null) {
-            runRequestFilm(filmListListener());
-        } else {
-            SearchCallback callback = this::setAdapterDiscoverFilm;
-            runSearchRequestFilm(querySearch, callback);
-        }
+
+        viewModel.runRequest(querySearch);
 
         return viewDataBinding.getRoot();
     }
@@ -183,22 +168,6 @@ public class DiscoverFilmFragment extends Fragment {
         return state;
     }
 
-    public void runSearchRequestFilm(String query, SearchCallback callback) {
-        FindFilmApi findFilmApi = RetrofitSingleton.getFindFilmApi();
-        findFilmApi.getSearchMovie(API_KEY, LANGUAGE, query, 1)
-                .enqueue(new Callback<DiscoverMovieRequest>() {
-                    @Override
-                    public void onResponse(Call<DiscoverMovieRequest> call, Response<DiscoverMovieRequest> response) {
-                        DiscoverMovieRequest discoverMovieRequest = response.body();
-                        callback.isFind(discoverMovieRequest.getResults());
-                    }
-
-                    @Override
-                    public void onFailure(Call<DiscoverMovieRequest> call, Throwable t) {
-                    }
-                });
-    }
-
     private void loadHistory(String query) {
         String[] columns = new String[]{"_id", "text"};
         Object[] temp = new Object[]{0, "default"};
@@ -228,7 +197,7 @@ public class DiscoverFilmFragment extends Fragment {
                 @Override
                 public void run() {
                     handler.post(() -> {
-                        runSearchRequestFilm(query, callback);
+                        viewModel.runSearchRequestFilm(query, callback);
                         timer = null;
                     });
                 }
@@ -239,49 +208,5 @@ public class DiscoverFilmFragment extends Fragment {
             timer = new Timer();
             timer.schedule(timerTask, 2000);
         }
-    }
-
-    private FilmListComplete filmListListener() {
-        return (filmList) -> {
-            setAdapterDiscoverFilm(filmList);
-            countLoadedPages++;
-        };
-    }
-
-    private void setAdapterDiscoverFilm(List<DiscoverMovieRequest.Result> filmList) {
-        if (isFirstList) {
-            DiscoverFilmFragment.RecyclerElementEnded callback = () -> {
-                if (querySearch == null) {
-                    runRequestFilm(filmListListener());
-                }
-            };
-            RecyclerView.Adapter adapter =
-                    new DiscoverRecyclerAdapter(filmList, filmSelectedListener, callback);
-            loadRecyclerFilmView();
-
-            viewDataBinding.discoverFilmList.setAdapter(adapter);
-            isFirstList = false;
-        } else {
-            ((DiscoverRecyclerAdapter) Objects.requireNonNull(
-                    viewDataBinding.discoverFilmList.getAdapter()))
-                    .addElements(filmList);
-        }
-    }
-
-    private void runRequestFilm(FilmListComplete callback) {
-        FindFilmApi findFilmApi = RetrofitSingleton.getFindFilmApi();
-        findFilmApi.getDiscoverMovie(API_KEY, LANGUAGE, countLoadedPages)
-                .enqueue(new Callback<DiscoverMovieRequest>() {
-                    @Override
-                    public void onResponse(Call<DiscoverMovieRequest> call,
-                                           Response<DiscoverMovieRequest> response) {
-                        callback.isCompleted(response.body().getResults());
-                    }
-
-                    @Override
-                    public void onFailure(Call<DiscoverMovieRequest> call, Throwable t) {
-
-                    }
-                });
     }
 }
