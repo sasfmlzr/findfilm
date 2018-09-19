@@ -2,11 +2,15 @@ package com.sasfmlzr.findfilm.fragment.currentfilm;
 
 import android.databinding.BindingAdapter;
 import android.graphics.Bitmap;
+import android.graphics.Color;
+import android.graphics.drawable.GradientDrawable;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.graphics.Palette;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -14,6 +18,7 @@ import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -22,7 +27,7 @@ import com.sasfmlzr.findfilm.databinding.CurrentFilmFragmentBinding;
 
 import java.util.Objects;
 
-public class CurrentFilmFragment extends Fragment{
+public class CurrentFilmFragment extends Fragment {
     public static final String ARGUMENT_FILM_ID = "idFilm";
     private CurrentFilmViewModel viewModel;
     private CurrentFilmFragmentBinding viewDataBinding;
@@ -63,7 +68,7 @@ public class CurrentFilmFragment extends Fragment{
         }
     }
 
-    private void setupToolbar(){
+    private void setupToolbar() {
         AppCompatActivity activity = (AppCompatActivity) getActivity();
         Toolbar toolbar = viewDataBinding.getRoot().findViewById(R.id.current_film_toolbar);
         setHasOptionsMenu(true);
@@ -75,13 +80,39 @@ public class CurrentFilmFragment extends Fragment{
     }
 
     @BindingAdapter("android:text")
-    public static void setText(TextView textView, double number){
+    public static void setText(TextView textView, double number) {
         textView.setText(String.valueOf(number));
     }
 
     @BindingAdapter("android:src")
-    public static void setPosterFilm(ImageView imageView, Bitmap bitmap){
+    public static void setPosterFilm(ImageView imageView, Bitmap bitmap) {
         imageView.setImageBitmap(bitmap);
+    }
+
+    @BindingAdapter("android:background")
+    public static void setShadow(LinearLayout linearLayout, Bitmap bitmap) {
+        if (bitmap == null) {
+            return;
+        }
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            Palette palette = Palette.from(bitmap).generate();
+            palette.getLightMutedSwatch();
+            int color;
+            Palette.Swatch swatch = palette.getLightMutedSwatch();
+            if (swatch != null) {
+                color = swatch.getRgb();
+            } else {
+                assert palette.getDominantSwatch() != null;
+                color = palette.getDominantSwatch().getRgb();
+            }
+
+            int radiusValue = 2;
+            int[] colors = {color, Color.WHITE, Color.WHITE, Color.WHITE, Color.WHITE, Color.WHITE, Color.WHITE};
+            GradientDrawable shadow = new GradientDrawable(GradientDrawable.Orientation.TOP_BOTTOM, colors);
+            shadow.setCornerRadius(radiusValue);
+            shadow.setAlpha(150);
+            linearLayout.setBackground(shadow);
+        }
     }
 
     @BindingAdapter({"toastMessage"})

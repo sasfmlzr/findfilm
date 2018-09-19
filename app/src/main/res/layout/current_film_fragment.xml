@@ -101,7 +101,7 @@
                 android:id="@+id/linear_layout_parent"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@{viewmodel.shadow}"
+                android:background="@{viewmodel.currentMovieField.backdropBitmap}"
                 android:orientation="vertical">
 
                 <RelativeLayout

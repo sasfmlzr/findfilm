@@ -5,11 +5,7 @@ import android.databinding.Bindable;
 import android.databinding.ObservableBoolean;
 import android.databinding.ObservableField;
 import android.graphics.Bitmap;
-import android.graphics.Color;
 import android.graphics.drawable.Drawable;
-import android.graphics.drawable.GradientDrawable;
-import android.os.Build;
-import android.support.v7.graphics.Palette;
 
 import com.android.databinding.library.baseAdapters.BR;
 import com.sasfmlzr.findfilm.model.RetrofitSingleton;
@@ -30,15 +26,14 @@ public class CurrentFilmViewModel extends BaseObservable {
     private static final ObservableField<String> materialMessage = new ObservableField<>("Buy tickets pressed");
     private static final ObservableField<String> videoMessage = new ObservableField<>("Play video pressed");
 
-    public ObservableField<Drawable> shadow = new ObservableField<>();
     public final ObservableBoolean dataLoading = new ObservableBoolean(false);
+    private int idFilm;
 
     @Bindable
     private CurrentMovieRequest currentMovieField;
 
     @Bindable
     private String toastMessage = null;
-    private int idFilm;
 
     public interface FilmLoaded {
         void isLoaded(CurrentMovieRequest currentMovieRequest);
@@ -64,10 +59,7 @@ public class CurrentFilmViewModel extends BaseObservable {
 
     private void loadFilm() {
         DownloadImage imageDownloadCallback = (film) -> {
-            Bitmap imageFilm = film.getBackdropBitmap();
             currentMovieField.setBackdropBitmap(film.getBackdropBitmap());
-
-            shadow.set(createShadow(imageFilm));
             dataLoading.set(true);
         };
 
@@ -114,31 +106,7 @@ public class CurrentFilmViewModel extends BaseObservable {
                     }
                 });
     }
-
-    private Drawable createShadow(Bitmap bitmap) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            Palette palette = Palette.from(bitmap).generate();
-            palette.getLightMutedSwatch();
-            int color;
-            Palette.Swatch swatch = palette.getLightMutedSwatch();
-            if (swatch != null) {
-                color = swatch.getRgb();
-            } else {
-                assert palette.getDominantSwatch() != null;
-                color = palette.getDominantSwatch().getRgb();
-            }
-
-            int radiusValue = 2;
-            int[] colors = {color, Color.WHITE, Color.WHITE, Color.WHITE, Color.WHITE, Color.WHITE, Color.WHITE};
-            GradientDrawable shadow = new GradientDrawable(GradientDrawable.Orientation.TOP_BOTTOM, colors);
-            shadow.setCornerRadius(radiusValue);
-            shadow.setAlpha(150);
-            return shadow;
-        } else {
-            return null;
-        }
-    }
-
+    
     /**
      * Toast message methods
      */
