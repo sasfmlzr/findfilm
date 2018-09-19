@@ -8,7 +8,7 @@ import com.squareup.picasso.Target;
 
 import static com.sasfmlzr.findfilm.model.SystemSettings.URL_IMAGE_500PX;
 
-public class ItemViewModel extends BaseObservable {
+public class DiscoverItemViewModel extends BaseObservable {
 
     public void loadBitmap(DiscoverMovieRequest.Result currentFilm, Target target){
         Picasso.get().load(setBackdropPath(currentFilm)).into(target);

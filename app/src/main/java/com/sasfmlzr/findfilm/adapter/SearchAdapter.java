@@ -2,13 +2,14 @@ package com.sasfmlzr.findfilm.adapter;
 
 import android.content.Context;
 import android.database.Cursor;
+import android.databinding.DataBindingUtil;
 import android.support.v4.widget.CursorAdapter;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 import com.sasfmlzr.findfilm.R;
+import com.sasfmlzr.findfilm.databinding.SearchItemBinding;
 import com.sasfmlzr.findfilm.fragment.discoverfilm.DiscoverFilmFragment;
 import com.sasfmlzr.findfilm.request.DiscoverMovieRequest;
 
@@ -29,12 +30,11 @@ public class SearchAdapter extends CursorAdapter {
 
     @Override
     public void bindView(View view, Context context, Cursor cursor) {
-        ViewHolder holder = (ViewHolder) view.getTag();
-        if (holder == null) {
-            holder = new ViewHolder(view);
-        }
+        SearchItemBinding binding = DataBindingUtil.bind(view);
+        assert binding != null;
+        ViewHolder holder = new ViewHolder(binding);
         if (filmList != null) {
-            holder.text.setText(filmList.get(cursor.getPosition()).getTitle());
+            holder.binding.itemSearchTitle.setText(filmList.get(cursor.getPosition()).getTitle());
         }
     }
 
@@ -46,12 +46,12 @@ public class SearchAdapter extends CursorAdapter {
     }
 
     private class ViewHolder implements View.OnClickListener {
-        final TextView text;
+        private SearchItemBinding binding;
         final int position = getCursor().getPosition();
 
-        ViewHolder(View itemView) {
-            text = itemView.findViewById(R.id.itemSearchTitle);
-            itemView.setOnClickListener(this);
+        ViewHolder(SearchItemBinding binding) {
+            this.binding = binding;
+            binding.itemSearchTitle.setOnClickListener(this);
         }
 
         @Override

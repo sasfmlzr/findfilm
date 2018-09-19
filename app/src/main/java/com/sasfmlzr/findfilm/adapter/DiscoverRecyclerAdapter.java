@@ -22,7 +22,7 @@ public class DiscoverRecyclerAdapter extends RecyclerView.Adapter<DiscoverRecycl
     private List<DiscoverMovieRequest.Result> filmList;
     private DiscoverFilmFragment.OnFilmSelectedListener filmSelectedListener;
     private DiscoverFilmFragment.RecyclerElementEnded elementEndedCallback;
-    private ItemViewModel viewModel;
+    private DiscoverItemViewModel viewModel;
 
     public DiscoverRecyclerAdapter(List<DiscoverMovieRequest.Result> filmList,
                                    DiscoverFilmFragment.OnFilmSelectedListener filmSelectedListener,
@@ -44,7 +44,7 @@ public class DiscoverRecyclerAdapter extends RecyclerView.Adapter<DiscoverRecycl
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         DiscoverMovieRequest.Result currentFilm = filmList.get(position);
 
-        viewModel = new ItemViewModel();
+        viewModel = new DiscoverItemViewModel();
         holder.binding.setViewmodel(viewModel);
         DiscoverFilmItemBinding binding = holder.binding;
 
