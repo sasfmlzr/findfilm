@@ -4,10 +4,13 @@ import android.app.SearchManager;
 import android.content.Context;
 import android.databinding.BindingAdapter;
 import android.os.Bundle;
+import android.support.annotation.IntRange;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.button.MaterialButton;
 import android.support.design.shape.MaterialShapeDrawable;
+import android.support.design.shape.RoundedCornerTreatment;
+import android.support.design.shape.ShapePathModel;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -160,21 +163,47 @@ public class ParentFilmFragment extends Fragment implements DiscoverFilmFragment
     private void configureTopButtons() {
         MaterialButton buttonNow = viewDataBinding.getRoot().findViewById(R.id.button_now);
         MaterialButton buttonSoon = viewDataBinding.getRoot().findViewById(R.id.button_soon);
+
+        buttonNow.setBackground(configureLeftButton(255));
+        buttonSoon.setBackground(configureRightButton(128));
+
         buttonNow.setOnClickListener(item -> {
             Toast.makeText(getContext(), "Now clicked", Toast.LENGTH_SHORT).show();
-            buttonNow.setBackground(viewModel.configureLeftButton(255));
-            buttonSoon.setBackground(viewModel.configureRightButton(128));
+            buttonNow.setBackground(configureLeftButton(255));
+            buttonSoon.setBackground(configureRightButton(128));
             buttonNow.setTextColor(getResources().getColor(R.color.colorBlack));
             buttonSoon.setTextColor(getResources().getColor(R.color.colorWhite));
         });
 
         buttonSoon.setOnClickListener(item -> {
             Toast.makeText(getContext(), "Soon clicked", Toast.LENGTH_SHORT).show();
-            buttonNow.setBackground(viewModel.configureLeftButton(128));
-            buttonSoon.setBackground(viewModel.configureRightButton(255));
+            buttonNow.setBackground(configureLeftButton(128));
+            buttonSoon.setBackground(configureRightButton(255));
             buttonSoon.setTextColor(getResources().getColor(R.color.colorBlack));
             buttonNow.setTextColor(getResources().getColor(R.color.colorWhite));
         });
+    }
+
+    private static final int COLOR_PRIMARY = 0xFFeaeaee;
+
+    private MaterialShapeDrawable configureLeftButton(@IntRange(from = 0L, to = 255L) int opacity) {
+        ShapePathModel leftShapePathModel = new ShapePathModel();
+        leftShapePathModel.setBottomLeftCorner(new RoundedCornerTreatment(40));
+        leftShapePathModel.setTopLeftCorner(new RoundedCornerTreatment(40));
+        MaterialShapeDrawable leftRoundedMaterialShape = new MaterialShapeDrawable(leftShapePathModel);
+        leftRoundedMaterialShape.setTint(COLOR_PRIMARY);
+        leftRoundedMaterialShape.setAlpha(opacity);
+        return leftRoundedMaterialShape;
+    }
+
+    private MaterialShapeDrawable configureRightButton(@IntRange(from = 0L, to = 255L) int opacity) {
+        ShapePathModel rightShapePathModel = new ShapePathModel();
+        rightShapePathModel.setBottomRightCorner(new RoundedCornerTreatment(40));
+        rightShapePathModel.setTopRightCorner(new RoundedCornerTreatment(40));
+        MaterialShapeDrawable rightRoundedMaterialShape = new MaterialShapeDrawable(rightShapePathModel);
+        rightRoundedMaterialShape.setTint(COLOR_PRIMARY);
+        rightRoundedMaterialShape.setAlpha(opacity);
+        return rightRoundedMaterialShape;
     }
 
     private void configureBottomNavigation() {

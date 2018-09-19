@@ -21,6 +21,4 @@ public class ItemViewModel extends BaseObservable {
             return URL_IMAGE_500PX + currentFilm.getBackdropPath();
         }
     }
-
-
 }
