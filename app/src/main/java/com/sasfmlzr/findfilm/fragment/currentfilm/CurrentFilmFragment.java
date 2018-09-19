@@ -14,6 +14,7 @@ import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.sasfmlzr.findfilm.R;
@@ -71,6 +72,11 @@ public class CurrentFilmFragment extends Fragment{
             toolbar.setNavigationOnClickListener(item -> activity.onBackPressed());
             Objects.requireNonNull(activity.getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
         }
+    }
+
+    @BindingAdapter("android:text")
+    public static void setText(TextView textView, double number){
+        textView.setText(String.valueOf(number));
     }
 
     @BindingAdapter("android:src")

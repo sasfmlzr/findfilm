@@ -30,13 +30,11 @@ public class CurrentFilmViewModel extends BaseObservable {
     private static final ObservableField<String> materialMessage = new ObservableField<>("Buy tickets pressed");
     private static final ObservableField<String> videoMessage = new ObservableField<>("Play video pressed");
 
-    public ObservableField<Bitmap> posterFilm = new ObservableField<>();
     public ObservableField<Drawable> shadow = new ObservableField<>();
-    public ObservableField<String> description = new ObservableField<>();
-    public ObservableField<String> voteAverage = new ObservableField<>();
-    public ObservableField<String> releaseDate = new ObservableField<>();
-    public ObservableField<String> title = new ObservableField<>();
     public final ObservableBoolean dataLoading = new ObservableBoolean(false);
+
+    @Bindable
+    private CurrentMovieRequest currentMovieField;
 
     @Bindable
     private String toastMessage = null;
@@ -55,21 +53,27 @@ public class CurrentFilmViewModel extends BaseObservable {
         loadFilm();
     }
 
+    public CurrentMovieRequest getCurrentMovieField() {
+        return currentMovieField;
+    }
+
+    private void setCurrentMovieField(CurrentMovieRequest currentMovieField) {
+        this.currentMovieField = currentMovieField;
+        notifyPropertyChanged(BR.currentMovieField);
+    }
+
     private void loadFilm() {
         DownloadImage imageDownloadCallback = (film) -> {
             Bitmap imageFilm = film.getBackdropBitmap();
-
-            posterFilm.set(imageFilm);
+            currentMovieField.setBackdropBitmap(film.getBackdropBitmap());
 
             shadow.set(createShadow(imageFilm));
             dataLoading.set(true);
         };
 
         FilmLoaded filmLoadCallback = (currentMovieRequest) -> {
-            title.set(currentMovieRequest.getTitle());
-            releaseDate.set(currentMovieRequest.getReleaseDate());
-            voteAverage.set(String.valueOf(currentMovieRequest.getVoteAverage()));
-            description.set(currentMovieRequest.getOverview());
+            setCurrentMovieField(currentMovieRequest);
+
             String url;
             if (currentMovieRequest.getBackdropPath() == null) {
                 url = URL_IMAGE_500PX + currentMovieRequest.getPosterPath();
