@@ -63,7 +63,7 @@
                 android:layout_marginBottom="50dp"
                 android:layout_marginStart="20dp"
                 android:text="@string/_3d"
-                android:textColor="@android:color/background_light"
+                android:textColor="?attr/android:windowBackground"
                 android:textSize="16sp" />
 
             <TextView
@@ -73,10 +73,10 @@
                 android:layout_marginBottom="20dp"
                 android:layout_marginStart="20dp"
                 android:gravity="bottom|left"
-                android:shadowColor="@android:color/black"
+                android:shadowColor="?attr/customShadowColor"
                 android:shadowRadius="5"
                 android:text="@string/name_film"
-                android:textColor="@android:color/white"
+                android:textColor="?attr/android:windowBackground"
                 android:textSize="16sp"
                 android:textStyle="bold" />
 
@@ -87,10 +87,10 @@
                 android:layout_marginBottom="20dp"
                 android:layout_marginEnd="20dp"
                 android:gravity="bottom|right"
-                android:shadowColor="@android:color/black"
+                android:shadowColor="?attr/customShadowColor"
                 android:shadowRadius="5"
                 android:text="@string/score_film"
-                android:textColor="@android:color/white"
+                android:textColor="?attr/android:windowBackground"
                 android:textSize="16sp" />
         </FrameLayout>
 
