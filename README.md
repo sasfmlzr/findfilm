@@ -3,6 +3,9 @@ Introduction
 Want to see information about the movie you are interested in? Welcome.
 This application allows you to search for information about movies.
 
+![Findfilm_1](screenshots/findfilm_1.png "Findfilm design")
+![Findfilm_2](screenshots/findfilm_2.png "Findfilm design")
+
 UI based on the [Dribble][1] project.
 
 This is a test application that shows the skills of working with the libraries listed below.
