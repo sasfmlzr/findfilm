@@ -1,15 +1,18 @@
 apply plugin: 'com.android.application'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-kapt'
+apply plugin: 'kotlin-parcelize'
 
 android {
-    compileSdkVersion 28
+    compileSdkVersion 30
     defaultConfig {
         applicationId "com.sasfmlzr.findfilm"
-        minSdkVersion 21
-        targetSdkVersion 28
+        minSdkVersion 23
+        targetSdkVersion 30
         versionCode 1
         versionName "1.0"
-        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
-        renderscriptTargetApi 28
+        testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'
+        renderscriptTargetApi 30
         renderscriptSupportModeEnabled true    // Enable RS support
     }
     buildTypes {
@@ -18,39 +21,42 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
-    dataBinding {
-        enabled = true
-    }
+    buildFeatures.dataBinding = true
+
     compileOptions {
-        targetCompatibility 1.8
-        sourceCompatibility 1.8
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+    kotlinOptions {
+        jvmTarget = '1.8'
     }
 }
 
 dependencies {
-    implementation fileTree(dir: 'libs', include: ['*.jar'])
-    implementation 'com.android.support:appcompat-v7:28.0.0-rc01'
-    implementation 'com.android.support:cardview-v7:28.0.0-rc01'
-    implementation 'com.android.support:preference-v7:28.0.0-rc01'
-    implementation 'com.android.support:support-v4:28.0.0-rc01'
-    implementation 'com.android.support:recyclerview-v7:28.0.0-rc01'
-    implementation 'com.android.support.constraint:constraint-layout:1.1.3'
+    implementation 'androidx.appcompat:appcompat:1.3.0'
+    implementation 'androidx.cardview:cardview:1.0.0'
+    implementation 'androidx.preference:preference-ktx:1.1.1'
+    implementation 'androidx.recyclerview:recyclerview:1.2.1'
+    implementation 'androidx.constraintlayout:constraintlayout:2.0.4'
 
-    implementation 'com.android.support:palette-v7:28.0.0-rc02'
-    implementation 'jp.wasabeef:glide-transformations:3.0.1'
-    implementation 'com.github.bumptech.glide:glide:4.8.0'
-    annotationProcessor 'com.github.bumptech.glide:compiler:4.8.0'
+    implementation 'androidx.palette:palette-ktx:1.0.0'
+    implementation 'jp.wasabeef:glide-transformations:4.3.0'
+    implementation 'com.github.bumptech.glide:glide:4.12.0'
+    annotationProcessor 'com.github.bumptech.glide:compiler:4.12.0'
     implementation 'com.squareup.picasso:picasso:2.71828'
-    implementation 'com.squareup.retrofit2:retrofit:2.1.0'
-    implementation 'com.squareup.retrofit2:converter-gson:2.1.0'
-    implementation 'com.google.code.gson:gson:2.8.5'
-    implementation 'com.jakewharton:butterknife:8.6.0'
-    annotationProcessor 'com.jakewharton:butterknife-compiler:8.6.0'
+    implementation 'com.squareup.retrofit2:retrofit:2.9.0'
+    implementation 'com.squareup.retrofit2:converter-gson:2.9.0'
+    implementation 'com.google.code.gson:gson:2.8.7'
 
-    testImplementation 'junit:junit:4.12'
-    androidTestImplementation 'com.android.support.test:runner:1.0.2'
-    androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
+    testImplementation 'junit:junit:4.13.2'
+    androidTestImplementation 'androidx.test.ext:junit:1.1.2'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
 
 
-    implementation 'com.android.support:design:28.0.0-rc01'
+    implementation 'com.google.android.material:material:1.3.0'
+    implementation "androidx.core:core-ktx:1.5.0"
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+}
+repositories {
+    mavenCentral()
 }

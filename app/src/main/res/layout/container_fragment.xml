@@ -3,18 +3,14 @@
 
     <data>
 
-        <variable
-            name="viewmodel"
-            type="com.sasfmlzr.findfilm.fragment.parentfilm.ParentFilmViewModel" />
-
         <import type="android.view.View" />
     </data>
 
-    <android.support.design.widget.CoordinatorLayout
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <android.support.design.widget.AppBarLayout
+        <com.google.android.material.appbar.AppBarLayout
             android:id="@+id/appbar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -23,7 +19,7 @@
             android:translationZ="0.1dp"
             app:elevation="0dp">
 
-            <android.support.v7.widget.Toolbar
+            <androidx.appcompat.widget.Toolbar
                 android:id="@+id/toolbar"
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
@@ -39,7 +35,7 @@
                 android:layout_marginRight="20dp"
                 android:orientation="horizontal">
 
-                <android.support.design.button.MaterialButton
+                <com.google.android.material.button.MaterialButton
                     android:id="@+id/button_now"
                     style="@style/Widget.MaterialComponents.Button"
                     android:layout_width="wrap_content"
@@ -52,7 +48,7 @@
                     android:textColor="?attr/customShadowColor"
                     android:textSize="16sp" />
 
-                <android.support.design.button.MaterialButton
+                <com.google.android.material.button.MaterialButton
                     android:id="@+id/button_soon"
                     style="@style/Widget.MaterialComponents.Button"
                     android:layout_width="wrap_content"
@@ -67,7 +63,7 @@
 
             </LinearLayout>
 
-        </android.support.design.widget.AppBarLayout>
+        </com.google.android.material.appbar.AppBarLayout>
 
         <FrameLayout
             android:id="@+id/container_child_fragment"
@@ -75,7 +71,7 @@
             android:layout_height="wrap_content"
             app:layout_behavior="@string/appbar_scrolling_view_behavior" />
 
-        <android.support.design.widget.BottomNavigationView
+        <com.google.android.material.bottomnavigation.BottomNavigationView
             android:id="@+id/bottom_navigation"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -85,5 +81,5 @@
             app:itemTextColor="@android:color/darker_gray"
             app:labelVisibilityMode="unlabeled"
             app:menu="@menu/navigation_bottom_menu" />
-    </android.support.design.widget.CoordinatorLayout>
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
 </layout>
