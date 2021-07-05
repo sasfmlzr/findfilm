@@ -20,4 +20,7 @@
     <string name="button_play_video">Button play video</string>
     <string name="current_film_poster">Current film poster</string>
     <string name="fill_color_area">Fill color area</string>
+    <string name="first_route">first_route</string>
+    <string name="second_route">second_route</string>
+    <string name="third_route">third_route</string>
 </resources>
