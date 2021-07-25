@@ -39,7 +39,7 @@ fun JetnewsNavGraph(
     ) {
         composable(MainDestinations.HOME_ROUTE) {
             HomeScreen(
-
+                Graph.findFilmRepository
       /*          postsRepository = appContainer.postsRepository,
                 navigateToArticle = actions.navigateToArticle,
                 openDrawer = openDrawer*/

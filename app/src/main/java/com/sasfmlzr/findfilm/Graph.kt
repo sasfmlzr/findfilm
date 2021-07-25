@@ -27,7 +27,7 @@ object Graph {
         FindFilmRepository(
             api = api,
             filmStore = filmStore,
-            mainDispatcher = mainDispatcher
+            mainDispatcher = ioDispatcher
         )
     }
 

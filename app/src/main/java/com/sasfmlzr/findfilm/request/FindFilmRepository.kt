@@ -1,11 +1,8 @@
 package com.sasfmlzr.findfilm.request
 
+import com.sasfmlzr.findfilm.Result
 import com.sasfmlzr.findfilm.model.SystemSettings
-import kotlinx.coroutines.CoroutineDispatcher
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Job
-import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.*
 
 class FindFilmRepository(
     private val api: FindFilmComposeApi,
@@ -16,21 +13,16 @@ class FindFilmRepository(
 
     private val scope = CoroutineScope(mainDispatcher)
 
-    suspend fun getNumThreadsFromCatalog(page: Int, force: Boolean) {
-        if (refreshingJob?.isActive == true) {
-            refreshingJob?.join()
-        } else if (force) {
-            refreshingJob = scope.launch {
-                // Now fetch the podcasts, and add each to each store
-                filmStore.films = flow {
-                    emit(
-                        api.getDiscoverMovie(
-                            SystemSettings.API_KEY,
-                            SystemSettings.LANGUAGE, page
-                        )
-                    )
-                }
-            }
+    suspend fun getNumThreadsFromCatalog(
+        page: Int,
+        force: Boolean = true
+    ): Result<DiscoverMovieRequest> {
+        return withContext(Dispatchers.IO) {
+            val result: DiscoverMovieRequest = api.getDiscoverMovie(
+                SystemSettings.API_KEY,
+                SystemSettings.LANGUAGE, page
+            )
+            Result.Success(result)
         }
     }
 }
